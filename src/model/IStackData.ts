@@ -1,7 +1,7 @@
 interface IStackData {
   input: string;
-  byteValue: number;
+  byteValue: number | string;
   byteValueDisplay: string;
-  display: number | string;
+  numberValue?: number;
 }
 export default IStackData;
