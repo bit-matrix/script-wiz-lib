@@ -16,7 +16,7 @@ module.exports = (env) => {
   return {
     // mode: env.mod,
     entry: {
-      sclib: "./src/index.js",
+      scriptWiz: "./src/index.ts",
     },
     output: {
       filename: "index.js",
@@ -27,6 +27,7 @@ module.exports = (env) => {
     devtool: "source-map", // devtool: 'cheap-module-source-map',
     module: {
       rules: [
+        { test: /\.ts$/, loader: "ts-loader" },
         {
           test: /\.js$/,
           exclude: /node_modules/,
@@ -35,7 +36,7 @@ module.exports = (env) => {
       ],
     },
     resolve: {
-      extensions: [".tsx", ".ts", ".js", ".d.ts"],
+      extensions: [".ts", ".js", ".d.ts"],
     },
     externals: {
       crypto: "crypto",
