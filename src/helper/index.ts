@@ -47,15 +47,25 @@ const hexLittleEndian = (hex: string): string => {
 const fillStackDataByte = (byteInput: string): StackData => {
   // byteInput
   // 0x1234
+
+  // 0x123 formatted input => 0x1203
+  let formattedInput: string = byteInput;
+  if (byteInput.length % 2 === 1) {
+    formattedInput = byteInput.substr(0, byteInput.length - 1) + "0" + byteInput.substr(byteInput.length - 1, 1);
+  }
+
   let byteValue: number | string;
-  const littleEndianValue = hexLittleEndian(byteInput);
-  const numberValue = parseInt(littleEndianValue);
+  let finalNumberValue: number | undefined = undefined;
 
-  if (numberValue <= maxInteger) {
-    byteValue = numberValue;
-  } else byteValue = byteInput;
+  const littleEndianValue = hexLittleEndian(formattedInput);
+  const hexNumberValue = parseInt(littleEndianValue);
 
-  return { input: byteInput, byteValue, byteValueDisplay: byteInput };
+  if (hexNumberValue <= maxInteger) {
+    finalNumberValue = hexNumberValue;
+    byteValue = hexNumberValue;
+  } else byteValue = formattedInput;
+
+  return { input: byteInput, numberValue: finalNumberValue, byteValue: formattedInput, byteValueDisplay: byteValue.toString() };
 };
 
 const fillStackDataNumber = (input: string): StackData => {
@@ -83,6 +93,22 @@ const fillStackDataNumber = (input: string): StackData => {
   return { input, numberValue, byteValueDisplay, byteValue };
 };
 
+const fillStackDataString = (input: string): StackData => {
+  //  input =>  bytevalue   => byteValueDisplay => inputNumber
+  //  ahmet => 0x61686d6574 => ahmet   => 418363827572 // set undefined
+  //  umut  => 0x756d7574   => umut    => 1970107764
+
+  const inputHexString = "0x" + hexString(input);
+  const inputHexNumber = parseInt(inputHexString);
+  let inputNumberValue: number | undefined = undefined;
+
+  if (inputHexNumber <= maxInteger) {
+    inputNumberValue = inputHexNumber;
+  }
+
+  return { input, byteValue: inputHexString, byteValueDisplay: input, numberValue: inputNumberValue };
+};
+
 const parseInput = (input: string): StackData => {
   // 0x1245
   // "hello"
@@ -90,16 +116,23 @@ const parseInput = (input: string): StackData => {
   // OP_...
 
   if (input.startsWith("0x")) {
+    console.log("byte data input");
     // byte data
     return fillStackDataByte(input);
   } else if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
     // string data
+
+    const formattedInput = input.substr(1, input.length - 2);
+    return fillStackDataString(formattedInput);
   } else if (input.startsWith("OP_")) {
+    console.log("op data input");
     // op functions
   } else if (!isNaN(input as any)) {
+    console.log("number data input");
     // number
     return fillStackDataNumber(input);
   } else {
+    console.log("what happend");
     throw "it is not a valid input";
   }
 
@@ -126,4 +159,4 @@ const parseInput = (input: string): StackData => {
 //   return { input, value, display };
 // };
 
-export { fillStackDataByte, fillStackDataNumber, hexLittleEndian, hexNumber, hexString, parseInput };
+export { fillStackDataByte, fillStackDataNumber, fillStackDataString, hexLittleEndian, hexNumber, hexString, parseInput };
