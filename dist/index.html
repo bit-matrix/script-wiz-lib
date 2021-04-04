@@ -6,6 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script type="text/javascript" src="scriptWiz.umd.js"></script>
+    <style>
+      #input {
+        width: calc(100% - 30px);
+        padding: 15px;
+      }
+      #output {
+        width: 100%;
+        background: #dfdfdf;
+        font-size: larger;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div><input type="text" id="input" onkeyup="inputChanged()" /></div>
+    <div><span id="output"></span></div>
+    <script>
+      let data;
+      let message = "";
+
+      var input = document.getElementById("input");
+      var output = document.getElementById("output");
+
+      function inputChanged() {
+        data = undefined;
+        try {
+          data = scriptWiz.helper.parseInput(input.value);
+        } catch {
+          message = "invalid input!";
+        } finally {
+          if (data) {
+            message = JSON.stringify(data);
+          }
+          output.innerText = message;
+        }
+      }
+    </script>
+  </body>
 </html>
