@@ -5,7 +5,12 @@ const signIntegerMax = 256;
 const maxInteger = 2147483647;
 
 const hexNumber = (number: number): string => {
-  let numberHexString = number.toString(16);
+  let numberInput = number;
+  if (number <= -1 && -signIntegerMin <= number) {
+    numberInput = signIntegerMin + 1 - number;
+  }
+
+  let numberHexString = numberInput.toString(16);
 
   if (numberHexString.length % 2 === 1) {
     numberHexString = "0" + numberHexString;
