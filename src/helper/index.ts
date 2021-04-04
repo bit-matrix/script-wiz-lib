@@ -1,5 +1,7 @@
 import { StackData } from "../model";
 
+const signIntegerMin = 127;
+const signIntegerMax = 256;
 const maxInteger = 2147483647;
 
 const hexNumber = (number: number): string => {
@@ -71,6 +73,10 @@ const fillStackDataByte = (byteInput: string): StackData => {
 const fillStackDataNumber = (input: string): StackData => {
   // input      =>  hexNumber     =>  le           =>  display        =>  byteValueDisplay  => byteValue    => numberValue
   // 1          =>  0x01          =>  0x01         =>  1              =>  1                 => 0x01         => 1
+  // 127        =>  0x7f          =>  0x7f         =>  127            =>  127               => 0x7f         => 127
+  // 128        =>  0x80          =>  0x80         =>  128            =>  128               => 0x8000       => 128
+  // 255        =>  0xff          =>  0xff00       =>  255            =>  255               => 0xff00       => 255
+  // 256        =>  0x0100        =>  0x0001       =>  256            =>  256               => 0x0001       => 256
   // 2147483647 =>  0x7fffffff    =>  0xffffff7f   =>  2147483647     =>  2147483647        => 0xffffff7f   => 2147483647
   // 2147483648 =>  0x80000000    =>  0x00000080   =>  0x00000008000  =>  0x0000008000      => 0x0000008000 => undefined
 
@@ -81,10 +87,16 @@ const fillStackDataNumber = (input: string): StackData => {
   let byteValue: string | number;
   let numberValue: number | undefined = undefined;
   let byteValueDisplay = littleEndianNumber;
+
   if (inputNumber <= maxInteger) {
+    numberValue = inputNumber;
+
     byteValueDisplay = input;
     byteValue = littleEndianNumber;
-    numberValue = inputNumber;
+
+    if (signIntegerMin < inputNumber && inputNumber < signIntegerMax) {
+      byteValue = littleEndianNumber + "00";
+    }
   } else {
     byteValueDisplay = littleEndianNumber + "00";
     byteValue = littleEndianNumber + "00";
