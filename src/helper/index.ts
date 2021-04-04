@@ -110,6 +110,19 @@ const fillStackDataString = (input: string): StackData => {
 };
 
 const parseInput = (input: string): StackData => {
+  let finalInput = undefined;
+  if (input.startsWith("<") && input.endsWith(">")) {
+    finalInput = input.substr(1, input.length - 2);
+  } else if (input.startsWith("OP_")) {
+    finalInput = input;
+  }
+
+  if (finalInput) return parseInputData(finalInput);
+
+  throw "it is not a valid input";
+};
+
+const parseInputData = (input: string): StackData => {
   // 0x1245
   // "hello"
   // 12
