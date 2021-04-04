@@ -10,36 +10,94 @@
       #input {
         width: calc(100% - 30px);
         padding: 15px;
+        background: #1d2023;
+        color: #ce9178 !important;
+        font-size: 16px;
       }
       #output {
         width: 100%;
-        background: #dfdfdf;
+        background: transparent;
         font-size: larger;
+        color: #b5cea8;
+      }
+
+      body {
+        background-color: #181b1e;
+        color: #fff;
+      }
+
+      .maindiv {
+        display: flex;
+      }
+
+      .inputDiv {
+        width: 50%;
+        padding-right: 50px;
+      }
+
+      .outputDiv {
+        border: 1px solid gray;
+        width: 50%;
+        padding: 15px;
+      }
+
+      #display1 {
+        color: #b5cea8;
+      }
+
+      #display2 {
+        color: #5bb498;
+      }
+
+      #display3 {
+        color: #b3675a;
       }
     </style>
   </head>
   <body>
-    <div><input type="text" id="input" onkeyup="inputChanged()" /></div>
-    <div><span id="output"></span></div>
+    <div class="maindiv">
+      <div class="inputDiv"><textarea id="input" rows="35" onkeyup="inputChanged()"></textarea></div>
+      <div class="outputDiv"><span id="output"></span></div>
+    </div>
     <script>
-      let data;
-      let message = "";
+      let datas = [];
+      let messages = [];
 
       var input = document.getElementById("input");
       var output = document.getElementById("output");
 
       function inputChanged() {
-        data = undefined;
-        try {
-          data = scriptWiz.helper.parseInput(input.value);
-        } catch {
-          message = "invalid input!";
-        } finally {
-          if (data) {
-            message = JSON.stringify(data);
+        datas = [];
+        messages = [];
+
+        var inputs = input.value.split("\n");
+
+        for (let i = 0; i < inputs.length; i++) {
+          var inp = inputs[i];
+          var data = undefined;
+          var message = "";
+
+          try {
+            if (inp === "") {
+              message = "";
+            } else {
+              data = scriptWiz.helper.parseInput(inp);
+            }
+          } catch {
+            messages.push('<span id="display3">Invalid input!</span><br/>');
+            continue;
+          } finally {
+            if (inp !== "") {
+              if (data) {
+                message = '<span id="display1">' + data.byteValueDisplay + '</span>&nbsp;&nbsp;<span id="display2">(' + data.byteValue + ")</span><br/>";
+              }
+            }
+
+            messages.push(message);
           }
-          output.innerText = message;
         }
+
+        output.innerHTML = messages.join("");
       }
     </script>
   </body>
