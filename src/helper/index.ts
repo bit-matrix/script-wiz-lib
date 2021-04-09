@@ -2,6 +2,7 @@ import { StackData } from "../model";
 import { getNumberByteLength, hexNumber } from "./byteNumber";
 
 const maxInteger = 2147483647;
+const emojiRegexp = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g;
 
 const hexString = (data: string): string => {
   let i: number;
@@ -42,10 +43,7 @@ const fillStackDataByte = (byteInput: string): StackData => {
   // 0x123 formatted input => 0x1203
   let formattedInput: string = byteInput;
   if (byteInput.length % 2 === 1) {
-    formattedInput =
-      byteInput.substr(0, byteInput.length - 1) +
-      "0" +
-      byteInput.substr(byteInput.length - 1, 1);
+    formattedInput = byteInput.substr(0, byteInput.length - 1) + "0" + byteInput.substr(byteInput.length - 1, 1);
   }
 
   let byteValue: number | string;
@@ -131,6 +129,28 @@ const parseInput = (input: string): StackData => {
   throw "it is not a valid input";
 };
 
+// Surrogates for emoji char code
+// const raw = (input: string) => {
+//   if (input.length === 1) {
+//     return input.charCodeAt(0);
+//   }
+//   let comp = (input.charCodeAt(0) - 0xd800) * 0x400 + (input.charCodeAt(1) - 0xdc00) + 0x10000;
+//   if (comp < 0) {
+//     return input.charCodeAt(0);
+//   }
+//   return comp;
+// };
+
+const fillStackDataEmoji = (input: string): StackData => {
+  const byteValueDisplay = input.replace(/'/g, "");
+  const charCode = input.charCodeAt(0);
+  return {
+    input,
+    byteValueDisplay,
+    byteValue: "",
+  };
+};
+
 const parseInputData = (input: string): StackData => {
   // 0x1245
   // "hello"
@@ -141,10 +161,10 @@ const parseInputData = (input: string): StackData => {
     console.log("byte data input");
     // byte data
     return fillStackDataByte(input);
-  } else if (
-    (input.startsWith('"') && input.endsWith('"')) ||
-    (input.startsWith("'") && input.endsWith("'"))
-  ) {
+  } else if (input.match(emojiRegexp)) {
+    // <'🌎'>
+    return fillStackDataEmoji(input);
+  } else if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
     // string data
 
     const formattedInput = input.substr(1, input.length - 2);
@@ -184,13 +204,4 @@ const parseInputData = (input: string): StackData => {
 //   return { input, value, display };
 // };
 
-export {
-  fillStackDataByte,
-  fillStackDataNumber,
-  fillStackDataString,
-  hexLittleEndian,
-  getNumberByteLength,
-  hexNumber,
-  hexString,
-  parseInput,
-};
+export { fillStackDataByte, fillStackDataNumber, fillStackDataString, hexLittleEndian, getNumberByteLength, hexNumber, hexString, parseInput };
