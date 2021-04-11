@@ -1,6 +1,6 @@
 interface IStackData {
   input: string;
-  byteValue: number | string;
+  byteValue: string;
   byteValueDisplay: string;
   numberValue?: number;
 }
