@@ -59,44 +59,51 @@
       <div class="outputDiv"><span id="output"></span></div>
     </div>
     <script>
-      let datas = [];
-      let messages = [];
+      const inputDom = document.getElementById("input");
+      const outputDom = document.getElementById("output");
 
-      var input = document.getElementById("input");
-      var output = document.getElementById("output");
+      let stackDataArray = [];
+      let outputs = [];
 
+      let timer;
       function inputChanged() {
-        datas = [];
-        messages = [];
+        if (timer) clearTimeout(timer);
 
-        var inputs = input.value.split("\n");
+        timer = setTimeout(function () {
+          scriptWiz.clearStack();
+          stackDataArray = [];
+          outputs = [];
 
-        for (let i = 0; i < inputs.length; i++) {
-          var inp = inputs[i];
-          var data = undefined;
-          var message = "";
+          var inputTexts = inputDom.value.split("\n");
 
-          try {
-            if (inp === "") {
-              message = "<br/>";
-            } else {
-              data = scriptWiz.parse(inp);
-            }
-          } catch {
-            messages.push('<span id="display3">Invalid input!</span><br/>');
-            continue;
-          } finally {
-            if (inp !== "") {
-              if (data) {
-                message = '<span id="display1">' + data.byteValueDisplay + '</span>&nbsp;&nbsp;<span id="display2">(' + data.byteValue + ")</span><br/>";
+          for (let i = 0; i < inputTexts.length; i++) {
+            var inputText = inputTexts[i];
+            var stackData = undefined;
+            var output = "";
+
+            try {
+              if (inputText === "") {
+                output = "<br/>";
+              } else {
+                stackDataArray = scriptWiz.parse(inputText);
+                stackData = stackDataArray[stackDataArray.length - 1];
               }
+            } catch {
+              outputs.push('<span id="display3">Invalid input!</span><br/>');
+              continue;
+            } finally {
+              if (inputText !== "") {
+                if (stackData) {
+                  output = '<span id="display1">' + stackData.byteValueDisplay + '</span>&nbsp;&nbsp;<span id="display2">(' + stackData.byteValue + ")</span><br/>";
+                }
+              }
+
+              outputs.push(output);
             }
-
-            messages.push(message);
           }
-        }
 
-        output.innerHTML = messages.join("");
+          outputDom.innerHTML = outputs.join("");
+        }, 1000);
       }
     </script>
   </body>

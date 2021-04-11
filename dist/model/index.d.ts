@@ -1,2 +1,3 @@
 import StackData from "./IStackData";
-export { StackData };
+import StackDataResult from "./IStackDataResult";
+export { StackData, StackDataResult };
