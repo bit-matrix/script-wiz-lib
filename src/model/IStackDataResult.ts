@@ -2,7 +2,7 @@ import IStackData from "./IStackData";
 
 interface IStackDataResult {
   data: IStackData;
-  removeLastTwo: boolean;
+  removeLastSize: number;
 }
 
 export default IStackDataResult;
