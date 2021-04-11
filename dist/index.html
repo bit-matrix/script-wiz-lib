@@ -80,7 +80,7 @@
             if (inp === "") {
               message = "<br/>";
             } else {
-              data = scriptWiz.helper.parseInput(inp);
+              data = scriptWiz.parse(inp);
             }
           } catch {
             messages.push('<span id="display3">Invalid input!</span><br/>');
