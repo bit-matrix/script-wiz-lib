@@ -42,22 +42,18 @@ const parseFinalInput = (input: string): StackData => {
 };
 
 const parse = (input: string, stackDataArray: StackData[]): StackDataResult => {
-  let data: StackData;
-  let removeLastTwo = false;
-
   if (input.startsWith("<") && input.endsWith(">")) {
     const finalInput = input.substr(1, input.length - 2);
-    data = parseFinalInput(finalInput);
+    const data = parseFinalInput(finalInput);
+    return { data, removeLastSize: 0 };
   } else if (input.startsWith("OP_")) {
     const sLength = stackDataArray.length;
     if (sLength < 2) throw "Empty stack error";
-    data = OP(input, stackDataArray[sLength - 2], stackDataArray[sLength - 1]);
-    removeLastTwo = true;
+    const thirth: StackData | undefined = sLength === 2 ? undefined : stackDataArray[sLength - 3];
+    return OP(input, stackDataArray[sLength - 1], stackDataArray[sLength - 2], thirth);
   } else {
     throw "it is not a valid input or OP code";
   }
-
-  return { data, removeLastTwo };
 };
 
 export default parse;
