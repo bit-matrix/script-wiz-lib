@@ -1,3 +1,3 @@
-import * as helper from "./helper";
+import parse from "./parse";
 
-export { helper };
+export { parse };

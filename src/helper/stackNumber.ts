@@ -1,5 +1,6 @@
-const signIntegerMin = 127;
-const signIntegerMax = 256;
+import { hexLittleEndian } from "./index";
+import { StackData } from "../model";
+import { MAX_INTEGER } from "../constant";
 
 const getNumberByteLength = (x: number): number => {
   /*
@@ -57,8 +58,7 @@ const hexNumber = (number: number): string => {
   const byteLength = getNumberByteLength(number);
 
   let numberInput = number;
-  if (number < 0 && byteLength !== 0)
-    numberInput = Math.pow(2, 8 * byteLength - 1) - number;
+  if (number < 0 && byteLength !== 0) numberInput = Math.pow(2, 8 * byteLength - 1) - number;
 
   let numberHexString = numberInput.toString(16);
 
@@ -66,10 +66,39 @@ const hexNumber = (number: number): string => {
     numberHexString = "0" + numberHexString;
   }
 
-  if (numberHexString.length / 2 < byteLength || byteLength === 0)
-    numberHexString = "00" + numberHexString;
+  if (numberHexString.length / 2 < byteLength || byteLength === 0) numberHexString = "00" + numberHexString;
 
   return numberHexString;
+};
+
+const stackNumber = (input: string): StackData => {
+  // input      =>  hexNumber     =>  le           =>  display        =>  byteValueDisplay  => byteValue    => numberValue
+  // 1          =>  0x01          =>  0x01         =>  1              =>  1                 => 0x01         => 1
+  // 127        =>  0x7f          =>  0x7f         =>  127            =>  127               => 0x7f         => 127
+  // 128        =>  0x80          =>  0x80         =>  128            =>  128               => 0x8000       => 128
+  // 255        =>  0xff          =>  0xff00       =>  255            =>  255               => 0xff00       => 255
+  // 256        =>  0x0100        =>  0x0001       =>  256            =>  256               => 0x0001       => 256
+  // 2147483647 =>  0x7fffffff    =>  0xffffff7f   =>  2147483647     =>  2147483647        => 0xffffff7f   => 2147483647
+  // 2147483648 =>  0x80000000    =>  0x00000080   =>  0x00000008000  =>  0x0000008000      => 0x0000008000 => undefined
+
+  const inputNumber = Number(input);
+  const inputHexNumber = hexNumber(inputNumber);
+  const littleEndianNumber = hexLittleEndian(inputHexNumber);
+
+  let numberValue: number | undefined = undefined;
+  let byteValueDisplay = littleEndianNumber;
+
+  if (inputNumber <= MAX_INTEGER) {
+    numberValue = inputNumber;
+    byteValueDisplay = input;
+  }
+
+  return {
+    input,
+    numberValue,
+    byteValueDisplay,
+    byteValue: littleEndianNumber,
+  };
 };
 
 /*
@@ -126,4 +155,4 @@ const hexNumber = (number: number): string => {
 <2147483649>
 */
 
-export { getNumberByteLength, hexNumber };
+export default stackNumber;

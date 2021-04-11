@@ -1,0 +1,4 @@
+const MAX_INTEGER = 2147483647;
+const EMOJI_REGEX = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g;
+
+export { EMOJI_REGEX, MAX_INTEGER };
