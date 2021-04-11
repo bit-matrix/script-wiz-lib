@@ -1,8 +1,8 @@
-import { EMOJI_REGEX } from "./constant";
 import stackHex from "./helper/stackHex";
 import stackNumber from "./helper/stackNumber";
+import OP from "./helper/stackOp";
 import stackString from "./helper/stackString";
-import { StackData } from "./model";
+import { StackData, StackDataResult } from "./model";
 
 const parseFinalInput = (input: string): StackData => {
   // 0x1245
@@ -14,22 +14,21 @@ const parseFinalInput = (input: string): StackData => {
     console.log("byte data input");
     // byte data
     return stackHex(input);
-  } else if (input.match(EMOJI_REGEX)) {
-    const byteValueDisplay = input.replace(/'/g, "");
-    //   const charCode = input.charCodeAt(0);
-    //   return {
-    //     input,
-    //     byteValueDisplay,
-    //     byteValue: "",
-    //   };
-  } else if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
+  }
+  // else if (input.match(EMOJI_REGEX)) {
+  //   const byteValueDisplay = input.replace(/'/g, "");
+  //   const charCode = input.charCodeAt(0);
+  //   return {
+  //     input,
+  //     byteValueDisplay,
+  //     byteValue: "",
+  //   };
+  // }
+  else if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
     // string data
 
     const formattedInput = input.substr(1, input.length - 2);
     return stackString(formattedInput);
-  } else if (input.startsWith("OP_")) {
-    console.log("op data input");
-    // op functions
   } else if (!isNaN(input as any)) {
     console.log("number data input");
     // number
@@ -42,17 +41,23 @@ const parseFinalInput = (input: string): StackData => {
   return { input: "", byteValue: "", byteValueDisplay: "" };
 };
 
-const parse = (input: string): StackData => {
-  let finalInput = undefined;
+const parse = (input: string, stackDataArray: StackData[]): StackDataResult => {
+  let data: StackData;
+  let removeLastTwo = false;
+
   if (input.startsWith("<") && input.endsWith(">")) {
-    finalInput = input.substr(1, input.length - 2);
+    const finalInput = input.substr(1, input.length - 2);
+    data = parseFinalInput(finalInput);
   } else if (input.startsWith("OP_")) {
-    finalInput = input;
+    const sLength = stackDataArray.length;
+    if (sLength < 2) throw "Empty stack error";
+    data = OP(input, stackDataArray[sLength - 2], stackDataArray[sLength - 1]);
+    removeLastTwo = true;
+  } else {
+    throw "it is not a valid input or OP code";
   }
 
-  if (finalInput) return parseFinalInput(finalInput);
-
-  throw "it is not a valid input";
+  return { data, removeLastTwo };
 };
 
 export default parse;
