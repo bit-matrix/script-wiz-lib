@@ -38,6 +38,7 @@
         border: 1px solid gray;
         width: 50%;
         padding: 15px;
+        overflow-y: auto;
       }
 
       #display1 {
@@ -65,45 +66,49 @@
       let stackDataArray = [];
       let outputs = [];
 
-      let timer;
+      // let timer;
       function inputChanged() {
-        if (timer) clearTimeout(timer);
+        // if (timer) clearTimeout(timer);
 
-        timer = setTimeout(function () {
-          scriptWiz.clearStack();
-          stackDataArray = [];
-          outputs = [];
+        // timer = setTimeout(function () {
+        scriptWiz.clearStack();
+        stackDataArray = [];
+        outputs = [];
 
-          var inputTexts = inputDom.value.split("\n");
+        var inputTexts = inputDom.value.split("\n");
 
-          for (let i = 0; i < inputTexts.length; i++) {
-            var inputText = inputTexts[i];
-            var stackData = undefined;
-            var output = "";
+        for (let i = 0; i < inputTexts.length; i++) {
+          var inputText = inputTexts[i];
+          var stackData = undefined;
+          var output = "";
 
-            try {
-              if (inputText === "") {
-                output = "<br/>";
-              } else {
-                stackDataArray = scriptWiz.parse(inputText);
-                stackData = stackDataArray[stackDataArray.length - 1];
-              }
-            } catch {
-              outputs.push('<span id="display3">Invalid input!</span><br/>');
-              continue;
-            } finally {
-              if (inputText !== "") {
-                if (stackData) {
-                  output = '<span id="display1">' + stackData.byteValueDisplay + '</span>&nbsp;&nbsp;<span id="display2">(' + stackData.byteValue + ")</span><br/>";
-                }
-              }
-
-              outputs.push(output);
+          try {
+            if (inputText === "") {
+              output = "<br/>";
+            } else {
+              stackDataArray = scriptWiz.parse(inputText);
+              stackData = stackDataArray[stackDataArray.length - 1];
             }
-          }
+          } catch {
+            outputs.push('<span id="display3">Invalid input!</span><br/>');
+            continue;
+          } finally {
+            if (inputText !== "") {
+              if (stackData) {
+                output = "";
+                for (let j = 0; j < stackDataArray.length; j++) {
+                  output += '<span id="display1">' + stackDataArray[j].byteValueDisplay + '</span><span id="display2">(' + stackDataArray[j].byteValue + ")</span>&nbsp;&nbsp;";
+                }
+                output += "<br/>";
+              }
+            }
 
-          outputDom.innerHTML = outputs.join("");
-        }, 1000);
+            outputs.push(output);
+          }
+        }
+
+        outputDom.innerHTML = outputs.join("");
+        // }, 1000);
       }
     </script>
   </body>
