@@ -28,6 +28,7 @@ const stackHex = (byteInput: string): StackData => {
     numberValue: finalNumberValue,
     byteValue: formattedInput,
     byteValueDisplay: byteValue.toString(),
+    stringValue: byteInput,
   };
 };
 

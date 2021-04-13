@@ -46,6 +46,8 @@ const parse = (input: string, stackDataArray: StackData[]): StackDataResult => {
     const finalInput = input.substr(1, input.length - 2);
     const data = parseFinalInput(finalInput);
     return { data, removeLastSize: 0 };
+  } else if (input === "OP_0" || input === "OP_FALSE") {
+    return { data: { byteValue: "0x00", input: "0x00", numberValue: 0, byteValueDisplay: "0" }, removeLastSize: 0 };
   } else if (input.startsWith("OP_")) {
     const sLength = stackDataArray.length;
     if (sLength < 2) throw "Empty stack error";

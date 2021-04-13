@@ -5,7 +5,7 @@ import stackNumber from "./stackNumber";
 import stackString from "./stackString";
 
 const OP_ADD = (stackData1: IStackData, stackData2: IStackData): IStackData => {
-  if (stackData1.numberValue && stackData2.numberValue) {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     const totalValue: number = stackData1.numberValue + stackData2.numberValue;
     return stackNumber(totalValue.toString());
   } else {
@@ -15,7 +15,7 @@ const OP_ADD = (stackData1: IStackData, stackData2: IStackData): IStackData => {
 };
 
 const OP_SUB = (stackData2: IStackData, stackData1: IStackData): IStackData => {
-  if (stackData2.numberValue && stackData1.numberValue) {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     const totalValue: number = stackData2.numberValue - stackData1.numberValue;
     return stackNumber(totalValue.toString());
   } else {
