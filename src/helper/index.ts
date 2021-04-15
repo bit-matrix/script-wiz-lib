@@ -59,4 +59,9 @@ const opWordToCode = (word: string): number => {
   return opcode === undefined ? -1 : opcode;
 };
 
-export { hexLittleEndian, opcodeToWord, opWordToCode };
+const opWordToHex = (word: string): string => {
+  const hex = opWordCodes.find((owc) => owc.word === word)?.hex;
+  return hex || "";
+};
+
+export { hexLittleEndian, opcodeToWord, opWordToCode, opWordToHex };
