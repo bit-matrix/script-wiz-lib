@@ -52,6 +52,11 @@ const hexLittleEndian = (hex: string): string => {
 //   return { input, value, display };
 // };
 
-const opcodeToWord = (opcode: number) => opWordCodes.find((owc) => owc.opcode === opcode)?.word || "";
+const opcodeToWord = (opcode: number): string => opWordCodes.find((owc) => owc.opcode === opcode)?.word || "";
 
-export { hexLittleEndian, opcodeToWord };
+const opWordToCode = (word: string): number => {
+  const opcode = opWordCodes.find((owc) => owc.word === word)?.opcode;
+  return opcode === undefined ? -1 : opcode;
+};
+
+export { hexLittleEndian, opcodeToWord, opWordToCode };
