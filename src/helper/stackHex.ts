@@ -3,6 +3,11 @@ import { MAX_INTEGER } from "../constant";
 import { StackData } from "../model";
 
 const stackHex = (byteInput: string): StackData => {
+  // TO DO
+  //
+
+  // 1. find hex data length
+  // Find
   // byteInput
   // 0x1234
 
