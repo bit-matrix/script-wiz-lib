@@ -49,7 +49,7 @@ const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: I
 
 const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   if (word === "OP_0" || word === "OP_FALSE") {
-    return { data: { byteValue: "0x00", input: "0x00", numberValue: 0, byteValueDisplay: "0" }, removeLastSize: 0 };
+    return { data: { byteValue: "0x00", input: "0x00", byteValueDisplay: "0" }, removeLastSize: 0 };
   }
   const stackDataArrayLength = stackDataArray.length;
 
