@@ -1,4 +1,4 @@
-import { opcodeToWord } from "./helper";
+import { opcodeToWord, opWordToCode } from "./helper";
 import stackHex from "./helper/stackHex";
 import stackNumber from "./helper/stackNumber";
 import OP from "./helper/stackOp";
@@ -7,16 +7,18 @@ import { StackData, StackDataResult } from "./model";
 
 const parseFinalInput = (input: string): StackData => {
   // 0x1245
+  // :D
   // "hello"
-  // 12
   // OP_...
+  // 12
 
   // HEX DATA INPUT
   if (input.startsWith("0x")) {
-    console.log("byte data input");
     return stackHex(input);
   }
-  // else if (input.match(EMOJI_REGEX)) {
+
+  // EMOJI BY AHMET :)
+  // if (input.match(EMOJI_REGEX)) {
   //   const byteValueDisplay = input.replace(/'/g, "");
   //   const charCode = input.charCodeAt(0);
   //   return {
@@ -25,30 +27,28 @@ const parseFinalInput = (input: string): StackData => {
   //     byteValue: "",
   //   };
   // }
-  // STRING INPUT
-  else if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
-    // string data
 
+  // STRING INPUT
+  if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
     const formattedInput = input.substr(1, input.length - 2);
     return stackString(formattedInput);
   }
+
   // OP_DATA INPUT
-  else if (input.startsWith("OP_")) {
-    //
-    // get number value of OP_ code from const array.
-    //
-  }
-  // NUMBER INPUT
-  if (!isNaN(input as any)) {
-    console.log("number data input");
-    // number
-    return stackNumber(input);
-  } else {
-    console.log("what happend");
-    throw "it is not a valid input";
+  if (input.startsWith("OP_")) {
+    const opcode = opWordToCode(input);
+    if (opcode === -1) throw "ParseFinalInput Error: it is not a valid op word!";
+    if (opcode === 0) return { byteValue: "0x00", input: "0x00", numberValue: 0, byteValueDisplay: "0" };
+
+    return stackNumber(opcode.toString());
   }
 
-  return { input: "", byteValue: "", byteValueDisplay: "" };
+  // NUMBER INPUT
+  if (!isNaN(input as any)) {
+    return stackNumber(input);
+  }
+
+  throw "ParseFinalInput Error: it is not a valid final input string!";
 };
 
 const parse = (input: string, stackDataArray: StackData[]): StackDataResult => {
