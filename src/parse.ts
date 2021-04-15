@@ -1,4 +1,4 @@
-import { opcodeToWord, opWordToCode } from "./helper";
+import { opcodeToWord, opWordToHex } from "./helper";
 import stackHex from "./helper/stackHex";
 import stackNumber from "./helper/stackNumber";
 import OP from "./helper/stackOp";
@@ -36,11 +36,11 @@ const parseFinalInput = (input: string): StackData => {
 
   // OP_DATA INPUT
   if (input.startsWith("OP_")) {
-    const opcode = opWordToCode(input);
-    if (opcode === -1) throw "ParseFinalInput Error: it is not a valid op word!";
-    if (opcode === 0) return { byteValue: "0x00", input: "0x00", numberValue: 0, byteValueDisplay: "0" };
+    const hex = opWordToHex(input);
+    if (hex === "") throw "ParseFinalInput Error: it is not a valid op word!";
+    if (hex === "0x00") return { byteValue: "0x00", input: "0x00", byteValueDisplay: "0" };
 
-    return stackNumber(opcode.toString());
+    return stackHex(hex);
   }
 
   // NUMBER INPUT
