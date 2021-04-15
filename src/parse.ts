@@ -52,22 +52,16 @@ const parseFinalInput = (input: string): StackData => {
 };
 
 const parse = (input: string, stackDataArray: StackData[]): StackDataResult => {
-  //
+  // Data
   if (input.startsWith("<") && input.endsWith(">")) {
     const finalInput = input.substr(1, input.length - 2);
     const data = parseFinalInput(finalInput);
     return { data, removeLastSize: 0 };
   }
 
-  //
-  else if (input === "OP_0" || input === "OP_FALSE") {
-    return { data: { byteValue: "0x00", input: "0x00", numberValue: 0, byteValueDisplay: "0" }, removeLastSize: 0 };
-  }
-  //
-  else if (!isNaN(input as any)) {
-  }
   // OP Word or OP Code
   if (input.startsWith("OP_") || !isNaN(input as any)) {
+    // OP Word
     let word = input;
     // Op Code
     if (!isNaN(input as any)) {
@@ -75,13 +69,10 @@ const parse = (input: string, stackDataArray: StackData[]): StackDataResult => {
       if (word === "") throw "Unknown OP code number";
     }
 
-    const sLength = stackDataArray.length;
-    if (sLength < 2) throw "Empty stack error";
-    const thirth: StackData | undefined = sLength === 2 ? undefined : stackDataArray[sLength - 3];
-    return OP(word, stackDataArray[sLength - 1], stackDataArray[sLength - 2], thirth);
-  } else {
-    throw "it is not a valid input or OP code";
+    return OP(word, stackDataArray);
   }
+
+  throw "it is not a valid input script";
 };
 
 export default parse;
