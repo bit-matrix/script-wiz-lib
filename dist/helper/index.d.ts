@@ -1,2 +1,3 @@
 declare const hexLittleEndian: (hex: string) => string;
-export { hexLittleEndian };
+declare const opcodeToWord: (opcode: number) => string;
+export { hexLittleEndian, opcodeToWord };
