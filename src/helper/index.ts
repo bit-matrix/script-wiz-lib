@@ -1,3 +1,5 @@
+import opWordCodes from "../constant/opWordCodes";
+
 const hexLittleEndian = (hex: string): string => {
   if (hex.length % 2 === 0) {
     let str = "0x";
@@ -50,4 +52,6 @@ const hexLittleEndian = (hex: string): string => {
 //   return { input, value, display };
 // };
 
-export { hexLittleEndian };
+const opcodeToWord = (opcode: number) => opWordCodes.find((owc) => owc.opcode === opcode)?.word || "";
+
+export { hexLittleEndian, opcodeToWord };
