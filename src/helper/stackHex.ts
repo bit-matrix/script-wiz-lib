@@ -2,9 +2,60 @@ import { hexLittleEndian } from "./index";
 import { MAX_INTEGER } from "../constant";
 import { StackData } from "../model";
 
+interface NumberBoundries {
+  minPos: number;
+  maxPos: number;
+  minNeg: number;
+  maxNeg: number;
+}
+
+const hexBoundries = (byteLenght: number): NumberBoundries | undefined => {
+  // 2^(8n-9) <= x <= 2^(8n-1) - 1
+  // -2(8n-9) >= x >= -2^(8n-1) + 1
+
+  const b1 = Math.pow(2, 8 * byteLenght - 9);
+  const b2 = Math.pow(2, 8 * byteLenght - 1);
+
+  if (0 < byteLenght && byteLenght < 5) {
+    return {
+      minPos: b1,
+      maxPos: b2 - 1,
+      minNeg: 1 - b2,
+      maxNeg: -1 * b1,
+    };
+  }
+
+  return;
+};
+
+const availableNumber = (hexString: string): boolean => {
+  // TODO
+  return true;
+};
+
+const hexToNumber = (inputHex: string): number | undefined => {
+  const n = (inputHex.length - 2) / 2;
+  if (n == 0 || 4 < n) return;
+
+  if (!availableNumber(inputHex)) return;
+
+  const numberHex: number = Number(inputHex);
+
+  const boundries = hexBoundries(n);
+  if (boundries === undefined) return;
+
+  if (boundries.minPos <= numberHex && numberHex <= boundries.maxPos)
+    return numberHex;
+
+  // if (boundries.minNeg <= numberHex && numberHex <= boundries.maxNeg)
+  return Math.pow(2, 8 * n - 1) - numberHex;
+
+  // throw "Hex To Number Error: hex is a available number but not in boundries !";
+};
+
 const stackHex = (byteInput: string): StackData => {
   // TO DO
-  //
+  // Zero check
 
   // 1. find hex data length
   // Find
@@ -24,12 +75,27 @@ const stackHex = (byteInput: string): StackData => {
   let finalNumberValue: number | undefined = undefined;
 
   const littleEndianValue = hexLittleEndian(formattedInput);
-  const hexNumberValue = parseInt(littleEndianValue);
+  const hexNumberValue = hexToNumber(littleEndianValue);
 
-  if (hexNumberValue <= MAX_INTEGER) {
+  if (hexNumberValue) {
     finalNumberValue = hexNumberValue;
-    byteValue = hexNumberValue;
-  } else byteValue = formattedInput;
+    if (
+      finalNumberValue <= MAX_INTEGER &&
+      -1 * MAX_INTEGER <= finalNumberValue
+    ) {
+      byteValue = hexNumberValue;
+    } else {
+      finalNumberValue = undefined;
+      byteValue = formattedInput;
+    }
+  } else {
+    byteValue = formattedInput;
+  }
+
+  // if (hexNumberValue <= MAX_INTEGER) {
+  //   finalNumberValue = hexNumberValue;
+  //   byteValue = hexNumberValue;
+  // } else byteValue = formattedInput;
 
   return {
     input: byteInput,
