@@ -75,7 +75,7 @@ const hexToNumber = (inputHex: string): number | undefined => {
     return numberHex;
 
   // if (boundries.minNeg <= numberHex && numberHex <= boundries.maxNeg)
-  return Math.pow(2, 8 * n - 1) - numberHex;
+  return Math.pow(2, 8 * byteLenght - 1) - numberHex;
 
   // throw "Hex To Number Error: hex is a available number but not in boundries !";
 };
