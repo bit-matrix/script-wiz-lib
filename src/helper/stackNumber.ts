@@ -55,10 +55,11 @@ const getNumberByteLength = (x: number): number => {
 const hexNumber = (number: number): string => {
   if (number === 0) return "";
 
-  const byteLength = getNumberByteLength(number);
+  const byteLength = getNumberByteLength(number); // 0,1,2,3,4
 
   let numberInput = number;
-  if (number < 0 && byteLength !== 0) numberInput = Math.pow(2, 8 * byteLength - 1) - number;
+  if (number < 0 && byteLength !== 0)
+    numberInput = Math.pow(2, 8 * byteLength - 1) - number;
 
   let numberHexString = numberInput.toString(16);
 
@@ -66,7 +67,8 @@ const hexNumber = (number: number): string => {
     numberHexString = "0" + numberHexString;
   }
 
-  if (numberHexString.length / 2 < byteLength || byteLength === 0) numberHexString = "00" + numberHexString;
+  if (numberHexString.length / 2 < byteLength || byteLength === 0)
+    numberHexString = "00" + numberHexString;
 
   return numberHexString;
 };
