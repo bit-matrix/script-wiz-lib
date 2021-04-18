@@ -28,20 +28,47 @@ const hexBoundries = (byteLenght: number): NumberBoundries | undefined => {
   return;
 };
 
-const availableNumber = (hexString: string): boolean => {
+const availableNumber = (hexString: string, byteLenght: number): boolean => {
   // TODO
+
+  // N/A
+
+  const numberHex = Number(hexString);
+
+  // 1 byte
+  // n = 0x80
+
+  // 2 byte
+  // 0x0001 <= n <= 0x007f
+  // 0x8000 <= n <= 0x807f
+
+  // 3 byte
+  // 0x000001 <= n <= 0x007fff
+  // 0x800000 <= n <= 0x807fff
+
+  // 4 byte
+  // 0x00000001 <= n <= 0x007fffff
+  // 0x80000000 <= n <= 0x807fffff
+
+  if (byteLenght === 2)
+    if (
+      (0x0001 <= numberHex && numberHex <= 0x007f) ||
+      (0x8000 <= numberHex && numberHex <= 0x807f)
+    )
+      return false;
+
   return true;
 };
 
 const hexToNumber = (inputHex: string): number | undefined => {
-  const n = (inputHex.length - 2) / 2;
-  if (n == 0 || 4 < n) return;
+  const byteLenght = (inputHex.length - 2) / 2;
+  if (byteLenght == 0 || 4 < byteLenght) return;
 
-  if (!availableNumber(inputHex)) return;
+  if (!availableNumber(inputHex, byteLenght)) return;
 
   const numberHex: number = Number(inputHex);
 
-  const boundries = hexBoundries(n);
+  const boundries = hexBoundries(byteLenght);
   if (boundries === undefined) return;
 
   if (boundries.minPos <= numberHex && numberHex <= boundries.maxPos)
