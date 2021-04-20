@@ -4,7 +4,6 @@ import { StackData, StackDataResult } from "../model";
 import IStackData from "../model/IStackData";
 import stackHex from "./stackHex";
 import stackNumber from "./stackNumber";
-import stackString from "./stackString";
 
 const OP_ADD = (stackData1: IStackData, stackData2: IStackData): IStackData => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
@@ -39,8 +38,9 @@ const OP_CAT = (stackData2: IStackData, stackData1: IStackData): IStackData => {
 const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData => {
   if (stackData3.stringValue !== undefined) {
     if (stackData2.numberValue !== undefined && stackData1.numberValue !== undefined) {
-      const resultString: string = stackData3.stringValue.substr(stackData2.numberValue, stackData1.numberValue);
-      return stackString(resultString);
+      const resultByteValue = "0x" + stackData3.byteValue.substr(2 + stackData2.numberValue * 2, stackData1.numberValue * 2);
+      const stack = stackHex(resultByteValue);
+      return stackHex(resultByteValue);
     }
 
     throw "OP_SUBSTR Error: Index and size must be number!";
