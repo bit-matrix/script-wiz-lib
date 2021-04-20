@@ -29,33 +29,26 @@ const hexBoundries = (byteLenght: number): NumberBoundries | undefined => {
 };
 
 const availableNumber = (hexString: string, byteLenght: number): boolean => {
-  // TODO
-
-  // N/A
-
   const numberHex = Number(hexString);
 
   // 1 byte
   // n = 0x80
+  if (byteLenght === 1) if (0x80 == numberHex) return false;
 
   // 2 byte
   // 0x0001 <= n <= 0x007f
   // 0x8000 <= n <= 0x807f
+  if (byteLenght === 2) if ((0x0001 <= numberHex && numberHex <= 0x007f) || (0x8000 <= numberHex && numberHex <= 0x807f)) return false;
 
   // 3 byte
   // 0x000001 <= n <= 0x007fff
   // 0x800000 <= n <= 0x807fff
+  if (byteLenght === 3) if ((0x000001 <= numberHex && numberHex <= 0x007fff) || (0x800000 <= numberHex && numberHex <= 0x807fff)) return false;
 
   // 4 byte
   // 0x00000001 <= n <= 0x007fffff
   // 0x80000000 <= n <= 0x807fffff
-
-  if (byteLenght === 2)
-    if (
-      (0x0001 <= numberHex && numberHex <= 0x007f) ||
-      (0x8000 <= numberHex && numberHex <= 0x807f)
-    )
-      return false;
+  if (byteLenght === 4) if ((0x00000001 <= numberHex && numberHex <= 0x007fffff) || (0x80000000 <= numberHex && numberHex <= 0x807fffff)) return false;
 
   return true;
 };
@@ -71,8 +64,7 @@ const hexToNumber = (inputHex: string): number | undefined => {
   const boundries = hexBoundries(byteLenght);
   if (boundries === undefined) return;
 
-  if (boundries.minPos <= numberHex && numberHex <= boundries.maxPos)
-    return numberHex;
+  if (boundries.minPos <= numberHex && numberHex <= boundries.maxPos) return numberHex;
 
   // if (boundries.minNeg <= numberHex && numberHex <= boundries.maxNeg)
   return Math.pow(2, 8 * byteLenght - 1) - numberHex;
@@ -92,10 +84,7 @@ const stackHex = (byteInput: string): StackData => {
   // 0x123 formatted input => 0x1203
   let formattedInput: string = byteInput;
   if (byteInput.length % 2 === 1) {
-    formattedInput =
-      byteInput.substr(0, byteInput.length - 1) +
-      "0" +
-      byteInput.substr(byteInput.length - 1, 1);
+    formattedInput = byteInput.substr(0, byteInput.length - 1) + "0" + byteInput.substr(byteInput.length - 1, 1);
   }
 
   let byteValue: number | string;
@@ -106,10 +95,7 @@ const stackHex = (byteInput: string): StackData => {
 
   if (hexNumberValue) {
     finalNumberValue = hexNumberValue;
-    if (
-      finalNumberValue <= MAX_INTEGER &&
-      -1 * MAX_INTEGER <= finalNumberValue
-    ) {
+    if (finalNumberValue <= MAX_INTEGER && -1 * MAX_INTEGER <= finalNumberValue) {
       byteValue = hexNumberValue;
     } else {
       finalNumberValue = undefined;
