@@ -2,6 +2,7 @@ import { opcodeToData } from ".";
 import { IOpWordCode } from "../constant/opWordCodes";
 import { StackData, StackDataResult } from "../model";
 import IStackData from "../model/IStackData";
+import { ripemd160, sha1, sha256 } from "./crypto";
 import stackHex from "./stackHex";
 import stackNumber from "./stackNumber";
 
@@ -47,6 +48,24 @@ const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: I
   }
 
   throw "OP_SUBSTR Error: Invalid string value for sub string!";
+};
+
+const OP_SHA1 = (stackData: IStackData): IStackData => {
+  const hashedData = "0x" + sha1(stackData.input);
+
+  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
+};
+
+const OP_SHA256 = (stackData: IStackData): IStackData => {
+  const hashedData = "0x" + sha256(stackData.input);
+
+  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
+};
+
+const OP_RIPEMD160 = (stackData: IStackData): IStackData => {
+  const hashedData = "0x" + ripemd160(stackData.input);
+
+  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
 };
 
 const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
@@ -98,6 +117,21 @@ const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   if (word === "OP_SUBSTR") {
     if (stackDataArrayLength < 3) throw "OP_SUBSTR Error: stack data array must include min 3 data!";
     return { data: OP_SUBSTR(stackDataArray[stackDataArrayLength - 3], stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 3 };
+  }
+
+  if (word === "OP_SHA1") {
+    if (stackDataArrayLength < 1) throw "OP_SHA1 Error: stack data array must include min 1 data!";
+    return { data: OP_SHA1(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+  }
+
+  if (word === "OP_SHA256") {
+    if (stackDataArrayLength < 1) throw "OP_SHA256 Error: stack data array must include min 1 data!";
+    return { data: OP_SHA256(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+  }
+
+  if (word === "OP_RIPEMD160") {
+    if (stackDataArrayLength < 1) throw "OP_RIPEMD160 Error: stack data array must include min 1 data!";
+    return { data: OP_RIPEMD160(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
   }
 
   throw "Unknown OP word!";
