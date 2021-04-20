@@ -12,4 +12,11 @@ const sha256 = (data: string) => {
   return CryptoJS.SHA256(data).toString();
 };
 
-export { ripemd160, sha1, sha256 };
+const hash160 = (data: string) => {
+  const dataWithSha256Hashed = CryptoJS.SHA256(data);
+  const dataWithRipemd160Hashed = CryptoJS.RIPEMD160(dataWithSha256Hashed).toString();
+
+  return dataWithRipemd160Hashed;
+};
+
+export { ripemd160, sha1, sha256, hash160 };

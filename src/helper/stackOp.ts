@@ -2,7 +2,7 @@ import { opcodeToData } from ".";
 import { IOpWordCode } from "../constant/opWordCodes";
 import { StackData, StackDataResult } from "../model";
 import IStackData from "../model/IStackData";
-import { ripemd160, sha1, sha256 } from "./crypto";
+import { hash160, ripemd160, sha1, sha256 } from "./crypto";
 import stackHex from "./stackHex";
 import stackNumber from "./stackNumber";
 
@@ -64,6 +64,12 @@ const OP_SHA256 = (stackData: IStackData): IStackData => {
 
 const OP_RIPEMD160 = (stackData: IStackData): IStackData => {
   const hashedData = "0x" + ripemd160(stackData.input);
+
+  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
+};
+
+const OP_HASH160 = (stackData: IStackData): IStackData => {
+  const hashedData = "0x" + hash160(stackData.input);
 
   return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
 };
@@ -132,6 +138,11 @@ const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   if (word === "OP_RIPEMD160") {
     if (stackDataArrayLength < 1) throw "OP_RIPEMD160 Error: stack data array must include min 1 data!";
     return { data: OP_RIPEMD160(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+  }
+
+  if (word === "OP_HASH160") {
+    if (stackDataArrayLength < 1) throw "OP_HASH160 Error: stack data array must include min 1 data!";
+    return { data: OP_HASH160(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
   }
 
   throw "Unknown OP word!";
