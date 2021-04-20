@@ -2,7 +2,7 @@ import { opcodeToData } from ".";
 import { IOpWordCode } from "../constant/opWordCodes";
 import { StackData, StackDataResult } from "../model";
 import IStackData from "../model/IStackData";
-import { hash160, ripemd160, sha1, sha256 } from "./crypto";
+import { hash160, hash256, ripemd160, sha1, sha256 } from "./crypto";
 import stackHex from "./stackHex";
 import stackNumber from "./stackNumber";
 
@@ -51,31 +51,31 @@ const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: I
 };
 
 const OP_SHA1 = (stackData: IStackData): IStackData => {
-  const hashedData = "0x" + sha1(stackData.input);
+  const hashedData = "0x" + sha1(stackData.byteValue);
 
   return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
 };
 
 const OP_SHA256 = (stackData: IStackData): IStackData => {
-  const hashedData = "0x" + sha256(stackData.input);
+  const hashedData = "0x" + sha256(stackData.byteValue);
 
   return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
 };
 
 const OP_RIPEMD160 = (stackData: IStackData): IStackData => {
-  const hashedData = "0x" + ripemd160(stackData.input);
+  const hashedData = "0x" + ripemd160(stackData.byteValue);
 
   return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
 };
 
 const OP_HASH160 = (stackData: IStackData): IStackData => {
-  const hashedData = "0x" + hash160(stackData.input);
+  const hashedData = "0x" + hash160(stackData.byteValue);
 
   return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
 };
 
 const OP_HASH256 = (stackData: IStackData): IStackData => {
-  const hashedData = "0x" + hash160(stackData.input);
+  const hashedData = "0x" + hash256(stackData.byteValue);
 
   return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
 };
