@@ -32,8 +32,9 @@ const availableNumber = (hexString: string, byteLenght: number): boolean => {
   const numberHex = Number(hexString);
 
   // 1 byte
+  // n = 0x00
   // n = 0x80
-  if (byteLenght === 1) if (0x80 == numberHex) return false;
+  if (byteLenght === 1) if (0x00 == numberHex || 0x80 == numberHex) return false;
 
   // 2 byte
   // 0x0001 <= n <= 0x007f
@@ -73,13 +74,7 @@ const hexToNumber = (inputHex: string): number | undefined => {
 };
 
 const stackHex = (byteInput: string): StackData => {
-  // TO DO
-  // Zero check
-
-  // 1. find hex data length
-  // Find
-  // byteInput
-  // 0x1234
+  if (byteInput.length === 2) throw "stackHex Error: Invalid hex code !";
 
   // 0x123 formatted input => 0x1203
   let formattedInput: string = byteInput;
@@ -104,11 +99,6 @@ const stackHex = (byteInput: string): StackData => {
   } else {
     byteValue = formattedInput;
   }
-
-  // if (hexNumberValue <= MAX_INTEGER) {
-  //   finalNumberValue = hexNumberValue;
-  //   byteValue = hexNumberValue;
-  // } else byteValue = formattedInput;
 
   return {
     input: byteInput,
