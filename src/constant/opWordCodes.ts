@@ -6,6 +6,7 @@ interface IOpWordCode {
 }
 
 const opWordCodes: IOpWordCode[] = [
+  // Constants
   { word: "OP_0", opcode: 0, hex: "0x00", output: 0 },
   { word: "OP_FALSE", opcode: 0, hex: "0x00", output: 0 },
   { word: "OP_TRUE", opcode: 81, hex: "0x51", output: 1 },
@@ -26,10 +27,18 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_15", opcode: 95, hex: "0x65", output: 15 },
   { word: "OP_16", opcode: 96, hex: "0x66", output: 16 },
 
+  //splice
   { word: "OP_CAT", opcode: 126, hex: "0x7e" },
   { word: "OP_SUBSTR", opcode: 127, hex: "0x7f" },
+
+  // Arithmetic
   { word: "OP_ADD", opcode: 147, hex: "0x93" },
   { word: "OP_SUB", opcode: 148, hex: "0x94" },
+
+  // Crypto
+  { word: "OP_RIPEMD160", opcode: 166, hex: "0xa6" },
+  { word: "OP_SHA1", opcode: 167, hex: "0xa7" },
+  { word: "OP_SHA256", opcode: 168, hex: "0xa8" },
 ];
 
 export default opWordCodes;
