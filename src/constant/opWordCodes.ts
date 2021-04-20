@@ -40,6 +40,7 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_SHA1", opcode: 167, hex: "0xa7" },
   { word: "OP_SHA256", opcode: 168, hex: "0xa8" },
   { word: "OP_HASH160", opcode: 169, hex: "0xa9" },
+  { word: "OP_HASH256", opcode: 170, hex: "0xaa" },
 ];
 
 export default opWordCodes;

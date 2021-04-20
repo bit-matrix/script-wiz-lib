@@ -74,6 +74,12 @@ const OP_HASH160 = (stackData: IStackData): IStackData => {
   return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
 };
 
+const OP_HASH256 = (stackData: IStackData): IStackData => {
+  const hashedData = "0x" + hash160(stackData.input);
+
+  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
+};
+
 const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   const opData: IOpWordCode | undefined = opcodeToData(word);
   if (opData === undefined) throw "Unknown OP word!";
@@ -143,6 +149,11 @@ const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   if (word === "OP_HASH160") {
     if (stackDataArrayLength < 1) throw "OP_HASH160 Error: stack data array must include min 1 data!";
     return { data: OP_HASH160(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+  }
+
+  if (word === "OP_HASH256") {
+    if (stackDataArrayLength < 1) throw "OP_HASH256 Error: stack data array must include min 1 data!";
+    return { data: OP_HASH256(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
   }
 
   throw "Unknown OP word!";

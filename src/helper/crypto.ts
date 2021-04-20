@@ -19,4 +19,11 @@ const hash160 = (data: string) => {
   return dataWithRipemd160Hashed;
 };
 
-export { ripemd160, sha1, sha256, hash160 };
+const hash256 = (data: string) => {
+  const firstSHAHash = CryptoJS.SHA256(data);
+  const secondSHAHash = CryptoJS.SHA256(firstSHAHash).toString();
+
+  return secondSHAHash;
+};
+
+export { hash160, hash256, ripemd160, sha1, sha256 };
