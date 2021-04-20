@@ -1,4 +1,4 @@
-import opWordCodes from "../constant/opWordCodes";
+import opWordCodes, { IOpWordCode } from "../constant/opWordCodes";
 
 const hexLittleEndian = (hex: string): string => {
   if (hex.length % 2 === 0) {
@@ -52,6 +52,8 @@ const hexLittleEndian = (hex: string): string => {
 //   return { input, value, display };
 // };
 
+const opcodeToData = (word: string): IOpWordCode | undefined => opWordCodes.find((owc) => owc.word === word);
+
 const opcodeToWord = (opcode: number): string => opWordCodes.find((owc) => owc.opcode === opcode)?.word || "";
 
 const opWordToCode = (word: string): number => {
@@ -64,4 +66,4 @@ const opWordToHex = (word: string): string => {
   return hex || "";
 };
 
-export { hexLittleEndian, opcodeToWord, opWordToCode, opWordToHex };
+export { hexLittleEndian, opcodeToWord, opcodeToData, opWordToCode, opWordToHex };
