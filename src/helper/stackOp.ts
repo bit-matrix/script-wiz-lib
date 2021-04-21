@@ -88,7 +88,11 @@ const OP_2SWAP = (stackData1: IStackData, stackData2: IStackData, stackData3: IS
 
 const OP_2DROP = (): IStackData[] => [];
 
-const OP_OVER = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1, stackData2, stackData1];
+const OP_OVER = (stackData: IStackData): IStackData[] => [stackData];
+
+const OP_2OVER = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1, stackData2];
+
+OP_2OVER;
 
 const OP_DUP = (stackData1: IStackData): IStackData[] => [stackData1];
 
@@ -207,7 +211,12 @@ const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
 
   if (word === "OP_OVER") {
     if (stackDataArrayLength < 2) throw "OP_OVER Error: stack data array must include min 2 data!";
-    return { dataArray: OP_OVER(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 2 };
+    return { dataArray: OP_OVER(stackDataArray[stackDataArrayLength - 2]), removeLastSize: 0 };
+  }
+
+  if (word === "OP_2OVER") {
+    if (stackDataArrayLength < 4) throw "OP_2OVER Error: stack data array must include min 4 data!";
+    return { dataArray: OP_2OVER(stackDataArray[stackDataArrayLength - 4], stackDataArray[stackDataArrayLength - 3]), removeLastSize: 0 };
   }
 
   if (word === "OP_DUP") {
