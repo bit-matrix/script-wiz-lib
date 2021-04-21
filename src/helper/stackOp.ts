@@ -94,6 +94,8 @@ const OP_DUP = (stackData1: IStackData): IStackData[] => [stackData1];
 
 const OP_2DUP = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1, stackData2];
 
+const OP_3DUP = (stackData1: IStackData, stackData2: IStackData, stackData3: IStackData): IStackData[] => [stackData1, stackData2, stackData3];
+
 const OP_NIP = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1];
 
 const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
@@ -216,6 +218,11 @@ const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   if (word === "OP_2DUP") {
     if (stackDataArrayLength < 2) throw "OP_2DUP Error: stack data array must include min 2 data!";
     return { dataArray: OP_2DUP(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 0 };
+  }
+
+  if (word === "OP_3DUP") {
+    if (stackDataArrayLength < 3) throw "OP_3DUP Error: stack data array must include min 3 data!";
+    return { dataArray: OP_3DUP(stackDataArray[stackDataArrayLength - 3], stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 0 };
   }
 
   if (word === "OP_NIP") {
