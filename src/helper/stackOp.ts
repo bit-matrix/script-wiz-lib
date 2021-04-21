@@ -88,6 +88,8 @@ const OP_2SWAP = (stackData1: IStackData, stackData2: IStackData, stackData3: IS
 
 const OP_2DROP = (): IStackData[] => [];
 
+const OP_OVER = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1, stackData2, stackData1];
+
 const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   const opData: IOpWordCode | undefined = opcodeToData(word);
   if (opData === undefined) throw "Unknown OP word!";
@@ -193,6 +195,11 @@ const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   if (word === "OP_2DROP") {
     if (stackDataArrayLength < 2) throw "OP_2DROP Error: stack data array must include min 2 data!";
     return { dataArray: OP_2DROP(), removeLastSize: 2 };
+  }
+
+  if (word === "OP_OVER") {
+    if (stackDataArrayLength < 2) throw "OP_OVER Error: stack data array must include min 2 data!";
+    return { dataArray: OP_OVER(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 2 };
   }
 
   throw "Unknown OP word!";
