@@ -43,6 +43,7 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_HASH256", opcode: 170, hex: "0xaa" },
 
   // Stack
+  { word: "OP_DROP", opcode: 117, hex: "0x75" },
   { word: "OP_SWAP", opcode: 124, hex: "0x7c" },
 ];
 
