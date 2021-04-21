@@ -45,6 +45,8 @@ const opWordCodes: IOpWordCode[] = [
   // Stack
   { word: "OP_2DROP", opcode: 109, hex: "0x6d" },
   { word: "OP_DROP", opcode: 117, hex: "0x75" },
+  { word: "OP_DUP", opcode: 118, hex: "0x76" },
+  { word: "OP_NIP", opcode: 119, hex: "0x77" },
   { word: "OP_OVER", opcode: 120, hex: "0x78" },
   { word: "OP_SWAP", opcode: 124, hex: "0x7c" },
   { word: "OP_2SWAP", opcode: 114, hex: "0x72" },

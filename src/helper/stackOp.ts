@@ -90,6 +90,10 @@ const OP_2DROP = (): IStackData[] => [];
 
 const OP_OVER = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1, stackData2, stackData1];
 
+const OP_DUP = (stackData1: IStackData): IStackData[] => [stackData1];
+
+const OP_NIP = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1];
+
 const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   const opData: IOpWordCode | undefined = opcodeToData(word);
   if (opData === undefined) throw "Unknown OP word!";
@@ -200,6 +204,16 @@ const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   if (word === "OP_OVER") {
     if (stackDataArrayLength < 2) throw "OP_OVER Error: stack data array must include min 2 data!";
     return { dataArray: OP_OVER(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 2 };
+  }
+
+  if (word === "OP_DUP") {
+    if (stackDataArrayLength < 1) throw "OP_DUP Error: stack data array must include min 1 data!";
+    return { dataArray: OP_DUP(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 0 };
+  }
+
+  if (word === "OP_NIP") {
+    if (stackDataArrayLength < 2) throw "OP_OVER Error: stack data array must include min 2 data!";
+    return { dataArray: OP_NIP(stackDataArray[stackDataArrayLength - 1], stackDataArray[stackDataArrayLength - 2]), removeLastSize: 2 };
   }
 
   throw "Unknown OP word!";
