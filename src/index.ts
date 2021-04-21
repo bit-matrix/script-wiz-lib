@@ -8,7 +8,8 @@ const parse = (input: string): StackData[] => {
   if (stackDataResult.removeLastSize > 0) {
     stackDataArray = stackDataArray.slice(0, stackDataArray.length - stackDataResult.removeLastSize);
   }
-  stackDataArray.push(stackDataResult.data);
+
+  stackDataArray = stackDataArray.concat(stackDataResult.dataArray);
   return stackDataArray;
 };
 

@@ -6,25 +6,25 @@ import { hash160, hash256, ripemd160, sha1, sha256 } from "./crypto";
 import stackHex from "./stackHex";
 import stackNumber from "./stackNumber";
 
-const OP_ADD = (stackData1: IStackData, stackData2: IStackData): IStackData => {
+const OP_ADD = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     const totalValue: number = stackData1.numberValue + stackData2.numberValue;
-    return stackNumber(totalValue.toString());
+    return [stackNumber(totalValue.toString())];
   }
 
   throw "OP_ADD Error: this operation requires 2 valid number data";
 };
 
-const OP_SUB = (stackData2: IStackData, stackData1: IStackData): IStackData => {
+const OP_SUB = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     const totalValue: number = stackData2.numberValue - stackData1.numberValue;
-    return stackNumber(totalValue.toString());
+    return [stackNumber(totalValue.toString())];
   }
 
   throw "OP_SUB Error: this operation requires 2 valid number data";
 };
 
-const OP_CAT = (stackData2: IStackData, stackData1: IStackData): IStackData => {
+const OP_CAT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   const byteValue = "0x";
   let firstByte1 = stackData2.byteValue.substring(2);
   let firstByte2 = stackData1.byteValue.substring(2);
@@ -32,16 +32,16 @@ const OP_CAT = (stackData2: IStackData, stackData1: IStackData): IStackData => {
   firstByte1 = firstByte1 === "00" ? "" : firstByte1;
   firstByte2 = firstByte2 === "00" ? "" : firstByte2;
 
-  return stackHex(byteValue + firstByte1 + firstByte2);
+  return [stackHex(byteValue + firstByte1 + firstByte2)];
 };
 
 // stackData 2 index  , stackData 1 size
-const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData => {
+const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   if (stackData3.stringValue !== undefined) {
     if (stackData2.numberValue !== undefined && stackData1.numberValue !== undefined) {
       const resultByteValue = "0x" + stackData3.byteValue.substr(2 + stackData2.numberValue * 2, stackData1.numberValue * 2);
       const stack = stackHex(resultByteValue);
-      return stackHex(resultByteValue);
+      return [stackHex(resultByteValue)];
     }
 
     throw "OP_SUBSTR Error: Index and size must be number!";
@@ -50,34 +50,38 @@ const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: I
   throw "OP_SUBSTR Error: Invalid string value for sub string!";
 };
 
-const OP_SHA1 = (stackData: IStackData): IStackData => {
+const OP_SHA1 = (stackData: IStackData): IStackData[] => {
   const hashedData = "0x" + sha1(stackData.byteValue);
 
-  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
+  return [{ byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData }];
 };
 
-const OP_SHA256 = (stackData: IStackData): IStackData => {
+const OP_SHA256 = (stackData: IStackData): IStackData[] => {
   const hashedData = "0x" + sha256(stackData.byteValue);
 
-  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
+  return [{ byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData }];
 };
 
-const OP_RIPEMD160 = (stackData: IStackData): IStackData => {
+const OP_RIPEMD160 = (stackData: IStackData): IStackData[] => {
   const hashedData = "0x" + ripemd160(stackData.byteValue);
 
-  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
+  return [{ byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData }];
 };
 
-const OP_HASH160 = (stackData: IStackData): IStackData => {
+const OP_HASH160 = (stackData: IStackData): IStackData[] => {
   const hashedData = "0x" + hash160(stackData.byteValue);
 
-  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
+  return [{ byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData }];
 };
 
-const OP_HASH256 = (stackData: IStackData): IStackData => {
+const OP_HASH256 = (stackData: IStackData): IStackData[] => {
   const hashedData = "0x" + hash256(stackData.byteValue);
 
-  return { byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData };
+  return [{ byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData }];
+};
+
+const OP_SWAP = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
+  return [stackData1, stackData2];
 };
 
 const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
@@ -107,53 +111,61 @@ const OP = (word: string, stackDataArray: StackData[]): StackDataResult => {
   ) {
     const outputNumber: number = opData.output || 0;
     const stack = stackNumber(outputNumber.toString());
-    return { data: { ...stack, input: word }, removeLastSize: 0 };
+    return { dataArray: [{ ...stack, input: word }], removeLastSize: 0 };
   }
 
   const stackDataArrayLength = stackDataArray.length;
   if (word === "OP_ADD") {
     if (stackDataArrayLength < 2) throw "OP_ADD Error: stack data array must include min 2 data!";
-    return { data: OP_ADD(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 2 };
+    return { dataArray: OP_ADD(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 2 };
   }
 
   if (word === "OP_SUB") {
     if (stackDataArrayLength < 2) throw "OP_SUB Error: stack data array must include min 2 data!";
-    return { data: OP_SUB(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 2 };
+    return { dataArray: OP_SUB(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 2 };
   }
 
   if (word === "OP_CAT") {
     if (stackDataArrayLength < 2) throw "OP_CAT Error: stack data array must include min 2 data!";
-    return { data: OP_CAT(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 2 };
+    return { dataArray: OP_CAT(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 2 };
   }
 
   if (word === "OP_SUBSTR") {
     if (stackDataArrayLength < 3) throw "OP_SUBSTR Error: stack data array must include min 3 data!";
-    return { data: OP_SUBSTR(stackDataArray[stackDataArrayLength - 3], stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]), removeLastSize: 3 };
+    return {
+      dataArray: OP_SUBSTR(stackDataArray[stackDataArrayLength - 3], stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]),
+      removeLastSize: 3,
+    };
   }
 
   if (word === "OP_SHA1") {
     if (stackDataArrayLength < 1) throw "OP_SHA1 Error: stack data array must include min 1 data!";
-    return { data: OP_SHA1(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+    return { dataArray: OP_SHA1(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
   }
 
   if (word === "OP_SHA256") {
     if (stackDataArrayLength < 1) throw "OP_SHA256 Error: stack data array must include min 1 data!";
-    return { data: OP_SHA256(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+    return { dataArray: OP_SHA256(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
   }
 
   if (word === "OP_RIPEMD160") {
     if (stackDataArrayLength < 1) throw "OP_RIPEMD160 Error: stack data array must include min 1 data!";
-    return { data: OP_RIPEMD160(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+    return { dataArray: OP_RIPEMD160(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
   }
 
   if (word === "OP_HASH160") {
     if (stackDataArrayLength < 1) throw "OP_HASH160 Error: stack data array must include min 1 data!";
-    return { data: OP_HASH160(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+    return { dataArray: OP_HASH160(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
   }
 
   if (word === "OP_HASH256") {
     if (stackDataArrayLength < 1) throw "OP_HASH256 Error: stack data array must include min 1 data!";
-    return { data: OP_HASH256(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+    return { dataArray: OP_HASH256(stackDataArray[stackDataArrayLength - 1]), removeLastSize: 1 };
+  }
+
+  if (word === "OP_SWAP") {
+    if (stackDataArrayLength < 2) throw "OP_SWAP Error: stack data array must include min 2 data!";
+    return { dataArray: OP_SWAP(stackDataArray[stackDataArrayLength - 1], stackDataArray[stackDataArrayLength - 2]), removeLastSize: 2 };
   }
 
   throw "Unknown OP word!";

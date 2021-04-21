@@ -5,7 +5,7 @@ import OP from "./helper/stackOp";
 import stackString from "./helper/stackString";
 import { StackData, StackDataResult } from "./model";
 
-const parseFinalInput = (input: string): StackData => {
+const parseFinalInput = (input: string): StackData[] => {
   // 0x1245
   // :D
   // "hello"
@@ -14,7 +14,7 @@ const parseFinalInput = (input: string): StackData => {
 
   // HEX DATA INPUT
   if (input.startsWith("0x")) {
-    return stackHex(input);
+    return [stackHex(input)];
   }
 
   // EMOJI BY AHMET :)
@@ -31,21 +31,21 @@ const parseFinalInput = (input: string): StackData => {
   // STRING INPUT
   if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
     const formattedInput = input.substr(1, input.length - 2);
-    return stackString(formattedInput);
+    return [stackString(formattedInput)];
   }
 
   // OP_DATA INPUT
   if (input.startsWith("OP_")) {
     const hex = opWordToHex(input);
     if (hex === "") throw "ParseFinalInput Error: it is not a valid op word!";
-    if (hex === "0x00") return { byteValue: "0x00", input: "0x00", byteValueDisplay: "0" };
+    if (hex === "0x00") return [{ byteValue: "0x00", input: "0x00", byteValueDisplay: "0" }];
 
-    return stackHex(hex);
+    return [stackHex(hex)];
   }
 
   // NUMBER INPUT
   if (!isNaN(input as any)) {
-    return stackNumber(input);
+    return [stackNumber(input)];
   }
 
   throw "ParseFinalInput Error: it is not a valid final input string!";
@@ -55,8 +55,8 @@ const parse = (input: string, stackDataArray: StackData[]): StackDataResult => {
   // Data
   if (input.startsWith("<") && input.endsWith(">")) {
     const finalInput = input.substr(1, input.length - 2);
-    const data = parseFinalInput(finalInput);
-    return { data, removeLastSize: 0 };
+    const dataArray = parseFinalInput(finalInput);
+    return { dataArray, removeLastSize: 0 };
   }
 
   // OP Word or OP Code

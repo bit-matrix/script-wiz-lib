@@ -1,7 +1,7 @@
 import IStackData from "./IStackData";
 
 interface IStackDataResult {
-  data: IStackData;
+  dataArray: IStackData[];
   removeLastSize: number;
 }
 
