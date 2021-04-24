@@ -29,10 +29,7 @@ const parseFinalInput = (input: string): StackData[] => {
   // }
 
   // STRING INPUT
-  if (
-    (input.startsWith('"') && input.endsWith('"')) ||
-    (input.startsWith("'") && input.endsWith("'"))
-  ) {
+  if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
     const formattedInput = input.substr(1, input.length - 2);
     return [stackString(formattedInput)];
   }
@@ -41,8 +38,7 @@ const parseFinalInput = (input: string): StackData[] => {
   if (input.startsWith("OP_")) {
     const hex = opWordToHex(input);
     if (hex === "") throw "ParseFinalInput Error: it is not a valid op word!";
-    if (hex === "0x00")
-      return [{ byteValue: "0x00", input: "0x00", byteValueDisplay: "0" }];
+    if (hex === "0x00") return [{ byteValue: "0x00", input: "0x00", byteValueDisplay: "0" }];
 
     return [stackHex(hex)];
   }
