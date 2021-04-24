@@ -79,7 +79,7 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_SUBSTR", opcode: 127, hex: "0x7f" }, //	in begin size	out	Returns a section of a string. disabled.
   // { word: "OP_LEFT", opcode: 128, hex: "0x80" }, //	in size	out	Keeps only characters left of the specified point in a string. disabled.
   // { word: "OP_RIGHT", opcode: 129, hex: "0x81" }, //	in size	out	Keeps only characters right of the specified point in a string. disabled.
-  // { word: "OP_SIZE", opcode: 130, hex: "0x82" }, //	in	in size	Pushes the string length of the top element of the stack (without popping it).
+  { word: "OP_SIZE", opcode: 130, hex: "0x82" }, //	in	in size	Pushes the string length of the top element of the stack (without popping it).
 
   /*
    * Bitwise logic

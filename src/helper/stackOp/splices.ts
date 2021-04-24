@@ -1,5 +1,6 @@
 import IStackData from "../../model/IStackData";
 import stackHex from "../stackHex";
+import stackNumber from "../stackNumber";
 
 const OP_CAT = (
   stackData2: IStackData,
@@ -37,4 +38,9 @@ const OP_SUBSTR = (
   throw "OP_SUBSTR Error: Index and size must be number!";
 };
 
-export { OP_CAT, OP_SUBSTR };
+const OP_SIZE = (stackData: IStackData): IStackData[] => {
+  const numberValue = stackData.byteValue.substr(2).length / 2;
+  return [stackNumber(numberValue.toString())];
+};
+
+export { OP_CAT, OP_SUBSTR, OP_SIZE };
