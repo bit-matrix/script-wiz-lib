@@ -31,7 +31,7 @@ const stackString = (input: string): StackData => {
     byteValue: inputHexString,
     byteValueDisplay: input,
     numberValue: inputNumberValue,
-    stringValue: input,
+    // stringValue: input,
   };
 };
 
