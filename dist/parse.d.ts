@@ -1,3 +1,3 @@
-import { StackData, StackDataResult } from "./model";
-declare const parse: (input: string, stackDataArray: StackData[]) => StackDataResult;
+import { ParseResult, StackData } from "./model";
+declare const parse: (input: string, stackDataArray: StackData[]) => ParseResult;
 export default parse;

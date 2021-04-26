@@ -1,4 +1,4 @@
 import StackData from "./IStackData";
 import StackDataList from "./IStackDataList";
-import StackDataResult from "./IStackDataResult";
-export { StackData, StackDataList, StackDataResult };
+import ParseResult from "./IParseResult";
+export { StackData, StackDataList, ParseResult };

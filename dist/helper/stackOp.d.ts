@@ -1,3 +1,3 @@
-import { StackData, StackDataResult } from "../model";
-declare const OP: (word: string, stackDataArray: StackData[]) => StackDataResult;
+import { StackData, ParseResult } from "../model";
+declare const OP: (word: string, stackDataArray: StackData[]) => ParseResult;
 export default OP;
