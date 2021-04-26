@@ -60,7 +60,7 @@ const opWordCodes: IOpWordCode[] = [
   // { word: "OP_2ROT", opcode: 113, hex: "0x71" }, //	x1 x2 x3 x4 x5 x6	x3 x4 x5 x6 x1 x2	The fifth and sixth items back are moved to the top of the stack.
   { word: "OP_2SWAP", opcode: 114, hex: "0x72" }, //	x1 x2 x3 x4	x3 x4 x1 x2	Swaps the top two pairs of stack.
   // { word: "OP_IFDUP", opcode: 115, hex: "0x73" }, //	x	x / x x	If the top stack value is not 0, duplicate it.
-  // { word: "OP_DEPTH", opcode: 116, hex: "0x74" }, //	Nothing	<Stack size>	Puts the number of stack items onto the stack.
+  { word: "OP_DEPTH", opcode: 116, hex: "0x74" }, //	Nothing	<Stack size>	Puts the number of stack items onto the stack.
   { word: "OP_DROP", opcode: 117, hex: "0x75" }, //	x	Nothing	Removes the top stack item.
   { word: "OP_DUP", opcode: 118, hex: "0x76" }, //	x	x x	Duplicates the top stack item.
   { word: "OP_NIP", opcode: 119, hex: "0x77" }, //	x1 x2	x2	Removes the second-to-top stack item.
@@ -79,7 +79,7 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_SUBSTR", opcode: 127, hex: "0x7f" }, //	in begin size	out	Returns a section of a string. disabled.
   // { word: "OP_LEFT", opcode: 128, hex: "0x80" }, //	in size	out	Keeps only characters left of the specified point in a string. disabled.
   // { word: "OP_RIGHT", opcode: 129, hex: "0x81" }, //	in size	out	Keeps only characters right of the specified point in a string. disabled.
-  // { word: "OP_SIZE", opcode: 130, hex: "0x82" }, //	in	in size	Pushes the string length of the top element of the stack (without popping it).
+  { word: "OP_SIZE", opcode: 130, hex: "0x82" }, //	in	in size	Pushes the string length of the top element of the stack (without popping it).
 
   /*
    * Bitwise logic

@@ -52,24 +52,28 @@ const parseFinalInput = (input: string): StackData[] => {
 };
 
 const parse = (input: string, stackDataArray: StackData[]): StackDataResult => {
-  // Data
-  if (input.startsWith("<") && input.endsWith(">")) {
-    const finalInput = input.substr(1, input.length - 2);
-    const dataArray = parseFinalInput(finalInput);
-    return { dataArray, removeLastSize: 0 };
-  }
-
-  // OP Word or OP Code
-  if (input.startsWith("OP_") || !isNaN(input as any)) {
-    // OP Word
-    let word = input;
-    // Op Code
-    if (!isNaN(input as any)) {
-      word = opcodeToWord(Number(input));
-      if (word === "") throw "Unknown OP code number";
+  try {
+    // Data
+    if (input.startsWith("<") && input.endsWith(">")) {
+      const finalInput = input.substr(1, input.length - 2);
+      const dataArray = parseFinalInput(finalInput);
+      return { dataArray, removeLastSize: 0 };
     }
 
-    return OP(word, stackDataArray);
+    // OP Word or OP Code
+    if (input.startsWith("OP_") || !isNaN(input as any)) {
+      // OP Word
+      let word = input;
+      // Op Code
+      if (!isNaN(input as any)) {
+        word = opcodeToWord(Number(input));
+        if (word === "") throw "Unknown OP code number";
+      }
+
+      return OP(word, stackDataArray);
+    }
+  } catch (ex) {
+    console.error(ex);
   }
 
   throw "it is not a valid input script";

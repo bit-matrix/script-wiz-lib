@@ -1,5 +1,6 @@
 import IStackData from "../../model/IStackData";
 import stackHex from "../stackHex";
+import stackNumber from "../stackNumber";
 
 const OP_CAT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   const byteValue = "0x";
@@ -13,17 +14,18 @@ const OP_CAT = (stackData2: IStackData, stackData1: IStackData): IStackData[] =>
 };
 
 const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData3.stringValue !== undefined) {
-    if (stackData2.numberValue !== undefined && stackData1.numberValue !== undefined) {
-      const resultByteValue = "0x" + stackData3.byteValue.substr(2 + stackData2.numberValue * 2, stackData1.numberValue * 2);
-      const stack = stackHex(resultByteValue);
-      return [stackHex(resultByteValue)];
-    }
-
-    throw "OP_SUBSTR Error: Index and size must be number!";
+  if (stackData2.numberValue !== undefined && stackData1.numberValue !== undefined) {
+    const resultByteValue = "0x" + stackData3.byteValue.substr(2 + stackData2.numberValue * 2, stackData1.numberValue * 2);
+    const stack = stackHex(resultByteValue);
+    return [stackHex(resultByteValue)];
   }
 
-  throw "OP_SUBSTR Error: Invalid string value for sub string!";
+  throw "OP_SUBSTR Error: Index and size must be number!";
 };
 
-export { OP_CAT, OP_SUBSTR };
+const OP_SIZE = (stackData: IStackData): IStackData[] => {
+  const numberValue = stackData.byteValue.substr(2).length / 2;
+  return [stackNumber(numberValue.toString())];
+};
+
+export { OP_CAT, OP_SUBSTR, OP_SIZE };
