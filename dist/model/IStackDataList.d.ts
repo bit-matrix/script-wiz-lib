@@ -1,6 +1,6 @@
 import IStackData from "./IStackData";
 interface IStackDataList {
     main: IStackData[];
-    alts: IStackData[][];
+    alt: IStackData[];
 }
 export default IStackDataList;

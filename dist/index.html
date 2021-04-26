@@ -74,7 +74,7 @@
       const inputDom = document.getElementById("input");
       const outputDom = document.getElementById("output");
 
-      let stackDataList = { main: [], alts: [] };
+      let stackDataList = { main: [], alt: [] };
       let outputs = [];
 
       // let timer;
@@ -83,7 +83,7 @@
 
         // timer = setTimeout(function () {
         scriptWiz.clearStack();
-        stackDataList = { main: [], alts: [] };
+        stackDataList = { main: [], alt: [] };
         outputs = [];
 
         var inputTexts = inputDom.value.split("\n");
