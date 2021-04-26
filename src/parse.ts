@@ -3,7 +3,7 @@ import stackHex from "./helper/stackHex";
 import stackNumber from "./helper/stackNumber";
 import OP from "./helper/stackOp";
 import stackString from "./helper/stackString";
-import { ParseResult, StackData } from "./model";
+import { ParseResult, StackData, StackDataList } from "./model";
 
 const parseFinalInput = (input: string): StackData[] => {
   // 0x1245
@@ -51,7 +51,7 @@ const parseFinalInput = (input: string): StackData[] => {
   throw "ParseFinalInput Error: it is not a valid final input string!";
 };
 
-const parse = (input: string, stackDataArray: StackData[]): ParseResult => {
+const parse = (input: string, stackDataList: StackDataList): ParseResult => {
   try {
     // Data
     if (input.startsWith("<") && input.endsWith(">")) {
@@ -71,7 +71,7 @@ const parse = (input: string, stackDataArray: StackData[]): ParseResult => {
         if (word === "") throw "Unknown OP code number";
       }
 
-      return OP(word, stackDataArray);
+      return OP(word, stackDataList);
     }
   } catch (ex) {
     console.error(ex);

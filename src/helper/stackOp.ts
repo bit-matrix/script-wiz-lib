@@ -1,6 +1,6 @@
 import { opcodeToData } from ".";
 import { IOpWordCode } from "../constant/opWordCodes";
-import { StackData, ParseResult } from "../model";
+import { StackData, ParseResult, StackDataList } from "../model";
 
 import * as constants from "./stackOp/constants";
 import * as stacks from "./stackOp/stacks";
@@ -8,10 +8,12 @@ import * as splices from "./stackOp/splices";
 import * as arithmetics from "./stackOp/arithmetics";
 import * as cryptos from "./stackOp/cryptos";
 
-const OP = (word: string, stackDataArray: StackData[]): ParseResult => {
+const OP = (word: string, stackDataList: StackDataList): ParseResult => {
+  const mainStackDataArray: StackData[] = stackDataList.main;
+
   const opData: IOpWordCode | undefined = opcodeToData(word);
   if (opData === undefined) throw "Unknown OP word!";
-  const stackDataArrayLength = stackDataArray.length;
+  const mainStackDataArrayLength = mainStackDataArray.length;
 
   /*
    * Constants
@@ -48,44 +50,63 @@ const OP = (word: string, stackDataArray: StackData[]): ParseResult => {
    * Stack
    * * 107 - 125
    */
+  if (word === "OP_TOALTSTACK") {
+    if (mainStackDataArrayLength < 1) throw "OP_TOALTSTACK Error: stack data array must include min 1 data!";
+    const addDataArray: StackData[] = stacks.OP_TOALTSTACK();
+    const removeLastSize: number = 1;
+    const alt = { addData: mainStackDataArray[mainStackDataArrayLength - 1], removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_FROMALTSTACK") {
+    const altStackDataArrayLength = stackDataList.alt.length;
+    if (altStackDataArrayLength < 1) throw "OP_FROMALTSTACK Error: tried to read from an empty alternate stack.";
+    const addDataArray: StackData[] = stacks.OP_FROMALTSTACK(stackDataList.alt[stackDataList.alt.length - 1]);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: true };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_2DROP") {
-    if (stackDataArrayLength < 2) throw "OP_2DROP Error: stack data array must include min 2 data!";
+    if (mainStackDataArrayLength < 2) throw "OP_2DROP Error: stack data array must include min 2 data!";
     const addDataArray: StackData[] = stacks.OP_2DROP();
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_2DUP") {
-    if (stackDataArrayLength < 2) throw "OP_2DUP Error: stack data array must include min 2 data!";
+    if (mainStackDataArrayLength < 2) throw "OP_2DUP Error: stack data array must include min 2 data!";
 
-    const addDataArray: StackData[] = stacks.OP_2DUP(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = stacks.OP_2DUP(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_3DUP") {
-    if (stackDataArrayLength < 3) throw "OP_3DUP Error: stack data array must include min 3 data!";
+    if (mainStackDataArrayLength < 3) throw "OP_3DUP Error: stack data array must include min 3 data!";
 
-    const addDataArray: StackData[] = stacks.OP_3DUP(stackDataArray[stackDataArrayLength - 3], stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = stacks.OP_3DUP(
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 1]
+    );
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_2OVER") {
-    if (stackDataArrayLength < 4) throw "OP_2OVER Error: stack data array must include min 4 data!";
-    const addDataArray: StackData[] = stacks.OP_2OVER(stackDataArray[stackDataArrayLength - 4], stackDataArray[stackDataArrayLength - 3]);
+    if (mainStackDataArrayLength < 4) throw "OP_2OVER Error: stack data array must include min 4 data!";
+    const addDataArray: StackData[] = stacks.OP_2OVER(mainStackDataArray[mainStackDataArrayLength - 4], mainStackDataArray[mainStackDataArrayLength - 3]);
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_2SWAP") {
-    if (stackDataArrayLength < 4) throw "OP_2SWAP Error: stack data array must include min 4 data!";
+    if (mainStackDataArrayLength < 4) throw "OP_2SWAP Error: stack data array must include min 4 data!";
     const addDataArray: StackData[] = stacks.OP_2SWAP(
-      stackDataArray[stackDataArrayLength - 1],
-      stackDataArray[stackDataArrayLength - 2],
-      stackDataArray[stackDataArrayLength - 3],
-      stackDataArray[stackDataArrayLength - 4]
+      mainStackDataArray[mainStackDataArrayLength - 1],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 4]
     );
     const removeLastSize: number = 4;
     const alt = { removeLastStackData: false };
@@ -93,7 +114,7 @@ const OP = (word: string, stackDataArray: StackData[]): ParseResult => {
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_DEPTH") {
-    const addDataArray: StackData[] = stacks.OP_DEPTH(stackDataArrayLength);
+    const addDataArray: StackData[] = stacks.OP_DEPTH(mainStackDataArrayLength);
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
@@ -101,7 +122,7 @@ const OP = (word: string, stackDataArray: StackData[]): ParseResult => {
   }
 
   if (word === "OP_DROP") {
-    if (stackDataArrayLength < 1) throw "OP_DROP Error: stack data array must include min 1 data!";
+    if (mainStackDataArrayLength < 1) throw "OP_DROP Error: stack data array must include min 1 data!";
 
     const addDataArray: StackData[] = stacks.OP_DROP();
     const removeLastSize: number = 1;
@@ -110,34 +131,34 @@ const OP = (word: string, stackDataArray: StackData[]): ParseResult => {
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_DUP") {
-    if (stackDataArrayLength < 1) throw "OP_DUP Error: stack data array must include min 1 data!";
-    const addDataArray: StackData[] = stacks.OP_DUP(stackDataArray[stackDataArrayLength - 1]);
+    if (mainStackDataArrayLength < 1) throw "OP_DUP Error: stack data array must include min 1 data!";
+    const addDataArray: StackData[] = stacks.OP_DUP(mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_NIP") {
-    if (stackDataArrayLength < 2) throw "OP_NIP Error: stack data array must include min 2 data!";
+    if (mainStackDataArrayLength < 2) throw "OP_NIP Error: stack data array must include min 2 data!";
 
-    const addDataArray: StackData[] = stacks.OP_NIP(stackDataArray[stackDataArrayLength - 1], stackDataArray[stackDataArrayLength - 2]);
+    const addDataArray: StackData[] = stacks.OP_NIP(mainStackDataArray[mainStackDataArrayLength - 1], mainStackDataArray[mainStackDataArrayLength - 2]);
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_OVER") {
-    if (stackDataArrayLength < 2) throw "OP_OVER Error: stack data array must include min 2 data!";
-    const addDataArray: StackData[] = stacks.OP_OVER(stackDataArray[stackDataArrayLength - 2]);
+    if (mainStackDataArrayLength < 2) throw "OP_OVER Error: stack data array must include min 2 data!";
+    const addDataArray: StackData[] = stacks.OP_OVER(mainStackDataArray[mainStackDataArrayLength - 2]);
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_SWAP") {
-    if (stackDataArrayLength < 2) throw "OP_SWAP Error: stack data array must include min 2 data!";
+    if (mainStackDataArrayLength < 2) throw "OP_SWAP Error: stack data array must include min 2 data!";
 
-    const addDataArray: StackData[] = stacks.OP_SWAP(stackDataArray[stackDataArrayLength - 1], stackDataArray[stackDataArrayLength - 2]);
+    const addDataArray: StackData[] = stacks.OP_SWAP(mainStackDataArray[mainStackDataArrayLength - 1], mainStackDataArray[mainStackDataArrayLength - 2]);
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
@@ -149,21 +170,21 @@ const OP = (word: string, stackDataArray: StackData[]): ParseResult => {
    * 126 - 130
    */
   if (word === "OP_CAT") {
-    if (stackDataArrayLength < 2) throw "OP_CAT Error: stack data array must include min 2 data!";
+    if (mainStackDataArrayLength < 2) throw "OP_CAT Error: stack data array must include min 2 data!";
 
-    const addDataArray: StackData[] = splices.OP_CAT(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = splices.OP_CAT(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_SUBSTR") {
-    if (stackDataArrayLength < 3) throw "OP_SUBSTR Error: stack data array must include min 3 data!";
+    if (mainStackDataArrayLength < 3) throw "OP_SUBSTR Error: stack data array must include min 3 data!";
 
     const addDataArray: StackData[] = splices.OP_SUBSTR(
-      stackDataArray[stackDataArrayLength - 3],
-      stackDataArray[stackDataArrayLength - 2],
-      stackDataArray[stackDataArrayLength - 1]
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 1]
     );
     const removeLastSize: number = 3;
     const alt = { removeLastStackData: false };
@@ -171,8 +192,8 @@ const OP = (word: string, stackDataArray: StackData[]): ParseResult => {
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_SIZE") {
-    if (stackDataArrayLength < 1) throw "OP_SIZE Error: stack data array must include min 1 data!";
-    const addDataArray: StackData[] = splices.OP_SIZE(stackDataArray[stackDataArrayLength - 1]);
+    if (mainStackDataArrayLength < 1) throw "OP_SIZE Error: stack data array must include min 1 data!";
+    const addDataArray: StackData[] = splices.OP_SIZE(mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
@@ -184,18 +205,18 @@ const OP = (word: string, stackDataArray: StackData[]): ParseResult => {
    * 139 - 165
    */
   if (word === "OP_ADD") {
-    if (stackDataArrayLength < 2) throw "OP_ADD Error: stack data array must include min 2 data!";
+    if (mainStackDataArrayLength < 2) throw "OP_ADD Error: stack data array must include min 2 data!";
 
-    const addDataArray: StackData[] = arithmetics.OP_ADD(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = arithmetics.OP_ADD(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_SUB") {
-    if (stackDataArrayLength < 2) throw "OP_SUB Error: stack data array must include min 2 data!";
+    if (mainStackDataArrayLength < 2) throw "OP_SUB Error: stack data array must include min 2 data!";
 
-    const addDataArray: StackData[] = arithmetics.OP_SUB(stackDataArray[stackDataArrayLength - 2], stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = arithmetics.OP_SUB(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
@@ -207,45 +228,45 @@ const OP = (word: string, stackDataArray: StackData[]): ParseResult => {
    * 166 - 175
    */
   if (word === "OP_SHA1") {
-    if (stackDataArrayLength < 1) throw "OP_SHA1 Error: stack data array must include min 1 data!";
+    if (mainStackDataArrayLength < 1) throw "OP_SHA1 Error: stack data array must include min 1 data!";
 
-    const addDataArray: StackData[] = cryptos.OP_SHA1(stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = cryptos.OP_SHA1(mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_SHA256") {
-    if (stackDataArrayLength < 1) throw "OP_SHA256 Error: stack data array must include min 1 data!";
+    if (mainStackDataArrayLength < 1) throw "OP_SHA256 Error: stack data array must include min 1 data!";
 
-    const addDataArray: StackData[] = cryptos.OP_SHA256(stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = cryptos.OP_SHA256(mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_RIPEMD160") {
-    if (stackDataArrayLength < 1) throw "OP_RIPEMD160 Error: stack data array must include min 1 data!";
+    if (mainStackDataArrayLength < 1) throw "OP_RIPEMD160 Error: stack data array must include min 1 data!";
 
-    const addDataArray: StackData[] = cryptos.OP_RIPEMD160(stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = cryptos.OP_RIPEMD160(mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_HASH160") {
-    if (stackDataArrayLength < 1) throw "OP_HASH160 Error: stack data array must include min 1 data!";
+    if (mainStackDataArrayLength < 1) throw "OP_HASH160 Error: stack data array must include min 1 data!";
 
-    const addDataArray: StackData[] = cryptos.OP_HASH160(stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = cryptos.OP_HASH160(mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_HASH256") {
-    if (stackDataArrayLength < 1) throw "OP_HASH256 Error: stack data array must include min 1 data!";
+    if (mainStackDataArrayLength < 1) throw "OP_HASH256 Error: stack data array must include min 1 data!";
 
-    const addDataArray: StackData[] = cryptos.OP_HASH256(stackDataArray[stackDataArrayLength - 1]);
+    const addDataArray: StackData[] = cryptos.OP_HASH256(mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 

@@ -51,8 +51,8 @@ const opWordCodes: IOpWordCode[] = [
    * Stack
    * * 107 - 125
    */
-  // { word: "OP_TOALTSTACK", opcode: 107, hex: "0x6b" }, //	x1	(alt)x1	Puts the input onto the top of the alt stack. Removes it from the main stack.
-  // { word: "OP_FROMALTSTACK", opcode: 108, hex: "0x6c" }, //	(alt)x1	x1	Puts the input onto the top of the main stack. Removes it from the alt stack.
+  { word: "OP_TOALTSTACK", opcode: 107, hex: "0x6b" }, //	x1	(alt)x1	Puts the input onto the top of the alt stack. Removes it from the main stack.
+  { word: "OP_FROMALTSTACK", opcode: 108, hex: "0x6c" }, //	(alt)x1	x1	Puts the input onto the top of the main stack. Removes it from the alt stack.
   { word: "OP_2DROP", opcode: 109, hex: "0x6d" }, //	x1 x2	Nothing	Removes the top two stack items.
   { word: "OP_2DUP", opcode: 110, hex: "0x6e" }, //	x1 x2	x1 x2 x1 x2	Duplicates the top two stack items.
   { word: "OP_3DUP", opcode: 111, hex: "0x6f" }, //	x1 x2 x3	x1 x2 x3 x1 x2 x3	Duplicates the top three stack items.
