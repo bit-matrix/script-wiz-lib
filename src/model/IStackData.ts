@@ -5,4 +5,5 @@ interface IStackData {
   stringValue?: string;
   numberValue?: number;
 }
+
 export default IStackData;

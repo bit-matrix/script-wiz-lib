@@ -1,20 +1,20 @@
-import { StackData, StackDataResult } from "./model";
+import { StackDataList, StackDataResult } from "./model";
 import parseToStack from "./parse";
 
-let stackDataArray: StackData[] = [];
+let stackDataList: StackDataList = { main: [], alts: [] };
 
-const parse = (input: string): StackData[] => {
-  const stackDataResult: StackDataResult = parseToStack(input, stackDataArray);
+const parse = (input: string): StackDataList => {
+  const stackDataResult: StackDataResult = parseToStack(input, stackDataList.main);
   if (stackDataResult.removeLastSize > 0) {
-    stackDataArray = stackDataArray.slice(0, stackDataArray.length - stackDataResult.removeLastSize);
+    stackDataList = { main: stackDataList.main.slice(0, stackDataList.main.length - stackDataResult.removeLastSize), alts: [] };
   }
 
-  stackDataArray = stackDataArray.concat(stackDataResult.dataArray);
-  return stackDataArray;
+  stackDataList = { main: stackDataList.main.concat(stackDataResult.dataArray), alts: [] };
+  return stackDataList;
 };
 
 const clearStack = () => {
-  stackDataArray = [];
+  stackDataList = { main: [], alts: [] };
 };
 
-export { parse, clearStack, stackDataArray };
+export { parse, clearStack, stackDataList };
