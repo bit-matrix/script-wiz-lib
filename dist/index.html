@@ -63,7 +63,7 @@
       const inputDom = document.getElementById("input");
       const outputDom = document.getElementById("output");
 
-      let stackDataArray = [];
+      let stackDataList = { main: [], alts: [] };
       let outputs = [];
 
       // let timer;
@@ -72,7 +72,7 @@
 
         // timer = setTimeout(function () {
         scriptWiz.clearStack();
-        stackDataArray = [];
+        stackDataList = { main: [], alts: [] };
         outputs = [];
 
         var inputTexts = inputDom.value.split("\n");
@@ -86,8 +86,8 @@
             if (inputText === "") {
               output = "<br/>";
             } else {
-              stackDataArray = scriptWiz.parse(inputText);
-              stackData = stackDataArray[stackDataArray.length - 1];
+              stackDataList = scriptWiz.parse(inputText);
+              stackData = stackDataList.main[stackDataList.main.length - 1];
             }
           } catch {
             outputs.push('<span id="display3">Invalid input!</span><br/>');
@@ -96,8 +96,9 @@
             if (inputText !== "") {
               if (stackData) {
                 output = "";
-                for (let j = 0; j < stackDataArray.length; j++) {
-                  output += '<span id="display1">' + stackDataArray[j].byteValueDisplay + '</span><span id="display2">(' + stackDataArray[j].byteValue + ")</span>&nbsp;&nbsp;";
+                for (let j = 0; j < stackDataList.main.length; j++) {
+                  output +=
+                    '<span id="display1">' + stackDataList.main[j].byteValueDisplay + '</span><span id="display2">(' + stackDataList.main[j].byteValue + ")</span>&nbsp;&nbsp;";
                 }
                 output += "<br/>";
               }
