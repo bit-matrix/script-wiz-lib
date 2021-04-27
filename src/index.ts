@@ -1,6 +1,8 @@
 import { StackDataList, ParseResult } from "./model";
 import parseToStack from "./parse";
 
+import * as uu from "./uu/uu";
+
 const initialStackDataList: StackDataList = { main: [], alt: [] };
 let stackDataList: StackDataList = initialStackDataList;
 
@@ -30,4 +32,4 @@ const clearStack = () => {
   stackDataList = initialStackDataList;
 };
 
-export { parse, clearStack, stackDataList };
+export { parse, clearStack, stackDataList, uu };
