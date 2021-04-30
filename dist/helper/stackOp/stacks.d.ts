@@ -17,4 +17,5 @@ declare const OP_OVER: (stackData: IStackData) => IStackData[];
 declare const OP_PICK: (stackDataArray: IStackData[], stackIndex: number) => IStackData[];
 declare const OP_ROLL: (stackDataArray: IStackData[], stackIndex: number) => IStackData[];
 declare const OP_SWAP: (stackData1: IStackData, stackData2: IStackData) => IStackData[];
-export { OP_TOALTSTACK, OP_FROMALTSTACK, OP_2DROP, OP_2DUP, OP_3DUP, OP_2OVER, OP_2ROT, OP_ROT, OP_2SWAP, OP_DEPTH, OP_DROP, OP_DUP, OP_IFDUP, OP_NIP, OP_OVER, OP_PICK, OP_ROLL, OP_SWAP, };
+declare const OP_TUCK: (stackData1: IStackData, stackData2: IStackData) => IStackData[];
+export { OP_TOALTSTACK, OP_FROMALTSTACK, OP_2DROP, OP_2DUP, OP_3DUP, OP_2OVER, OP_2ROT, OP_ROT, OP_2SWAP, OP_DEPTH, OP_DROP, OP_DUP, OP_IFDUP, OP_NIP, OP_OVER, OP_PICK, OP_ROLL, OP_SWAP, OP_TUCK, };
