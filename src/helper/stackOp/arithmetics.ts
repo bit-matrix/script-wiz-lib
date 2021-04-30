@@ -19,4 +19,22 @@ const OP_SUB = (stackData2: IStackData, stackData1: IStackData): IStackData[] =>
   throw "OP_SUB Error: this operation requires 2 valid number data";
 };
 
-export { OP_ADD, OP_SUB };
+const OP_LSHIFT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
+    const lShiftValue: number = stackData2.numberValue << stackData1.numberValue;
+    return [stackNumber(lShiftValue.toString())];
+  }
+
+  throw "OP_SUB Error: this operation requires 2 valid number data";
+};
+
+const OP_RSHIFT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
+    const rShiftValue: number = stackData2.numberValue >> stackData1.numberValue;
+    return [stackNumber(rShiftValue.toString())];
+  }
+
+  throw "OP_SUB Error: this operation requires 2 valid number data";
+};
+
+export { OP_ADD, OP_SUB, OP_LSHIFT, OP_RSHIFT };
