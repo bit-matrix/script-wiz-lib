@@ -201,6 +201,26 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_ROLL") {
+    if (mainStackDataArrayLength < 2) throw "OP_ROLL Error: stack data array must include min 2 data!";
+
+    let stackIndex: number | undefined = mainStackDataArray[mainStackDataArrayLength - 1].numberValue;
+    let willChangedStackDataArray: StackData[] = [...mainStackDataArray];
+    willChangedStackDataArray.pop();
+
+    if (stackIndex !== undefined) {
+      if (stackIndex >= willChangedStackDataArray.length) throw "OP_ROLL Error: stack index cant be equal and greater than stack array length";
+    } else {
+      throw "OP_PICK Error: stack index must be a number";
+    }
+
+    const addDataArray: StackData[] = stacks.OP_ROLL(willChangedStackDataArray, stackIndex);
+
+    const removeLastSize: number = mainStackDataArray.length;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
   /*
    * Splice

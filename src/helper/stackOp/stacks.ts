@@ -36,6 +36,17 @@ const OP_OVER = (stackData: IStackData): IStackData[] => [stackData];
 
 const OP_PICK = (stackDataArray: IStackData[], stackIndex: number): IStackData[] => [...stackDataArray, stackDataArray.reverse()[stackIndex]];
 
+const OP_ROLL = (stackDataArray: IStackData[], stackIndex: number): IStackData[] => {
+  const newStackDataArray: IStackData[] = [...stackDataArray].reverse();
+  const currentItem: IStackData = newStackDataArray[stackIndex];
+
+  newStackDataArray.splice(stackIndex, 1);
+
+  newStackDataArray.unshift(currentItem);
+
+  return newStackDataArray.reverse();
+};
+
 const OP_SWAP = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1, stackData2];
 
-export { OP_TOALTSTACK, OP_FROMALTSTACK, OP_2DROP, OP_2DUP, OP_3DUP, OP_2OVER, OP_2ROT, OP_2SWAP, OP_DEPTH, OP_DROP, OP_DUP, OP_NIP, OP_OVER, OP_PICK, OP_SWAP };
+export { OP_TOALTSTACK, OP_FROMALTSTACK, OP_2DROP, OP_2DUP, OP_3DUP, OP_2OVER, OP_2ROT, OP_2SWAP, OP_DEPTH, OP_DROP, OP_DUP, OP_NIP, OP_OVER, OP_PICK, OP_ROLL, OP_SWAP };
