@@ -113,6 +113,15 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_IFDUP") {
+    if (mainStackDataArrayLength < 1) throw "OP_IFDUP Error: stack data array must include min 1 data!";
+
+    const addDataArray: StackData[] = stacks.OP_IFDUP(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_DEPTH") {
     const addDataArray: StackData[] = stacks.OP_DEPTH(mainStackDataArrayLength);
     const removeLastSize: number = 0;
