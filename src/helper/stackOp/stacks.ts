@@ -13,13 +13,15 @@ const OP_3DUP = (stackData1: IStackData, stackData2: IStackData, stackData3: ISt
 
 const OP_2OVER = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1, stackData2];
 
+const OP_ROT = (stackData1: IStackData, stackData2: IStackData, stackData3: IStackData): IStackData[] => [stackData2, stackData3, stackData1];
+
 const OP_2ROT = (stackData1: IStackData, stackData2: IStackData, stackData3: IStackData, stackData4: IStackData, stackData5: IStackData, stackData6: IStackData): IStackData[] => [
-  stackData4,
   stackData3,
-  stackData2,
-  stackData1,
-  stackData6,
+  stackData4,
   stackData5,
+  stackData6,
+  stackData1,
+  stackData2,
 ];
 
 const OP_2SWAP = (stackData1: IStackData, stackData2: IStackData, stackData3: IStackData, stackData4: IStackData): IStackData[] => [stackData2, stackData1, stackData4, stackData3];
@@ -57,4 +59,23 @@ const OP_ROLL = (stackDataArray: IStackData[], stackIndex: number): IStackData[]
 
 const OP_SWAP = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1, stackData2];
 
-export { OP_TOALTSTACK, OP_FROMALTSTACK, OP_2DROP, OP_2DUP, OP_3DUP, OP_2OVER, OP_2ROT, OP_2SWAP, OP_DEPTH, OP_DROP, OP_DUP, OP_IFDUP, OP_NIP, OP_OVER, OP_PICK, OP_ROLL, OP_SWAP };
+export {
+  OP_TOALTSTACK,
+  OP_FROMALTSTACK,
+  OP_2DROP,
+  OP_2DUP,
+  OP_3DUP,
+  OP_2OVER,
+  OP_2ROT,
+  OP_ROT,
+  OP_2SWAP,
+  OP_DEPTH,
+  OP_DROP,
+  OP_DUP,
+  OP_IFDUP,
+  OP_NIP,
+  OP_OVER,
+  OP_PICK,
+  OP_ROLL,
+  OP_SWAP,
+};
