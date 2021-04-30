@@ -57,7 +57,7 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_2DUP", opcode: 110, hex: "0x6e" }, //	x1 x2	x1 x2 x1 x2	Duplicates the top two stack items.
   { word: "OP_3DUP", opcode: 111, hex: "0x6f" }, //	x1 x2 x3	x1 x2 x3 x1 x2 x3	Duplicates the top three stack items.
   { word: "OP_2OVER", opcode: 112, hex: "0x70" }, //	x1 x2 x3 x4	x1 x2 x3 x4 x1 x2	Copies the pair of items two spaces back in the stack to the front.
-  // { word: "OP_2ROT", opcode: 113, hex: "0x71" }, //	x1 x2 x3 x4 x5 x6	x3 x4 x5 x6 x1 x2	The fifth and sixth items back are moved to the top of the stack.
+  { word: "OP_2ROT", opcode: 113, hex: "0x71" }, //	x1 x2 x3 x4 x5 x6	x3 x4 x5 x6 x1 x2	The fifth and sixth items back are moved to the top of the stack.
   { word: "OP_2SWAP", opcode: 114, hex: "0x72" }, //	x1 x2 x3 x4	x3 x4 x1 x2	Swaps the top two pairs of stack.
   // { word: "OP_IFDUP", opcode: 115, hex: "0x73" }, //	x	x / x x	If the top stack value is not 0, duplicate it.
   { word: "OP_DEPTH", opcode: 116, hex: "0x74" }, //	Nothing	<Stack size>	Puts the number of stack items onto the stack.
