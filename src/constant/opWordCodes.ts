@@ -69,7 +69,7 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_ROLL", opcode: 122, hex: "0x7a" }, //	xn ... x2 x1 x0 <n>	... x2 x1 x0 xn	The item n back in the stack is moved to the top.
   { word: "OP_ROT", opcode: 123, hex: "0x7b" }, //	x1 x2 x3	x2 x3 x1	The 3rd item down the stack is moved to the top.
   { word: "OP_SWAP", opcode: 124, hex: "0x7c" }, //	x1 x2	x2 x1	The top two items on the stack are swapped.
-  // { word: "OP_TUCK", opcode: 125, hex: "0x7d" }, //	x1 x2	x2 x1 x2	The item at the top of the stack is copied and inserted before the second-to-top item.
+  { word: "OP_TUCK", opcode: 125, hex: "0x7d" }, //	x1 x2	x2 x1 x2	The item at the top of the stack is copied and inserted before the second-to-top item.
 
   /*
    * Splice

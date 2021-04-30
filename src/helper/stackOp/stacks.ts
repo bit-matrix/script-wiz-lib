@@ -59,6 +59,8 @@ const OP_ROLL = (stackDataArray: IStackData[], stackIndex: number): IStackData[]
 
 const OP_SWAP = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData1, stackData2];
 
+const OP_TUCK = (stackData1: IStackData, stackData2: IStackData): IStackData[] => [stackData2, stackData1, stackData2];
+
 export {
   OP_TOALTSTACK,
   OP_FROMALTSTACK,
@@ -78,4 +80,5 @@ export {
   OP_PICK,
   OP_ROLL,
   OP_SWAP,
+  OP_TUCK,
 };

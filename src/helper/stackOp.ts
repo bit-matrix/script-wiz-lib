@@ -191,7 +191,7 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_ROT") {
-    if (mainStackDataArrayLength < 3) throw "OP_ROT Error: stack data array must include min 6 data!";
+    if (mainStackDataArrayLength < 3) throw "OP_ROT Error: stack data array must include min 3 data!";
 
     const addDataArray: StackData[] = stacks.OP_ROT(
       mainStackDataArray[mainStackDataArrayLength - 3],
@@ -240,6 +240,16 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     const addDataArray: StackData[] = stacks.OP_ROLL(willChangedStackDataArray, stackIndex);
 
     const removeLastSize: number = mainStackDataArray.length;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_TUCK") {
+    if (mainStackDataArrayLength < 2) throw "OP_TUCK Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = stacks.OP_TUCK(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+
+    const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
