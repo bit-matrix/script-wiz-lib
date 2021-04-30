@@ -166,7 +166,7 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
   }
   if (word === "OP_2ROT") {
     if (mainStackDataArrayLength < 6) throw "OP_2ROT Error: stack data array must include min 6 data!";
-    console.log(mainStackDataArray);
+
     const addDataArray: StackData[] = stacks.OP_2ROT(
       mainStackDataArray[mainStackDataArrayLength - 1],
       mainStackDataArray[mainStackDataArrayLength - 2],
@@ -175,7 +175,28 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
       mainStackDataArray[mainStackDataArrayLength - 5],
       mainStackDataArray[mainStackDataArrayLength - 6]
     );
+
     const removeLastSize: number = 6;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_PICK") {
+    if (mainStackDataArrayLength < 2) throw "OP_PICK Error: stack data array must include min 2 data!";
+
+    let stackIndex: number | undefined = mainStackDataArray[mainStackDataArrayLength - 1].numberValue;
+    let willChangedStackDataArray: StackData[] = [...mainStackDataArray];
+    willChangedStackDataArray.pop();
+
+    if (stackIndex !== undefined) {
+      if (stackIndex >= willChangedStackDataArray.length) throw "OP_PICK Error: stack index cant be equal and greater than stack array length";
+    } else {
+      throw "OP_PICK Error: stack index must be a number";
+    }
+
+    const addDataArray: StackData[] = stacks.OP_PICK(willChangedStackDataArray, stackIndex);
+
+    const removeLastSize: number = mainStackDataArray.length;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
