@@ -211,7 +211,7 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     if (stackIndex !== undefined) {
       if (stackIndex >= willChangedStackDataArray.length) throw "OP_ROLL Error: stack index cant be equal and greater than stack array length";
     } else {
-      throw "OP_PICK Error: stack index must be a number";
+      throw "OP_ROLL Error: stack index must be a number";
     }
 
     const addDataArray: StackData[] = stacks.OP_ROLL(willChangedStackDataArray, stackIndex);
