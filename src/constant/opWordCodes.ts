@@ -106,8 +106,8 @@ const opWordCodes: IOpWordCode[] = [
   // { word: "OP_0NOTEQUAL", opcode: 146, hex: "0x92" }, //	in	out	Returns 0 if the input is 0. 1 otherwise.
   { word: "OP_ADD", opcode: 147, hex: "0x93" }, //	a b	out	a is added to b.
   { word: "OP_SUB", opcode: 148, hex: "0x94" }, //	a b	out	b is subtracted from a.
-  // { word: "OP_MUL", opcode: 149, hex: "0x95" }, //	a b	out	a is multiplied by b. disabled.
-  // { word: "OP_DIV", opcode: 150, hex: "0x96" }, //	a b	out	a is divided by b. disabled.
+  { word: "OP_MUL", opcode: 149, hex: "0x95" }, //	a b	out	a is multiplied by b. disabled.
+  { word: "OP_DIV", opcode: 150, hex: "0x96" }, //	a b	out	a is divided by b. disabled.
   // { word: "OP_MOD", opcode: 151, hex: "0x97" }, //	a b	out	Returns the remainder after dividing a by b. disabled.
   { word: "OP_LSHIFT", opcode: 152, hex: "0x98" }, //	a b	out	Shifts a left b bits, preserving sign. disabled.
   { word: "OP_RSHIFT", opcode: 153, hex: "0x99" }, //	a b	out	Shifts a right b bits, preserving sign. disabled.

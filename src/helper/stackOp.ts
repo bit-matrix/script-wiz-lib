@@ -312,6 +312,24 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_MUL") {
+    if (mainStackDataArrayLength < 2) throw "OP_MUL Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_MUL(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_DIV") {
+    if (mainStackDataArrayLength < 2) throw "OP_DIV Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_DIV(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_LSHIFT") {
     if (mainStackDataArrayLength < 2) throw "OP_LSHIFT Error: stack data array must include min 2 data!";
 
