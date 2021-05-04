@@ -1,3 +1,4 @@
+import { currentScope } from "./helper";
 import { StackDataList, ParseResult } from "./model";
 import parseToStack from "./parse";
 
@@ -5,6 +6,8 @@ const initialStackDataList: StackDataList = { main: [], alt: [], flow: [true] };
 let stackDataList: StackDataList = initialStackDataList;
 
 const parse = (input: string): StackDataList => {
+  if (!currentScope(stackDataList)) return stackDataList;
+
   const parseResult: ParseResult = parseToStack(input, stackDataList);
 
   // remove item(s) from main stack
@@ -22,6 +25,9 @@ const parse = (input: string): StackDataList => {
 
   // add item to alternate stack
   if (parseResult.alt.addData) stackDataList = { ...stackDataList, alt: [...stackDataList.alt, parseResult.alt.addData] };
+
+  // update flow
+  if (parseResult.flow) stackDataList = { ...stackDataList, flow: parseResult.flow };
 
   return stackDataList;
 };
