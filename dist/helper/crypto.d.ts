@@ -1,7 +1,8 @@
-declare const ripemd160: (data: string) => string;
-declare const sha1: (data: string) => string;
-declare const sha256: (data: string) => string;
-declare const hash160: (data: string) => string;
-declare const hash256: (data: string) => string;
-declare const ecdsaVerify: (signature: string, message: string, publicKey: string) => boolean;
-export { hash160, hash256, ripemd160, sha1, sha256, ecdsaVerify };
+declare const RIPEMD160: (data: string) => string;
+declare const SHA1: (data: string) => string;
+declare const SHA256: (data: string) => string;
+declare const HASH160: (data: string) => string;
+declare const HASH256: (data: string) => string;
+declare const ECDSA: (messageHash: string, publicKey: string) => string;
+declare const ECDSAVerify: (signature: string, message: string, publicKey: string) => boolean;
+export { HASH160, HASH256, RIPEMD160, SHA1, SHA256, ECDSA, ECDSAVerify };
