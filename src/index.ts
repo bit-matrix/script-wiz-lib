@@ -2,11 +2,13 @@ import { currentScope } from "./helper";
 import { StackDataList, ParseResult } from "./model";
 import parseToStack from "./parse";
 
-const initialStackDataList: StackDataList = { main: [], alt: [], flow: [true] };
+const initialStackDataList: StackDataList = { main: [], alt: [], flow: [true], altFlow: [] };
 let stackDataList: StackDataList = initialStackDataList;
 
 const parse = (input: string): StackDataList => {
-  if (!currentScope(stackDataList)) return stackDataList;
+  if (!currentScope(stackDataList)) {
+    if (input !== "OP_IF" && input !== "OP_NOTIF" && input !== "OP_ELSE" && input !== "OP_ENDIF") return stackDataList;
+  }
 
   const parseResult: ParseResult = parseToStack(input, stackDataList);
 
@@ -28,6 +30,9 @@ const parse = (input: string): StackDataList => {
 
   // update flow
   if (parseResult.flow) stackDataList = { ...stackDataList, flow: parseResult.flow };
+
+  // update alt flow
+  if (parseResult.altFlow) stackDataList = { ...stackDataList, altFlow: parseResult.altFlow };
 
   return stackDataList;
 };
