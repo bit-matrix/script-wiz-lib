@@ -1,7 +1,7 @@
 import { StackDataList, ParseResult } from "./model";
 import parseToStack from "./parse";
 
-const initialStackDataList: StackDataList = { main: [], alt: [] };
+const initialStackDataList: StackDataList = { main: [], alt: [], flow: [true] };
 let stackDataList: StackDataList = initialStackDataList;
 
 const parse = (input: string): StackDataList => {
