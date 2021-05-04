@@ -1,4 +1,4 @@
-import { opcodeToData } from ".";
+import { currentScope, opcodeToData } from ".";
 import { IOpWordCode } from "../constant/opWordCodes";
 import { StackData, ParseResult, StackDataList } from "../model";
 
@@ -7,6 +7,7 @@ import * as stacks from "./stackOp/stacks";
 import * as splices from "./stackOp/splices";
 import * as arithmetics from "./stackOp/arithmetics";
 import * as cryptos from "./stackOp/cryptos";
+import { OP_ELSE, OP_ENDIF, OP_IF, OP_NOTIF } from "./stackOp/flow";
 
 const OP = (word: string, stackDataList: StackDataList): ParseResult => {
   const mainStackDataArray: StackData[] = stackDataList.main;
@@ -44,6 +45,48 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
     return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  /*
+   * Flow control
+   * * 97 - 106
+   */
+  if (word === "OP_IF") {
+    if (mainStackDataArrayLength < 1) throw "OP_IF Error: stack data array must include min 1 data!";
+
+    const newFlow = OP_IF(stackDataList);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow };
+  }
+  if (word === "OP_NOTIF") {
+    if (mainStackDataArrayLength < 1) throw "OP_NOTIF Error: stack data array must include min 1 data!";
+
+    const newFlow = OP_NOTIF(stackDataList);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow };
+  }
+  if (word === "OP_ELSE") {
+    if (mainStackDataArrayLength < 1) throw "OP_ELSE Error: Encountered an OP_ELSE outside of an OP_IF ... OP_ENDIF block.!";
+
+    const newFlow = OP_ELSE(stackDataList);
+    console.log("OP_ELSE newFlow", newFlow);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow };
+  }
+  if (word === "OP_ENDIF") {
+    if (stackDataList.flow.length === 1) throw "OP_ENDIF Error: Encountered an OP_ENDIF which is not following a matching OP_IF.!";
+
+    const newFlow = OP_ENDIF(stackDataList);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow };
   }
 
   /*
