@@ -9,6 +9,7 @@ interface IParseResult {
     addData?: IStackData;
     removeLastStackData: boolean;
   };
+  flow?: boolean[];
 }
 
 export default IParseResult;
