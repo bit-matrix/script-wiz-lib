@@ -57,19 +57,19 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_2DUP", opcode: 110, hex: "0x6e" }, //	x1 x2	x1 x2 x1 x2	Duplicates the top two stack items.
   { word: "OP_3DUP", opcode: 111, hex: "0x6f" }, //	x1 x2 x3	x1 x2 x3 x1 x2 x3	Duplicates the top three stack items.
   { word: "OP_2OVER", opcode: 112, hex: "0x70" }, //	x1 x2 x3 x4	x1 x2 x3 x4 x1 x2	Copies the pair of items two spaces back in the stack to the front.
-  // { word: "OP_2ROT", opcode: 113, hex: "0x71" }, //	x1 x2 x3 x4 x5 x6	x3 x4 x5 x6 x1 x2	The fifth and sixth items back are moved to the top of the stack.
+  { word: "OP_2ROT", opcode: 113, hex: "0x71" }, //	x1 x2 x3 x4 x5 x6	x3 x4 x5 x6 x1 x2	The fifth and sixth items back are moved to the top of the stack.
   { word: "OP_2SWAP", opcode: 114, hex: "0x72" }, //	x1 x2 x3 x4	x3 x4 x1 x2	Swaps the top two pairs of stack.
-  // { word: "OP_IFDUP", opcode: 115, hex: "0x73" }, //	x	x / x x	If the top stack value is not 0, duplicate it.
+  { word: "OP_IFDUP", opcode: 115, hex: "0x73" }, //	x	x / x x	If the top stack value is not 0, duplicate it.
   { word: "OP_DEPTH", opcode: 116, hex: "0x74" }, //	Nothing	<Stack size>	Puts the number of stack items onto the stack.
   { word: "OP_DROP", opcode: 117, hex: "0x75" }, //	x	Nothing	Removes the top stack item.
   { word: "OP_DUP", opcode: 118, hex: "0x76" }, //	x	x x	Duplicates the top stack item.
   { word: "OP_NIP", opcode: 119, hex: "0x77" }, //	x1 x2	x2	Removes the second-to-top stack item.
   { word: "OP_OVER", opcode: 120, hex: "0x78" }, //	x1 x2	x1 x2 x1	Copies the second-to-top stack item to the top.
-  // { word: "OP_PICK", opcode: 121, hex: "0x79" }, //	xn ... x2 x1 x0 <n>	xn ... x2 x1 x0 xn	The item n back in the stack is copied to the top.
-  // { word: "OP_ROLL", opcode: 122, hex: "0x7a" }, //	xn ... x2 x1 x0 <n>	... x2 x1 x0 xn	The item n back in the stack is moved to the top.
-  // { word: "OP_ROT", opcode: 123, hex: "0x7b" }, //	x1 x2 x3	x2 x3 x1	The 3rd item down the stack is moved to the top.
+  { word: "OP_PICK", opcode: 121, hex: "0x79" }, //	xn ... x2 x1 x0 <n>	xn ... x2 x1 x0 xn	The item n back in the stack is copied to the top.
+  { word: "OP_ROLL", opcode: 122, hex: "0x7a" }, //	xn ... x2 x1 x0 <n>	... x2 x1 x0 xn	The item n back in the stack is moved to the top.
+  { word: "OP_ROT", opcode: 123, hex: "0x7b" }, //	x1 x2 x3	x2 x3 x1	The 3rd item down the stack is moved to the top.
   { word: "OP_SWAP", opcode: 124, hex: "0x7c" }, //	x1 x2	x2 x1	The top two items on the stack are swapped.
-  // { word: "OP_TUCK", opcode: 125, hex: "0x7d" }, //	x1 x2	x2 x1 x2	The item at the top of the stack is copied and inserted before the second-to-top item.
+  { word: "OP_TUCK", opcode: 125, hex: "0x7d" }, //	x1 x2	x2 x1 x2	The item at the top of the stack is copied and inserted before the second-to-top item.
 
   /*
    * Splice
@@ -109,8 +109,8 @@ const opWordCodes: IOpWordCode[] = [
   // { word: "OP_MUL", opcode: 149, hex: "0x95" }, //	a b	out	a is multiplied by b. disabled.
   // { word: "OP_DIV", opcode: 150, hex: "0x96" }, //	a b	out	a is divided by b. disabled.
   // { word: "OP_MOD", opcode: 151, hex: "0x97" }, //	a b	out	Returns the remainder after dividing a by b. disabled.
-  // { word: "OP_LSHIFT", opcode: 152, hex: "0x98" }, //	a b	out	Shifts a left b bits, preserving sign. disabled.
-  // { word: "OP_RSHIFT", opcode: 153, hex: "0x99" }, //	a b	out	Shifts a right b bits, preserving sign. disabled.
+  { word: "OP_LSHIFT", opcode: 152, hex: "0x98" }, //	a b	out	Shifts a left b bits, preserving sign. disabled.
+  { word: "OP_RSHIFT", opcode: 153, hex: "0x99" }, //	a b	out	Shifts a right b bits, preserving sign. disabled.
   // { word: "OP_BOOLAND", opcode: 154, hex: "0x9a" }, //	a b	out	If both a and b are not 0, the output is 1. Otherwise 0.
   // { word: "OP_BOOLOR", opcode: 155, hex: "0x9b" }, //	a b	out	If a or b is not 0, the output is 1. Otherwise 0.
   // { word: "OP_NUMEQUAL", opcode: 156, hex: "0x9c" }, //	a b	out	Returns 1 if the numbers are equal, 0 otherwise.
@@ -138,11 +138,11 @@ const opWordCodes: IOpWordCode[] = [
   // { word: "OP_CHECKSIGVERIFY", opcode: 173, hex: "0xad" }, //	sig pubkey	Nothing / fail	Same as OP_CHECKSIG, but OP_VERIFY is executed afterward.
   // { word: "OP_CHECKMULTISIG", opcode: 174, hex: "0xae" }, //	x sig1 sig2 ... <number of signatures> pub1 pub2 <number of public keys>	True / False	Compares the first signature against each public key until it finds an ECDSA match. Starting with the subsequent public key, it compares the second signature against each remaining public key until it finds an ECDSA match. The process is repeated until all signatures have been checked or not enough public keys remain to produce a successful result. All signatures need to match a public key. Because public keys are not checked again if they fail any signature comparison, signatures must be placed in the scriptSig using the same order as their corresponding public keys were placed in the scriptPubKey or redeemScript. If all signatures are valid, 1 is returned, 0 otherwise. Due to a bug, one extra unused value is removed from the stack.
   // { word: "OP_CHECKMULTISIGVERIFY", opcode: 175, hex: "0xaf" }, //	x sig1 sig2 ... <number of signatures> pub1 pub2 ... <number of public keys>	Nothing / fail	Same as OP_CHECKMULTISIG, but OP_VERIFY is executed afterward.
-
+  { word: "OP_CHECKSIGFROMSTACK", opcode: 186, hex: "0xba" }
   /*
    * Locktime
    * 177 - 178
-   */
+   */,
   // (previously OP_NOP2)
   // { word: "OP_CHECKLOCKTIMEVERIFY", opcode: 177, hex: "0xb1" }, //	x	x / fail	Marks transaction as invalid if the top stack item is greater than the transaction's nLockTime field, otherwise script evaluation continues as though an OP_NOP was executed. Transaction is also invalid if 1. the stack is empty; or 2. the top stack item is negative; or 3. the top stack item is greater than or equal to 500000000 while the transaction's nLockTime field is less than 500000000, or vice versa; or 4. the input's nSequence field is equal to 0xffffffff. The precise semantics are described in BIP 0065.
   // (previously OP_NOP3)
