@@ -2,35 +2,54 @@ import CryptoJS from "crypto-js";
 import elliptic from "elliptic";
 import BN from "bn.js";
 
-const ripemd160 = (data: string) => {
+const RIPEMD160 = (data: string) => {
   return CryptoJS.RIPEMD160(CryptoJS.enc.Hex.parse(data.substr(2))).toString();
 };
 
-const sha1 = (data: string) => {
+const SHA1 = (data: string) => {
   return CryptoJS.SHA1(CryptoJS.enc.Hex.parse(data.substr(2))).toString();
 };
 
-const sha256 = (data: string) => {
+const SHA256 = (data: string) => {
   return CryptoJS.SHA256(CryptoJS.enc.Hex.parse(data.substr(2))).toString();
 };
 
-const hash160 = (data: string) => {
+const HASH160 = (data: string) => {
   const dataWithSha256Hashed = CryptoJS.SHA256(CryptoJS.enc.Hex.parse(data.substr(2)));
   const dataWithRipemd160Hashed = CryptoJS.RIPEMD160(dataWithSha256Hashed).toString();
 
   return dataWithRipemd160Hashed;
 };
 
-const hash256 = (data: string) => {
+const HASH256 = (data: string) => {
   const firstSHAHash = CryptoJS.SHA256(CryptoJS.enc.Hex.parse(data.substr(2)));
   const secondSHAHash = CryptoJS.SHA256(firstSHAHash).toString();
 
   return secondSHAHash;
 };
 
-const ecdsaVerify = (signature: string, message: string, publicKey: string): boolean => {
+const ECDSA = (messageHash: string, publicKey: string): string => {
+  const EC = elliptic.ec;
+
+  // Create and initialize EC context
+  // (better do it once and reuse it)
+  const ec = new EC("secp256k1");
+
+  // Generate keys
+  const key = ec.genKeyPair();
+
+  // Sign the message's hash (input must be an array, or a hex-string)
+  const signature = key.sign(messageHash);
+
+  // Export DER encoded signature in Array
+  const derSign = signature.toDER();
+
+  return derSign;
+};
+
+const ECDSAVerify = (signature: string, message: string, publicKey: string): boolean => {
   const secp256k1 = new elliptic.ec("secp256k1");
-  const hashedMessage = sha256(message);
+  const hashedMessage = SHA256(message);
 
   if (!signature.startsWith("0x30")) throw "ECDSA Verify error : signature must start with 0x30";
 
@@ -54,4 +73,4 @@ const ecdsaVerify = (signature: string, message: string, publicKey: string): boo
   return secp256k1.verify(hashedMessage, { r: rBn, s: sBn }, secp256k1.keyFromPublic(publicKey.slice(2), "hex"));
 };
 
-export { hash160, hash256, ripemd160, sha1, sha256, ecdsaVerify };
+export { HASH160, HASH256, RIPEMD160, SHA1, SHA256, ECDSA, ECDSAVerify };
