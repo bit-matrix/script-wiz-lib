@@ -71,16 +71,16 @@ const opWordToHex = (word: string): string => {
 const currentScope = (stackDataList: StackDataList): boolean => stackDataList.flow[stackDataList.flow.length - 1];
 
 // supports OP_IF, OP_IFNOT
-const addScope = (stackDataList: StackDataList, expression: boolean): StackDataList => ({ ...stackDataList, flow: [...stackDataList.flow, expression] });
+// const addScope = (stackDataList: StackDataList, expression: boolean): StackDataList => ({ ...stackDataList, flow: [...stackDataList.flow, expression] });
 
 // supports OP_ELSE
-const revertCurrentScope = (stackDataList: StackDataList): StackDataList => {
-  const newFlow = [...stackDataList.flow];
-  newFlow.pop();
-  return { ...stackDataList, flow: [...newFlow, !currentScope(stackDataList)] };
-};
+// const revertCurrentScope = (stackDataList: StackDataList): StackDataList => {
+//   const newFlow = [...stackDataList.flow];
+//   newFlow.pop();
+//   return { ...stackDataList, flow: [...newFlow, !currentScope(stackDataList)] };
+// };
 
 // supports OP_ENDIF
-const removeScope = (stackDataList: StackDataList): StackDataList => ({ ...stackDataList, flow: stackDataList.flow.splice(0, stackDataList.flow.length - 1) });
+// const removeScope = (stackDataList: StackDataList): StackDataList => ({ ...stackDataList, flow: stackDataList.flow.splice(0, stackDataList.flow.length - 1) });
 
-export { hexLittleEndian, opcodeToWord, opcodeToData, opWordToCode, opWordToHex, currentScope, addScope, revertCurrentScope, removeScope };
+export { hexLittleEndian, opcodeToWord, opcodeToData, opWordToCode, opWordToHex, currentScope /* addScope, revertCurrentScope, removeScope */ };
