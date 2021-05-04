@@ -138,11 +138,12 @@ const opWordCodes: IOpWordCode[] = [
   // { word: "OP_CHECKSIGVERIFY", opcode: 173, hex: "0xad" }, //	sig pubkey	Nothing / fail	Same as OP_CHECKSIG, but OP_VERIFY is executed afterward.
   // { word: "OP_CHECKMULTISIG", opcode: 174, hex: "0xae" }, //	x sig1 sig2 ... <number of signatures> pub1 pub2 <number of public keys>	True / False	Compares the first signature against each public key until it finds an ECDSA match. Starting with the subsequent public key, it compares the second signature against each remaining public key until it finds an ECDSA match. The process is repeated until all signatures have been checked or not enough public keys remain to produce a successful result. All signatures need to match a public key. Because public keys are not checked again if they fail any signature comparison, signatures must be placed in the scriptSig using the same order as their corresponding public keys were placed in the scriptPubKey or redeemScript. If all signatures are valid, 1 is returned, 0 otherwise. Due to a bug, one extra unused value is removed from the stack.
   // { word: "OP_CHECKMULTISIGVERIFY", opcode: 175, hex: "0xaf" }, //	x sig1 sig2 ... <number of signatures> pub1 pub2 ... <number of public keys>	Nothing / fail	Same as OP_CHECKMULTISIG, but OP_VERIFY is executed afterward.
-  { word: "OP_CHECKSIGFROMSTACK", opcode: 186, hex: "0xba" }
+  { word: "OP_CHECKSIGFROMSTACK", opcode: 186, hex: "0xba" },
+
   /*
    * Locktime
    * 177 - 178
-   */,
+   */
   // (previously OP_NOP2)
   // { word: "OP_CHECKLOCKTIMEVERIFY", opcode: 177, hex: "0xb1" }, //	x	x / fail	Marks transaction as invalid if the top stack item is greater than the transaction's nLockTime field, otherwise script evaluation continues as though an OP_NOP was executed. Transaction is also invalid if 1. the stack is empty; or 2. the top stack item is negative; or 3. the top stack item is greater than or equal to 500000000 while the transaction's nLockTime field is less than 500000000, or vice versa; or 4. the input's nSequence field is equal to 0xffffffff. The precise semantics are described in BIP 0065.
   // (previously OP_NOP3)
