@@ -58,7 +58,7 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow };
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow.flow, altFlow: newFlow.altFlow };
   }
   if (word === "OP_NOTIF") {
     if (mainStackDataArrayLength < 1) throw "OP_NOTIF Error: stack data array must include min 1 data!";
@@ -67,7 +67,7 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow };
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow.flow, altFlow: newFlow.altFlow };
   }
   if (word === "OP_ELSE") {
     if (mainStackDataArrayLength < 1) throw "OP_ELSE Error: Encountered an OP_ELSE outside of an OP_IF ... OP_ENDIF block.!";
@@ -77,7 +77,7 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow };
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow.flow, altFlow: newFlow.altFlow };
   }
   if (word === "OP_ENDIF") {
     if (stackDataList.flow.length === 1) throw "OP_ENDIF Error: Encountered an OP_ENDIF which is not following a matching OP_IF.!";
@@ -86,7 +86,7 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow };
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow.flow, altFlow: newFlow.altFlow };
   }
 
   /*
