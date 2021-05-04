@@ -9,5 +9,6 @@ interface IParseResult {
         removeLastStackData: boolean;
     };
     flow?: boolean[];
+    altFlow?: boolean[];
 }
 export default IParseResult;
