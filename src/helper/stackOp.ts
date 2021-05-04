@@ -54,39 +54,38 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
   if (word === "OP_IF") {
     if (mainStackDataArrayLength < 1) throw "OP_IF Error: stack data array must include min 1 data!";
 
-    const newFlow = OP_IF(stackDataList);
-    const removeLastSize: number = 1;
+    const flows = OP_IF(stackDataList);
+    const removeLastSize: number = currentScope(stackDataList) ? 1 : 0;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow.flow, altFlow: newFlow.altFlow };
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: flows.flow, altFlow: flows.altFlow };
   }
   if (word === "OP_NOTIF") {
     if (mainStackDataArrayLength < 1) throw "OP_NOTIF Error: stack data array must include min 1 data!";
 
-    const newFlow = OP_NOTIF(stackDataList);
-    const removeLastSize: number = 1;
+    const flows = OP_NOTIF(stackDataList);
+    const removeLastSize: number = currentScope(stackDataList) ? 1 : 0;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow.flow, altFlow: newFlow.altFlow };
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: flows.flow, altFlow: flows.altFlow };
   }
   if (word === "OP_ELSE") {
-    if (mainStackDataArrayLength < 1) throw "OP_ELSE Error: Encountered an OP_ELSE outside of an OP_IF ... OP_ENDIF block.!";
+    if (stackDataList.flow.length === 1) throw "OP_ELSE Error: Encountered an OP_ELSE outside of an OP_IF ... OP_ENDIF block.!";
 
-    const newFlow = OP_ELSE(stackDataList);
-    console.log("OP_ELSE newFlow", newFlow);
+    const flows = OP_ELSE(stackDataList);
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow.flow, altFlow: newFlow.altFlow };
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: flows.flow, altFlow: flows.altFlow };
   }
   if (word === "OP_ENDIF") {
     if (stackDataList.flow.length === 1) throw "OP_ENDIF Error: Encountered an OP_ENDIF which is not following a matching OP_IF.!";
 
-    const newFlow = OP_ENDIF(stackDataList);
+    const flows = OP_ENDIF(stackDataList);
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: newFlow.flow, altFlow: newFlow.altFlow };
+    return { main: { addDataArray: [], removeLastSize }, alt, flow: flows.flow, altFlow: flows.altFlow };
   }
 
   /*
