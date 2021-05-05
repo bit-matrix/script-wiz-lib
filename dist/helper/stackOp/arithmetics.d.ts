@@ -5,4 +5,5 @@ declare const OP_MUL: (stackData1: IStackData, stackData2: IStackData) => IStack
 declare const OP_DIV: (stackData1: IStackData, stackData2: IStackData) => IStackData[];
 declare const OP_LSHIFT: (stackData2: IStackData, stackData1: IStackData) => IStackData[];
 declare const OP_RSHIFT: (stackData2: IStackData, stackData1: IStackData) => IStackData[];
-export { OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT };
+declare const OP_GREATERTHANOREQUAL: (stackData1: IStackData, stackData2: IStackData) => IStackData[];
+export { OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT, OP_GREATERTHANOREQUAL };
