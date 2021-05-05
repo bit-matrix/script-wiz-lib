@@ -75,6 +75,7 @@ const parse = (input: string, stackDataList: StackDataList): ParseResult => {
     }
   } catch (ex) {
     console.error(ex);
+    throw ex;
   }
 
   throw "it is not a valid input script";
