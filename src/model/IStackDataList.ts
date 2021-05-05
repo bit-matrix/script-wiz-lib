@@ -5,6 +5,7 @@ interface IStackDataList {
   alt: IStackData[];
   flow: boolean[];
   altFlow: boolean[];
+  isStackFailed: boolean;
 }
 
 export default IStackDataList;
