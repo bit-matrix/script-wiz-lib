@@ -100,8 +100,8 @@
               stackDataList = scriptWiz.parse(inputText);
               stackData = stackDataList.main[stackDataList.main.length - 1];
             }
-          } catch {
-            outputs.push('<span id="display3">Invalid input!</span><br/>');
+          } catch (e) {
+            outputs.push(`<span id="display3">${e}</span><br/>`);
             continue;
           } finally {
             if (inputText !== "") {
