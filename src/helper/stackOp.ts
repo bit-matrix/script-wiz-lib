@@ -8,7 +8,7 @@ import * as splices from "./stackOp/splices";
 import * as arithmetics from "./stackOp/arithmetics";
 import * as cryptos from "./stackOp/cryptos";
 import { OP_ELSE, OP_ENDIF, OP_IF, OP_NOTIF, OP_VERIFY } from "./stackOp/flow";
-import { OP_EQUAL } from "./stackOp/bitwise";
+import { OP_EQUAL, OP_EQUALVERIFY } from "./stackOp/bitwise";
 
 const OP = (word: string, stackDataList: StackDataList): ParseResult => {
   const mainStackDataArray: StackData[] = stackDataList.main;
@@ -361,6 +361,21 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_EQUALVERIFY") {
+    if (mainStackDataArray.length < 2) throw "OP_EQUALVERIFY Error:  stack data array must include min 2 data!!";
+
+    const isVerify = OP_EQUALVERIFY(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+
+    if (isVerify) {
+      const addDataArray: StackData[] = [];
+      const removeLastSize: number = 2;
+      const alt = { removeLastStackData: false };
+
+      return { main: { addDataArray, removeLastSize }, alt };
+    } else {
+      return { main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false }, isStackFailed: true };
+    }
   }
 
   /*
