@@ -7,7 +7,7 @@ import * as stacks from "./stackOp/stacks";
 import * as splices from "./stackOp/splices";
 import * as arithmetics from "./stackOp/arithmetics";
 import * as cryptos from "./stackOp/cryptos";
-import { OP_ELSE, OP_ENDIF, OP_IF, OP_NOTIF } from "./stackOp/flow";
+import { OP_ELSE, OP_ENDIF, OP_IF, OP_NOTIF, OP_VERIFY } from "./stackOp/flow";
 
 const OP = (word: string, stackDataList: StackDataList): ParseResult => {
   const mainStackDataArray: StackData[] = stackDataList.main;
@@ -86,6 +86,21 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray: [], removeLastSize }, alt, flow: flows.flow, altFlow: flows.altFlow };
+  }
+  if (word === "OP_VERIFY") {
+    if (mainStackDataArray.length < 1) throw "OP_VERIFY Error:  stack data array must include min 1 data!!";
+
+    const isVerify = OP_VERIFY(mainStackDataArray[mainStackDataArray.length - 1]);
+
+    if (isVerify) {
+      const addDataArray: StackData[] = stacks.OP_DROP();
+      const removeLastSize: number = 1;
+      const alt = { removeLastStackData: false };
+
+      return { main: { addDataArray, removeLastSize }, alt };
+    } else {
+      return { main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false }, isStackFailed: true };
+    }
   }
 
   /*

@@ -2,10 +2,12 @@ import { currentScope } from "./helper";
 import { StackDataList, ParseResult } from "./model";
 import parseToStack from "./parse";
 
-const initialStackDataList: StackDataList = { main: [], alt: [], flow: [true], altFlow: [] };
+const initialStackDataList: StackDataList = { main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
 let stackDataList: StackDataList = initialStackDataList;
 
 const parse = (input: string): StackDataList => {
+  if (stackDataList.isStackFailed) throw "Stack failed an OP_VERIFY operation.";
+
   if (!currentScope(stackDataList)) {
     if (input !== "OP_IF" && input !== "OP_NOTIF" && input !== "OP_ELSE" && input !== "OP_ENDIF") return stackDataList;
   }
@@ -33,6 +35,12 @@ const parse = (input: string): StackDataList => {
 
   // update alt flow
   if (parseResult.altFlow) stackDataList = { ...stackDataList, altFlow: parseResult.altFlow };
+
+  // stack failed
+  if (parseResult.isStackFailed) {
+    stackDataList = { ...stackDataList, isStackFailed: parseResult.isStackFailed };
+    throw "Stack failed an OP_VERIFY operation.";
+  }
 
   return stackDataList;
 };

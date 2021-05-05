@@ -1,4 +1,5 @@
 import { currentScope } from "..";
+import { StackData } from "../../model";
 import IStackDataList from "../../model/IStackDataList";
 
 const OP_IF = (stackDataList: IStackDataList): { flow: boolean[]; altFlow: boolean[] } => {
@@ -56,4 +57,8 @@ const OP_ENDIF = (stackDataList: IStackDataList): { flow: boolean[]; altFlow: bo
   }
 };
 
-export { OP_IF, OP_NOTIF, OP_ELSE, OP_ENDIF };
+const OP_VERIFY = (stackData: StackData): boolean => {
+  return stackData.byteValue === "0x" ? false : !!Number(stackData.byteValue);
+};
+
+export { OP_IF, OP_NOTIF, OP_ELSE, OP_ENDIF, OP_VERIFY };
