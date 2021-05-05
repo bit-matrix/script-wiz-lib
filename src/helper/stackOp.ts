@@ -94,7 +94,7 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     const isVerify = OP_VERIFY(mainStackDataArray[mainStackDataArray.length - 1]);
 
     if (isVerify) {
-      const addDataArray: StackData[] = stacks.OP_DROP();
+      const addDataArray: StackData[] = [];
       const removeLastSize: number = 1;
       const alt = { removeLastStackData: false };
 
