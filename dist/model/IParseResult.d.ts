@@ -10,5 +10,6 @@ interface IParseResult {
     };
     flow?: boolean[];
     altFlow?: boolean[];
+    isStackFailed?: boolean;
 }
 export default IParseResult;
