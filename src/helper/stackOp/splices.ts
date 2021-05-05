@@ -7,8 +7,9 @@ const OP_CAT = (stackData2: IStackData, stackData1: IStackData): IStackData[] =>
   let firstByte1 = stackData2.byteValue.substring(2);
   let firstByte2 = stackData1.byteValue.substring(2);
 
-  firstByte1 = firstByte1 === "00" ? "" : firstByte1;
-  firstByte2 = firstByte2 === "00" ? "" : firstByte2;
+  firstByte1 = stackData2.byteValue !== "0x00" && firstByte1 === "00" ? "" : firstByte1;
+
+  firstByte2 = stackData1.byteValue !== "0x00" && firstByte2 === "00" ? "" : firstByte2;
 
   return [stackHex(byteValue + firstByte1 + firstByte2)];
 };
