@@ -57,4 +57,16 @@ const OP_RSHIFT = (stackData2: IStackData, stackData1: IStackData): IStackData[]
   throw "OP_SUB Error: this operation requires 2 valid number data";
 };
 
-export { OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT };
+const OP_GREATERTHANOREQUAL = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
+    if (stackData1.numberValue >= stackData2.numberValue) {
+      return [stackNumber("1")];
+    }
+
+    return [stackNumber("0")];
+  }
+
+  throw "OP_SUB Error: this operation requires 2 valid number data";
+};
+
+export { OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT, OP_GREATERTHANOREQUAL };
