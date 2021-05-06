@@ -8,7 +8,7 @@ import * as splices from "./stackOp/splices";
 import * as arithmetics from "./stackOp/arithmetics";
 import * as cryptos from "./stackOp/cryptos";
 import { OP_ELSE, OP_ENDIF, OP_IF, OP_NOTIF, OP_VERIFY } from "./stackOp/flow";
-import { OP_AND, OP_EQUAL, OP_EQUALVERIFY, OP_INVERT, OP_OR } from "./stackOp/bitwise";
+import { OP_AND, OP_EQUAL, OP_EQUALVERIFY, OP_INVERT, OP_OR, OP_XOR } from "./stackOp/bitwise";
 
 const OP = (word: string, stackDataList: StackDataList): ParseResult => {
   const mainStackDataArray: StackData[] = stackDataList.main;
@@ -381,6 +381,15 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
     if (mainStackDataArrayLength < 2) throw "OP_OR Error: stack data array must include min 2 data!";
 
     const addDataArray: StackData[] = OP_OR(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_XOR") {
+    if (mainStackDataArrayLength < 2) throw "OP_XOR Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = OP_XOR(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
