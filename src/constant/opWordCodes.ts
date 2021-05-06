@@ -85,7 +85,7 @@ const opWordCodes: IOpWordCode[] = [
    * Bitwise logic
    * 131 - 136
    */
-  // { word: "OP_INVERT", opcode: 131, hex: "0x83" }, //	in	out	Flips all of the bits in the input. disabled.
+  { word: "OP_INVERT", opcode: 131, hex: "0x83" }, //	in	out	Flips all of the bits in the input. disabled.
   // { word: "OP_AND", opcode: 132, hex: "0x84" }, //	x1 x2	out	Boolean and between each bit in the inputs. disabled.
   // { word: "OP_OR", opcode: 133, hex: "0x85" }, //	x1 x2	out	Boolean or between each bit in the inputs. disabled.
   // { word: "OP_XOR", opcode: 134, hex: "0x86" }, //	x1 x2	out	Boolean exclusive or between each bit in the inputs. disabled.

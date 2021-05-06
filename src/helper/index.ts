@@ -77,6 +77,19 @@ const checkByteValuesEquality = (byte1: string, byte2: string): boolean => {
   return byte1NumberValue === byte2NumberValue;
 };
 
+const invertBits = (n: number) => {
+  // Calculate number of bits of N-1;
+  let x = Math.log(n) / Math.log(2);
+
+  let m = 1 << x;
+
+  m = m | (m - 1);
+
+  n = n ^ m;
+
+  return n;
+};
+
 // supports OP_IF, OP_IFNOT
 // const addScope = (stackDataList: StackDataList, expression: boolean): StackDataList => ({ ...stackDataList, flow: [...stackDataList.flow, expression] });
 
@@ -90,4 +103,13 @@ const checkByteValuesEquality = (byte1: string, byte2: string): boolean => {
 // supports OP_ENDIF
 // const removeScope = (stackDataList: StackDataList): StackDataList => ({ ...stackDataList, flow: stackDataList.flow.splice(0, stackDataList.flow.length - 1) });
 
-export { hexLittleEndian, opcodeToWord, opcodeToData, opWordToCode, opWordToHex, currentScope, checkByteValuesEquality /* addScope, revertCurrentScope, removeScope */ };
+export {
+  hexLittleEndian,
+  invertBits,
+  opcodeToWord,
+  opcodeToData,
+  opWordToCode,
+  opWordToHex,
+  currentScope,
+  checkByteValuesEquality /* addScope, revertCurrentScope, removeScope */,
+};

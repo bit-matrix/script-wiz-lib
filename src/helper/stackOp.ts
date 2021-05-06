@@ -8,7 +8,7 @@ import * as splices from "./stackOp/splices";
 import * as arithmetics from "./stackOp/arithmetics";
 import * as cryptos from "./stackOp/cryptos";
 import { OP_ELSE, OP_ENDIF, OP_IF, OP_NOTIF, OP_VERIFY } from "./stackOp/flow";
-import { OP_EQUAL, OP_EQUALVERIFY } from "./stackOp/bitwise";
+import { OP_EQUAL, OP_EQUALVERIFY, OP_INVERT } from "./stackOp/bitwise";
 
 const OP = (word: string, stackDataList: StackDataList): ParseResult => {
   const mainStackDataArray: StackData[] = stackDataList.main;
@@ -359,6 +359,15 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
    * 131 - 136
    */
 
+  if (word === "OP_INVERT") {
+    if (mainStackDataArrayLength < 1) throw "OP_INVERT Error: stack data array must include min 1 data!";
+
+    const addDataArray: StackData[] = OP_INVERT(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_EQUAL") {
     if (mainStackDataArrayLength < 2) throw "OP_EQUAL Error: stack data array must include min 2 data!";
 
