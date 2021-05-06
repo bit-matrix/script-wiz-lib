@@ -7,4 +7,5 @@ declare const opWordToCode: (word: string) => number;
 declare const opWordToHex: (word: string) => string;
 declare const currentScope: (stackDataList: StackDataList) => boolean;
 declare const checkByteValuesEquality: (byte1: string, byte2: string) => boolean;
-export { hexLittleEndian, opcodeToWord, opcodeToData, opWordToCode, opWordToHex, currentScope, checkByteValuesEquality };
+declare const invertBits: (n: number) => number;
+export { hexLittleEndian, invertBits, opcodeToWord, opcodeToData, opWordToCode, opWordToHex, currentScope, checkByteValuesEquality, };
