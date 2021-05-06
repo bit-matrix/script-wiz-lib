@@ -86,8 +86,8 @@ const opWordCodes: IOpWordCode[] = [
    * 131 - 136
    */
   { word: "OP_INVERT", opcode: 131, hex: "0x83" }, //	in	out	Flips all of the bits in the input. disabled.
-  // { word: "OP_AND", opcode: 132, hex: "0x84" }, //	x1 x2	out	Boolean and between each bit in the inputs. disabled.
-  // { word: "OP_OR", opcode: 133, hex: "0x85" }, //	x1 x2	out	Boolean or between each bit in the inputs. disabled.
+  { word: "OP_AND", opcode: 132, hex: "0x84" }, //	x1 x2	out	Boolean and between each bit in the inputs. disabled.
+  { word: "OP_OR", opcode: 133, hex: "0x85" }, //	x1 x2	out	Boolean or between each bit in the inputs. disabled.
   // { word: "OP_XOR", opcode: 134, hex: "0x86" }, //	x1 x2	out	Boolean exclusive or between each bit in the inputs. disabled.
   { word: "OP_EQUAL", opcode: 135, hex: "0x87" }, //	x1 x2	True / false	Returns 1 if the inputs are exactly equal, 0 otherwise.
   { word: "OP_EQUALVERIFY", opcode: 136, hex: "0x88" }, //	x1 x2	Nothing / fail	Same as OP_EQUAL, but runs OP_VERIFY afterward.
