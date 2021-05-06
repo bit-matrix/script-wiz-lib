@@ -1,22 +1,9 @@
 import { StackData } from "../../model";
 import stackNumber from "../stackNumber";
-import { checkByteValuesEquality, invertBits } from "../index";
-import stackHex from "../stackHex";
+import { checkByteValuesEquality } from "../index";
 
 const OP_INVERT = (stackData: StackData): StackData[] => {
-  const currentByteValue = stackData.byteValue.substr(2);
-  const currentByteValueArray: string[] | null = currentByteValue.match(/..|./g);
-  const finalByteValueArray: number[] = [];
-
-  if (currentByteValueArray !== null) {
-    currentByteValueArray.forEach((byteValue) => {
-      finalByteValueArray.push(invertBits(Number("0x" + byteValue)));
-    });
-  }
-
-  const finalValue = "0x" + finalByteValueArray.join("");
-
-  return [stackHex(finalValue)];
+  return [stackNumber((~Number(stackData.byteValue)).toString())];
 };
 
 const OP_AND = (stackData1: StackData, stackData2: StackData): StackData[] => {
