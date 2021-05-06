@@ -52,6 +52,12 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
    * Flow control
    * * 97 - 106
    */
+  if (word === "OP_NOP") {
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray: [], removeLastSize }, alt };
+  }
   if (word === "OP_IF") {
     if (mainStackDataArrayLength < 1) throw "OP_IF Error: stack data array must include min 1 data!";
 

@@ -39,7 +39,7 @@ const opWordCodes: IOpWordCode[] = [
    * Flow control
    * * 97 - 106
    */
-  // { word: "OP_NOP", opcode: 97, hex: "0x61" }, //	Nothing	Nothing	Does nothing.
+  { word: "OP_NOP", opcode: 97, hex: "0x61" }, //	Nothing	Nothing	Does nothing.
   { word: "OP_IF", opcode: 99, hex: "0x63" }, //	<expression> if [statements] [else [statements]]* endif	If the top stack value is not False, the statements are executed. The top stack value is removed.
   { word: "OP_NOTIF", opcode: 100, hex: "0x64" }, //	<expression> notif [statements] [else [statements]]* endif	If the top stack value is False, the statements are executed. The top stack value is removed.
   { word: "OP_ELSE", opcode: 103, hex: "0x67" }, //	<expression> if [statements] [else [statements]]* endif	If the preceding OP_IF or OP_NOTIF or OP_ELSE was not executed then these statements are and if the preceding OP_IF or OP_NOTIF or OP_ELSE was executed then these statements are not.
