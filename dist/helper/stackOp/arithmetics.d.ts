@@ -3,6 +3,8 @@ declare const OP_1ADD: (stackData: IStackData) => IStackData[];
 declare const OP_1SUB: (stackData: IStackData) => IStackData[];
 declare const OP_NEGATE: (stackData: IStackData) => IStackData[];
 declare const OP_ABS: (stackData: IStackData) => IStackData[];
+declare const OP_NOT: (stackData: IStackData) => IStackData[];
+declare const OP_0NOTEQUAL: (stackData: IStackData) => IStackData[];
 declare const OP_ADD: (stackData1: IStackData, stackData2: IStackData) => IStackData[];
 declare const OP_SUB: (stackData2: IStackData, stackData1: IStackData) => IStackData[];
 declare const OP_MUL: (stackData1: IStackData, stackData2: IStackData) => IStackData[];
@@ -10,4 +12,4 @@ declare const OP_DIV: (stackData1: IStackData, stackData2: IStackData) => IStack
 declare const OP_LSHIFT: (stackData2: IStackData, stackData1: IStackData) => IStackData[];
 declare const OP_RSHIFT: (stackData2: IStackData, stackData1: IStackData) => IStackData[];
 declare const OP_GREATERTHANOREQUAL: (stackData1: IStackData, stackData2: IStackData) => IStackData[];
-export { OP_1ADD, OP_1SUB, OP_NEGATE, OP_ABS, OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT, OP_GREATERTHANOREQUAL };
+export { OP_1ADD, OP_1SUB, OP_NEGATE, OP_ABS, OP_NOT, OP_0NOTEQUAL, OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT, OP_GREATERTHANOREQUAL };
