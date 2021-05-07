@@ -96,8 +96,8 @@ const opWordCodes: IOpWordCode[] = [
    * Arithmetic
    * 139 - 165
    */
-  // { word: "OP_1ADD", opcode: 139, hex: "0x8b" }, //	in	out	1 is added to the input.
-  // { word: "OP_1SUB", opcode: 140, hex: "0x8c" }, //	in	out	1 is subtracted from the input.
+  { word: "OP_1ADD", opcode: 139, hex: "0x8b" }, //	in	out	1 is added to the input.
+  { word: "OP_1SUB", opcode: 140, hex: "0x8c" }, //	in	out	1 is subtracted from the input.
   // { word: "OP_2MUL", opcode: 141, hex: "0x8d" }, //	in	out	The input is multiplied by 2. disabled.
   // { word: "OP_2DIV", opcode: 142, hex: "0x8e" }, //	in	out	The input is divided by 2. disabled.
   // { word: "OP_NEGATE", opcode: 143, hex: "0x8f" }, //	in	out	The sign of the input is flipped.

@@ -424,6 +424,24 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
    * Arithmetic
    * 139 - 165
    */
+  if (word === "OP_1ADD") {
+    if (mainStackDataArrayLength < 1) throw "OP_1ADD Error: stack data array must include min 1 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_1ADD(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_1SUB") {
+    if (mainStackDataArrayLength < 1) throw "OP_1SUB Error: stack data array must include min 1 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_1SUB(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_ADD") {
     if (mainStackDataArrayLength < 2) throw "OP_ADD Error: stack data array must include min 2 data!";
 
