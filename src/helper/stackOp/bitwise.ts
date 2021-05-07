@@ -4,7 +4,8 @@ import { checkByteValuesEquality } from "../index";
 import stackHex from "../stackHex";
 
 const OP_INVERT = (stackData: StackData): StackData[] => {
-  return [stackNumber((~Number(stackData.byteValue)).toString())];
+  if (stackData.numberValue !== undefined) return [stackNumber((~Number(stackData.numberValue)).toString())];
+  throw "OP_INVERT Error: input is not a number.";
 };
 
 const OP_AND = (stackData1: StackData, stackData2: StackData): StackData[] => {
