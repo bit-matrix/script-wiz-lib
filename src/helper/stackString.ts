@@ -1,5 +1,6 @@
 import { MAX_INTEGER } from "../constant";
 import { StackData } from "../model";
+import stackHex from "./stackHex";
 
 const hexString = (data: string): string => {
   let i: number;
@@ -19,11 +20,11 @@ const stackString = (input: string): StackData => {
   //  umut  => 0x756d7574   => umut    => 1970107764
 
   const inputHexString = "0x" + hexString(input);
-  const inputHexNumber = parseInt(inputHexString);
+  const inputHexNumberStack: StackData = stackHex(inputHexString);
   let inputNumberValue: number | undefined = undefined;
 
-  if (inputHexNumber <= MAX_INTEGER) {
-    inputNumberValue = inputHexNumber;
+  if (inputHexNumberStack.numberValue && inputHexNumberStack.numberValue <= MAX_INTEGER) {
+    inputNumberValue = inputHexNumberStack.numberValue;
   }
 
   return {
