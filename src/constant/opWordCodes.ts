@@ -102,8 +102,8 @@ const opWordCodes: IOpWordCode[] = [
   // { word: "OP_2DIV", opcode: 142, hex: "0x8e" }, //	in	out	The input is divided by 2. disabled.
   { word: "OP_NEGATE", opcode: 143, hex: "0x8f" }, //	in	out	The sign of the input is flipped.
   { word: "OP_ABS", opcode: 144, hex: "0x90" }, //	in	out	The input is made positive.
-  // { word: "OP_NOT", opcode: 145, hex: "0x91" }, //	in	out	If the input is 0 or 1, it is flipped. Otherwise the output will be 0.
-  // { word: "OP_0NOTEQUAL", opcode: 146, hex: "0x92" }, //	in	out	Returns 0 if the input is 0. 1 otherwise.
+  { word: "OP_NOT", opcode: 145, hex: "0x91" }, //	in	out	If the input is 0 or 1, it is flipped. Otherwise the output will be 0.
+  { word: "OP_0NOTEQUAL", opcode: 146, hex: "0x92" }, //	in	out	Returns 0 if the input is 0. 1 otherwise.
   { word: "OP_ADD", opcode: 147, hex: "0x93" }, //	a b	out	a is added to b.
   { word: "OP_SUB", opcode: 148, hex: "0x94" }, //	a b	out	b is subtracted from a.
   // { word: "OP_MUL", opcode: 149, hex: "0x95" }, //	a b	out	a is multiplied by b. disabled.

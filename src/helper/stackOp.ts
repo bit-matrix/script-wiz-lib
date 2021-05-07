@@ -460,6 +460,24 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_NOT") {
+    if (mainStackDataArrayLength < 1) throw "OP_NOT Error: stack data array must include min 1 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_NOT(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_0NOTEQUAL") {
+    if (mainStackDataArrayLength < 1) throw "OP_0NOTEQUAL Error: stack data array must include min 1 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_0NOTEQUAL(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_ADD") {
     if (mainStackDataArrayLength < 2) throw "OP_ADD Error: stack data array must include min 2 data!";
 
