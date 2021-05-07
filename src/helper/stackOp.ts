@@ -442,6 +442,24 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_NEGATE") {
+    if (mainStackDataArrayLength < 1) throw "OP_NEGATE Error: stack data array must include min 1 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_NEGATE(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_ABS") {
+    if (mainStackDataArrayLength < 1) throw "OP_ABS Error: stack data array must include min 1 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_ABS(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_ADD") {
     if (mainStackDataArrayLength < 2) throw "OP_ADD Error: stack data array must include min 2 data!";
 
