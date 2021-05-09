@@ -13,5 +13,7 @@ declare const OP_LSHIFT: (stackData2: IStackData, stackData1: IStackData) => ISt
 declare const OP_RSHIFT: (stackData2: IStackData, stackData1: IStackData) => IStackData[];
 declare const OP_BOOLAND: (stackData2: IStackData, stackData1: IStackData) => IStackData[];
 declare const OP_BOOLOR: (stackData2: IStackData, stackData1: IStackData) => IStackData[];
+declare const OP_NUMEQUAL: (stackData2: IStackData, stackData1: IStackData) => IStackData[];
+declare const OP_NUMEQUALVERIFY: (stackData2: IStackData, stackData1: IStackData) => boolean;
 declare const OP_GREATERTHANOREQUAL: (stackData1: IStackData, stackData2: IStackData) => IStackData[];
-export { OP_1ADD, OP_1SUB, OP_NEGATE, OP_ABS, OP_NOT, OP_0NOTEQUAL, OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT, OP_BOOLAND, OP_BOOLOR, OP_GREATERTHANOREQUAL };
+export { OP_1ADD, OP_1SUB, OP_NEGATE, OP_ABS, OP_NOT, OP_0NOTEQUAL, OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT, OP_BOOLAND, OP_BOOLOR, OP_NUMEQUAL, OP_NUMEQUALVERIFY, OP_GREATERTHANOREQUAL, };
