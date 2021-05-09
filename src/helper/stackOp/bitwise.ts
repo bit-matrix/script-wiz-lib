@@ -10,8 +10,8 @@ const OP_INVERT = (stackData: StackData): StackData[] => {
 
 const OP_AND = (stackData1: StackData, stackData2: StackData): StackData[] => {
   if (stackData1.byteValue.length !== stackData2.byteValue.length) throw "OP_AND Error: Script attempted a bitwise operation on operands of different lengths.";
-  const number1 = stackHex(stackData1.byteValue).numberValue;
-  const number2 = stackHex(stackData2.byteValue).numberValue;
+  const number1 = stackData1.numberValue;
+  const number2 = stackData2.numberValue;
   if (number1 && number2) {
     const isNegative = number1 < 0 && number2 < 0;
     let logic = Math.abs(number1) & Math.abs(number2);
@@ -23,8 +23,8 @@ const OP_AND = (stackData1: StackData, stackData2: StackData): StackData[] => {
 
 const OP_OR = (stackData1: StackData, stackData2: StackData): StackData[] => {
   if (stackData1.byteValue.length !== stackData2.byteValue.length) throw "OP_OR Error: Script attempted a bitwise operation on operands of different lengths.";
-  const number1 = stackHex(stackData1.byteValue).numberValue;
-  const number2 = stackHex(stackData2.byteValue).numberValue;
+  const number1 = stackData1.numberValue;
+  const number2 = stackData2.numberValue;
   if (number1 && number2) {
     const isNegative = number1 < 0 || number2 < 0;
     let logic = Math.abs(number1) | Math.abs(number2);
