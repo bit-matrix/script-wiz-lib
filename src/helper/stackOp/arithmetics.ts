@@ -190,9 +190,21 @@ const OP_GREATERTHAN = (stackData2: IStackData, stackData1: IStackData): IStackD
   throw "OP_GREATERTHAN Error: this operation requires 2 valid number data";
 };
 
-const OP_GREATERTHANOREQUAL = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
+const OP_LESSTHANOREQUAL = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     if (stackData1.numberValue >= stackData2.numberValue) {
+      return [stackNumber("1")];
+    }
+
+    return [stackNumber("0")];
+  }
+
+  throw "OP_SUB Error: this operation requires 2 valid number data";
+};
+
+const OP_GREATERTHANOREQUAL = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
+    if (stackData2.numberValue >= stackData1.numberValue) {
       return [stackNumber("1")];
     }
 
@@ -222,5 +234,6 @@ export {
   OP_NUMNOTEQUAL,
   OP_LESSTHAN,
   OP_GREATERTHAN,
+  OP_LESSTHANOREQUAL,
   OP_GREATERTHANOREQUAL,
 };
