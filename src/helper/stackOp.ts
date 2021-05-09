@@ -559,6 +559,15 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_NUMEQUALVERIFY") {
+    if (mainStackDataArrayLength < 2) throw "OP_NUMEQUALVERIFY Error: stack data array must include min 2 data!";
+
+    const isVerifed: boolean = arithmetics.OP_NUMEQUALVERIFY(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed: !isVerifed };
+  }
   if (word === "OP_GREATERTHANOREQUAL") {
     if (mainStackDataArrayLength < 2) throw "OP_GREATERTHANOREQUAL Error: stack data array must include min 2 data!";
 

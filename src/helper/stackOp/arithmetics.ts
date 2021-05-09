@@ -149,6 +149,14 @@ const OP_NUMEQUAL = (stackData2: IStackData, stackData1: IStackData): IStackData
   throw "OP_NUMEQUAL Error: this operation requires 2 valid number data";
 };
 
+const OP_NUMEQUALVERIFY = (stackData2: IStackData, stackData1: IStackData): boolean => {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
+    return stackData1.numberValue === stackData2.numberValue;
+  }
+
+  throw "OP_NUMEQUAL Error: this operation requires 2 valid number data";
+};
+
 const OP_GREATERTHANOREQUAL = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     if (stackData1.numberValue >= stackData2.numberValue) {
@@ -177,5 +185,6 @@ export {
   OP_BOOLAND,
   OP_BOOLOR,
   OP_NUMEQUAL,
+  OP_NUMEQUALVERIFY,
   OP_GREATERTHANOREQUAL,
 };
