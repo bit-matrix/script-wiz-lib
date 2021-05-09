@@ -568,6 +568,15 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed: !isVerifed };
   }
+  if (word === "OP_NUMNOTEQUAL") {
+    if (mainStackDataArrayLength < 2) throw "OP_NUMNOTEQUAL Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_NUMNOTEQUAL(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_GREATERTHANOREQUAL") {
     if (mainStackDataArrayLength < 2) throw "OP_GREATERTHANOREQUAL Error: stack data array must include min 2 data!";
 
