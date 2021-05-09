@@ -631,6 +631,19 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_WITHIN") {
+    if (mainStackDataArrayLength < 3) throw "OP_WITHIN Error: stack data array must include min 3 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_WITHIN(
+      mainStackDataArray[mainStackDataArrayLength - 3], // x
+      mainStackDataArray[mainStackDataArrayLength - 2], // min
+      mainStackDataArray[mainStackDataArrayLength - 1] // max
+    );
+    const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
   /*
    * Crypto

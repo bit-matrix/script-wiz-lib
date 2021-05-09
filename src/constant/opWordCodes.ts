@@ -122,7 +122,7 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_GREATERTHANOREQUAL", opcode: 162, hex: "0xa2" }, //	a b	out	Returns 1 if a is greater than or equal to b, 0 otherwise.
   { word: "OP_MIN", opcode: 163, hex: "0xa3" }, //	a b	out	Returns the smaller of a and b.
   { word: "OP_MAX", opcode: 164, hex: "0xa4" }, //	a b	out	Returns the larger of a and b.
-  // { word: "OP_WITHIN", opcode: 165, hex: "0xa5" }, //	x min max	out	Returns 1 if x is within the specified range (left-inclusive), 0 otherwise.
+  { word: "OP_WITHIN", opcode: 165, hex: "0xa5" }, //	x min max	out	Returns 1 if x is within the specified range (left-inclusive), 0 otherwise.
 
   /*
    * Crypto

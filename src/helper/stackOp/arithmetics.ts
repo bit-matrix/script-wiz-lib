@@ -234,6 +234,20 @@ const OP_MAX = (stackData2: IStackData, stackData1: IStackData): IStackData[] =>
   throw "OP_MAX Error: this operation requires 2 valid number data";
 };
 
+const OP_WITHIN = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData[] => {
+  const currentNumber = stackData3.numberValue;
+  const minValue = stackData2.numberValue;
+  const maxValue = stackData1.numberValue;
+
+  if (currentNumber !== undefined && minValue !== undefined && maxValue !== undefined) {
+    if (currentNumber >= minValue && currentNumber <= maxValue) return [stackNumber("1")];
+
+    return [stackNumber("0")];
+  }
+
+  throw "OP_WITHIN Error: this operation requires 3 valid number data";
+};
+
 export {
   OP_1ADD,
   OP_1SUB,
@@ -258,4 +272,5 @@ export {
   OP_GREATERTHANOREQUAL,
   OP_MIN,
   OP_MAX,
+  OP_WITHIN,
 };
