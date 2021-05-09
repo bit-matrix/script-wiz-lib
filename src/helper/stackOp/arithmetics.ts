@@ -168,6 +168,17 @@ const OP_NUMNOTEQUAL = (stackData2: IStackData, stackData1: IStackData): IStackD
   throw "OP_NUMNOTEQUAL Error: this operation requires 2 valid number data";
 };
 
+const OP_LESSTHAN = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
+    if (stackData1.numberValue > stackData2.numberValue) {
+      return [stackNumber("1")];
+    }
+    return [stackNumber("0")];
+  }
+
+  throw "OP_LESSTHAN Error: this operation requires 2 valid number data";
+};
+
 const OP_GREATERTHANOREQUAL = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     if (stackData1.numberValue >= stackData2.numberValue) {
@@ -198,5 +209,6 @@ export {
   OP_NUMEQUAL,
   OP_NUMEQUALVERIFY,
   OP_NUMNOTEQUAL,
+  OP_LESSTHAN,
   OP_GREATERTHANOREQUAL,
 };

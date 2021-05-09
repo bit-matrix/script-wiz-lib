@@ -116,7 +116,7 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_NUMEQUAL", opcode: 156, hex: "0x9c" }, //	a b	out	Returns 1 if the numbers are equal, 0 otherwise.
   { word: "OP_NUMEQUALVERIFY", opcode: 157, hex: "0x9d" }, //	a b	Nothing / fail	Same as OP_NUMEQUAL, but runs OP_VERIFY afterward.
   { word: "OP_NUMNOTEQUAL", opcode: 158, hex: "0x9e" }, //	a b	out	Returns 1 if the numbers are not equal, 0 otherwise.
-  // { word: "OP_LESSTHAN", opcode: 159, hex: "0x9f" }, //	a b	out	Returns 1 if a is less than b, 0 otherwise.
+  { word: "OP_LESSTHAN", opcode: 159, hex: "0x9f" }, //	a b	out	Returns 1 if a is less than b, 0 otherwise.
   // { word: "OP_GREATERTHAN", opcode: 160, hex: "0xa0" }, //	a b	out	Returns 1 if a is greater than b, 0 otherwise.
   // { word: "OP_LESSTHANOREQUAL", opcode: 161, hex: "0xa1" }, //	a b	out	Returns 1 if a is less than or equal to b, 0 otherwise.
   { word: "OP_GREATERTHANOREQUAL", opcode: 162, hex: "0xa2" }, //	a b	out	Returns 1 if a is greater than or equal to b, 0 otherwise.

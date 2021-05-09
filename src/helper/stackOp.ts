@@ -577,6 +577,15 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_LESSTHAN") {
+    if (mainStackDataArrayLength < 2) throw "OP_LESSTHAN Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_LESSTHAN(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_GREATERTHANOREQUAL") {
     if (mainStackDataArrayLength < 2) throw "OP_GREATERTHANOREQUAL Error: stack data array must include min 2 data!";
 
