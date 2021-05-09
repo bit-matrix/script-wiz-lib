@@ -532,6 +532,24 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_BOOLAND") {
+    if (mainStackDataArrayLength < 2) throw "OP_BOOLAND Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_BOOLAND(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+  if (word === "OP_BOOLOR") {
+    if (mainStackDataArrayLength < 2) throw "OP_BOOLOR Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_BOOLOR(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_GREATERTHANOREQUAL") {
     if (mainStackDataArrayLength < 2) throw "OP_GREATERTHANOREQUAL Error: stack data array must include min 2 data!";
 

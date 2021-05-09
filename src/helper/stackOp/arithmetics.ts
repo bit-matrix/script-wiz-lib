@@ -116,6 +116,28 @@ const OP_RSHIFT = (stackData2: IStackData, stackData1: IStackData): IStackData[]
   throw "OP_SUB Error: this operation requires 2 valid number data";
 };
 
+const OP_BOOLAND = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
+    if (stackData1.numberValue === 0 || stackData2.numberValue === 0) {
+      return [stackNumber("0")];
+    }
+    return [stackNumber("1")];
+  }
+
+  throw "OP_BOOLAND Error: this operation requires 2 valid number data";
+};
+
+const OP_BOOLOR = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
+  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
+    if (stackData1.numberValue === 0 && stackData2.numberValue === 0) {
+      return [stackNumber("0")];
+    }
+    return [stackNumber("1")];
+  }
+
+  throw "OP_BOOLOR Error: this operation requires 2 valid number data";
+};
+
 const OP_GREATERTHANOREQUAL = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     if (stackData1.numberValue >= stackData2.numberValue) {
@@ -128,4 +150,4 @@ const OP_GREATERTHANOREQUAL = (stackData1: IStackData, stackData2: IStackData): 
   throw "OP_SUB Error: this operation requires 2 valid number data";
 };
 
-export { OP_1ADD, OP_1SUB, OP_NEGATE, OP_ABS, OP_NOT, OP_0NOTEQUAL, OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT, OP_GREATERTHANOREQUAL };
+export { OP_1ADD, OP_1SUB, OP_NEGATE, OP_ABS, OP_NOT, OP_0NOTEQUAL, OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_LSHIFT, OP_RSHIFT, OP_BOOLAND, OP_BOOLOR, OP_GREATERTHANOREQUAL };
