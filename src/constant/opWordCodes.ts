@@ -113,7 +113,7 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_RSHIFT", opcode: 153, hex: "0x99" }, //	a b	out	Shifts a right b bits, preserving sign. disabled.
   { word: "OP_BOOLAND", opcode: 154, hex: "0x9a" }, //	a b	out	If both a and b are not 0, the output is 1. Otherwise 0.
   { word: "OP_BOOLOR", opcode: 155, hex: "0x9b" }, //	a b	out	If a or b is not 0, the output is 1. Otherwise 0.
-  // { word: "OP_NUMEQUAL", opcode: 156, hex: "0x9c" }, //	a b	out	Returns 1 if the numbers are equal, 0 otherwise.
+  { word: "OP_NUMEQUAL", opcode: 156, hex: "0x9c" }, //	a b	out	Returns 1 if the numbers are equal, 0 otherwise.
   // { word: "OP_NUMEQUALVERIFY", opcode: 157, hex: "0x9d" }, //	a b	Nothing / fail	Same as OP_NUMEQUAL, but runs OP_VERIFY afterward.
   // { word: "OP_NUMNOTEQUAL", opcode: 158, hex: "0x9e" }, //	a b	out	Returns 1 if the numbers are not equal, 0 otherwise.
   // { word: "OP_LESSTHAN", opcode: 159, hex: "0x9f" }, //	a b	out	Returns 1 if a is less than b, 0 otherwise.

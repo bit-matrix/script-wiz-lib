@@ -550,6 +550,15 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_NUMEQUAL") {
+    if (mainStackDataArrayLength < 2) throw "OP_NUMEQUAL Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = arithmetics.OP_NUMEQUAL(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_GREATERTHANOREQUAL") {
     if (mainStackDataArrayLength < 2) throw "OP_GREATERTHANOREQUAL Error: stack data array must include min 2 data!";
 
