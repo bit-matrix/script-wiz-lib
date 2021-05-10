@@ -1,6 +1,7 @@
 import { currentScope } from "./helper";
 import { StackDataList, ParseResult } from "./model";
 import parseToStack from "./parse";
+import opWordCodes from "./constant/opWordCodes";
 
 const initialStackDataList: StackDataList = { main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
 let stackDataList: StackDataList = initialStackDataList;
@@ -49,4 +50,4 @@ const clearStack = () => {
   stackDataList = initialStackDataList;
 };
 
-export { parse, clearStack, stackDataList };
+export { parse, clearStack, opWordCodes, stackDataList };
