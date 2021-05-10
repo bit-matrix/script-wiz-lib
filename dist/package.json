@@ -1,0 +1,35 @@
+{
+  "name": "@script-wiz/lib",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "npm-pubish": "npm publish --access public"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@types/crypto-js": "^4.0.1",
+    "@types/elliptic": "^6.4.12",
+    "babel-loader": "^8.0.6",
+    "ts-loader": "^8.0.18",
+    "typescript": "^4.2.3",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bit-matrix/script-wiz-lib.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bit-matrix/script-wiz-lib/issues"
+  },
+  "homepage": "https://github.com/bit-matrix/script-wiz-lib#readme",
+  "dependencies": {
+    "bn.js": "^5.2.0",
+    "crypto-js": "^4.0.0",
+    "elliptic": "^6.5.4"
+  }
+}
