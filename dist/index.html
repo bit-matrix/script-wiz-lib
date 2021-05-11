@@ -23,7 +23,6 @@
         padding: 15px;
         background: #1d2023;
         color: #ce9178 !important;
-        font-size: 16px;
       }
       #output {
         width: 100%;
@@ -34,6 +33,7 @@
       body {
         background-color: #181b1e;
         color: #fff;
+        font-size: 14px;
       }
 
       .maindiv {
@@ -50,6 +50,7 @@
         width: 50%;
         padding: 15px;
         overflow-y: auto;
+        max-height: 85vh;
       }
 
       #display1 {
@@ -67,7 +68,7 @@
   </head>
   <body>
     <div class="maindiv">
-      <div class="inputDiv"><textarea id="input" rows="35" onkeyup="inputChanged()"></textarea></div>
+      <div class="inputDiv"><textarea id="input" rows="40" onkeyup="inputChanged()"></textarea></div>
       <div class="outputDiv"><span id="output"></span></div>
     </div>
     <script>
