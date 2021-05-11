@@ -70,13 +70,6 @@ const opWordToHex = (word: string): string => {
 // supports all opcodes
 const currentScope = (stackDataList: StackDataList): boolean => stackDataList.flow[stackDataList.flow.length - 1];
 
-const checkByteValuesEquality = (byte1: string, byte2: string): boolean => {
-  const byte1NumberValue = byte1 === "0x" ? 0 : Number(byte1);
-  const byte2NumberValue = byte2 === "0x" ? 0 : Number(byte2);
-
-  return byte1NumberValue === byte2NumberValue;
-};
-
 const invertBits = (n: number) => {
   // Calculate number of bits of N-1;
   let x = Math.log(n) / Math.log(2);
@@ -103,13 +96,4 @@ const invertBits = (n: number) => {
 // supports OP_ENDIF
 // const removeScope = (stackDataList: StackDataList): StackDataList => ({ ...stackDataList, flow: stackDataList.flow.splice(0, stackDataList.flow.length - 1) });
 
-export {
-  hexLittleEndian,
-  invertBits,
-  opcodeToWord,
-  opcodeToData,
-  opWordToCode,
-  opWordToHex,
-  currentScope,
-  checkByteValuesEquality /* addScope, revertCurrentScope, removeScope */,
-};
+export { hexLittleEndian, invertBits, opcodeToWord, opcodeToData, opWordToCode, opWordToHex, currentScope /* addScope, revertCurrentScope, removeScope */ };
