@@ -23,6 +23,8 @@
         padding: 15px;
         background: #1d2023;
         color: #ce9178 !important;
+        font-family: "Times New Roman", Times, serif;
+        line-height: 1.3;
       }
       #output {
         width: 100%;
@@ -41,13 +43,21 @@
       }
 
       .inputDiv {
-        width: 50%;
+        width: 45%;
         padding-right: 50px;
+      }
+
+      #lines {
+        padding: 15px !important;
+      }
+
+      #lines2 {
+        padding: 15px !important;
       }
 
       .outputDiv {
         border: 1px solid gray;
-        width: 50%;
+        width: 45%;
         padding: 15px;
         overflow-y: auto;
         max-height: 85vh;
@@ -68,19 +78,36 @@
   </head>
   <body>
     <div class="maindiv">
-      <div class="inputDiv"><textarea id="input" rows="40" onkeyup="inputChanged()"></textarea></div>
+      <div id="lines"></div>
+
+      <div class="inputDiv">
+        <textarea id="input" rows="35" onkeyup="inputChanged()"></textarea>
+      </div>
+
+      <div id="lines2"></div>
       <div class="outputDiv"><span id="output"></span></div>
     </div>
     <script>
       const inputDom = document.getElementById("input");
       const outputDom = document.getElementById("output");
+      const lineDom = document.getElementById("lines");
+      const line2Dom = document.getElementById("lines2");
 
       let stackDataList = { main: [], alt: [] };
       let outputs = [];
+      let lines = [];
 
       // let timer;
       function inputChanged() {
-        // if (timer) clearTimeout(timer);
+        const textAreaRowCount = inputDom.value.split(/\r?\n|\r/).length;
+
+        lines = [];
+        for (let i = 1; i < textAreaRowCount + 1; i++) {
+          lines.push('<span id="display1">' + i + "." + "</br>" + "</span>");
+        }
+
+        lineDom.innerHTML = lines.join("");
+        line2Dom.innerHTML = lines.join("");
 
         // timer = setTimeout(function () {
         scriptWiz.clearStack();
