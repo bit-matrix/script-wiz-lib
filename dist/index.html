@@ -19,13 +19,22 @@
     </script>
     <style>
       #input {
-        width: calc(100% - 30px);
-        padding: 15px;
-        background: #1d2023;
+        width: 100%;
+        /* padding: 15px; */
+        background: transparent !important;
         color: #ce9178 !important;
         font-family: "Times New Roman", Times, serif;
         line-height: 1.3;
+        border: none !important;
+        height: 100%;
+        overflow: hidden;
+        outline: none;
       }
+
+      #input:focus-within {
+        border: none !important;
+      }
+
       #output {
         width: 100%;
         background: transparent;
@@ -35,16 +44,44 @@
       body {
         background-color: #181b1e;
         color: #fff;
-        font-size: 14px;
+        font-size: 1rem;
       }
 
       .maindiv {
         display: flex;
+        height: calc(100% - 1rem);
+        justify-content: space-around;
+      }
+
+      .left-main-div {
+        display: flex;
+        width: 47%;
+        height: 100%;
+        overflow-y: auto;
+        min-height: 85vh;
+      }
+
+      .right-main-div {
+        display: flex;
+        width: 47%;
+        height: 100%;
+        min-height: 85vh;
+
+        overflow-y: auto;
+        overflow-x: hidden;
       }
 
       .inputDiv {
-        width: 45%;
-        padding-right: 50px;
+        border: 1px solid gray;
+        width: 100%;
+        padding: 15px;
+      }
+
+      .outputDiv {
+        border: 1px solid gray;
+        padding: 15px;
+        width: 100%;
+        overflow-x: auto;
       }
 
       #lines {
@@ -53,14 +90,6 @@
 
       #lines2 {
         padding: 15px !important;
-      }
-
-      .outputDiv {
-        border: 1px solid gray;
-        width: 45%;
-        padding: 15px;
-        overflow-y: auto;
-        max-height: 85vh;
       }
 
       #display1 {
@@ -78,14 +107,17 @@
   </head>
   <body>
     <div class="maindiv">
-      <div id="lines"></div>
+      <div class="left-main-div">
+        <div id="lines"></div>
 
-      <div class="inputDiv">
-        <textarea id="input" rows="35" onkeyup="inputChanged()"></textarea>
+        <div class="inputDiv">
+          <textarea id="input" onkeyup="inputChanged()"></textarea>
+        </div>
       </div>
-
-      <div id="lines2"></div>
-      <div class="outputDiv"><span id="output"></span></div>
+      <div class="right-main-div">
+        <div id="lines2"></div>
+        <div class="outputDiv"><span id="output"></span></div>
+      </div>
     </div>
     <script>
       const inputDom = document.getElementById("input");
