@@ -31,7 +31,7 @@ const OP_RIGHT = (stackData2: IStackData, stackData1: IStackData): IStackData[] 
     const data = stackData2.byteValue.substr(2);
     const size = stackData1.numberValue * 2;
 
-    if (size < 0) throw "OP_RIGHT Error: Size must be integer!";
+    if (size < 0) throw "OP_RIGHT Error: Size can't be negative integer!";
     if (data.length < size) throw "OP_RIGHT Error: Size can't higher than data length!";
     if (size === 0) return [stackNumber("0")];
 
@@ -48,7 +48,7 @@ const OP_LEFT = (stackData2: IStackData, stackData1: IStackData): IStackData[] =
     const data = stackData2.byteValue.substr(2);
     const size = stackData1.numberValue * 2;
 
-    if (size < 0) throw "OP_LEFT Error: Size must be integer!";
+    if (size < 0) throw "OP_LEFT Error: Size can't be negative integer.!";
     if (data.length < size) throw "OP_LEFT Error: Size can't higher than data length!";
     if (size === 0) return [stackNumber("0")];
 
