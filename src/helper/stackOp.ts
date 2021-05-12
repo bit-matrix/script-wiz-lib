@@ -371,6 +371,19 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_SUBSTR_LAZY") {
+    if (mainStackDataArrayLength < 3) throw "OP_SUBSTR_LAZY Error: stack data array must include min 3 data!";
+
+    const addDataArray: StackData[] = splices.OP_SUBSTR_LAZY(
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 1]
+    );
+    const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
   /*
    * Bitwise logic

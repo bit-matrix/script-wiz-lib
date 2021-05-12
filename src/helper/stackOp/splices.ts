@@ -19,7 +19,7 @@ const OP_CAT = (stackData2: IStackData, stackData1: IStackData): IStackData[] =>
 const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   if (stackData2.numberValue !== undefined && stackData1.numberValue !== undefined) {
     const resultByteValue = "0x" + stackData3.byteValue.substr(2 + stackData2.numberValue * 2, stackData1.numberValue * 2);
-    const stack = stackHex(resultByteValue);
+
     return [stackHex(resultByteValue)];
   }
 
@@ -65,4 +65,29 @@ const OP_SIZE = (stackData: IStackData): IStackData[] => {
   return [stackNumber(numberValue.toString())];
 };
 
-export { OP_CAT, OP_SUBSTR, OP_RIGHT, OP_LEFT, OP_SIZE };
+const OP_SUBSTR_LAZY = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData[] => {
+  if (stackData2.numberValue !== undefined && stackData1.numberValue !== undefined) {
+    let start = stackData2.numberValue * 2;
+    let length = stackData1.numberValue * 2;
+    const data = stackData3.byteValue.substr(2);
+    const dataSize = data.length;
+
+    if (start < 0) start = 0;
+
+    if (length < 0) length = 0;
+
+    if (start >= dataSize) return [stackNumber("0")];
+
+    if (start + length > dataSize) {
+      length = dataSize - start;
+    }
+
+    const resultByteValue = "0x" + data.substr(start, length);
+
+    return [stackHex(resultByteValue)];
+  }
+
+  throw "OP_SUBSTR Error: Index and size must be number!";
+};
+
+export { OP_CAT, OP_SUBSTR, OP_RIGHT, OP_LEFT, OP_SIZE, OP_SUBSTR_LAZY };
