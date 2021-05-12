@@ -116,6 +116,8 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_RIGHT", opcode: 129, hex: "0x81", description: "Keeps only characters right of the specified point in a string" }, //	in size	out	Keeps only characters right of the specified point in a string. disabled.
   { word: "OP_SIZE", opcode: 130, hex: "0x82", description: "Pushes the string length of the top element of the stack (without popping it)." }, //	in	in size	Pushes the string length of the top element of the stack (without popping it).
 
+  { word: "OP_SUBSTR_LAZY", opcode: 195, hex: "0xc3", description: "Returns a section of a string." }, //	liquid network feature.
+
   /*
    * Bitwise logic
    * 131 - 136
@@ -175,8 +177,8 @@ const opWordCodes: IOpWordCode[] = [
   // { word: "OP_CHECKMULTISIGVERIFY", opcode: 175, hex: "0xaf" }, //	x sig1 sig2 ... <number of signatures> pub1 pub2 ... <number of public keys>	Nothing / fail	Same as OP_CHECKMULTISIG, but OP_VERIFY is executed afterward.
   {
     word: "OP_CHECKSIGFROMSTACK",
-    opcode: 186,
-    hex: "0xba",
+    opcode: 193,
+    hex: "0xc1",
     description:
       "Pop the top 3 items from the stack. Treat the top as a public key, the second as a message, and the third as a signature. If the signature is valid, push a Script Number 1, otherwise push a Script Number 0.",
   },
