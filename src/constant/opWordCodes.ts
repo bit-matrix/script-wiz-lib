@@ -112,8 +112,8 @@ const opWordCodes: IOpWordCode[] = [
    */
   { word: "OP_CAT", opcode: 126, hex: "0x7e", description: "Concatenates two strings." }, //	x1 x2	out	Concatenates two strings. disabled.
   { word: "OP_SUBSTR", opcode: 127, hex: "0x7f", description: "Returns a section of a string." }, //	in begin size	out	Returns a section of a string. disabled.
-  // { word: "OP_LEFT", opcode: 128, hex: "0x80" }, //	in size	out	Keeps only characters left of the specified point in a string. disabled.
-  // { word: "OP_RIGHT", opcode: 129, hex: "0x81" }, //	in size	out	Keeps only characters right of the specified point in a string. disabled.
+  { word: "OP_LEFT", opcode: 128, hex: "0x80", description: "Keeps only characters left of the specified point in a string." }, //	in size	out	Keeps only characters left of the specified point in a string. disabled.
+  { word: "OP_RIGHT", opcode: 129, hex: "0x81", description: "Keeps only characters right of the specified point in a string" }, //	in size	out	Keeps only characters right of the specified point in a string. disabled.
   { word: "OP_SIZE", opcode: 130, hex: "0x82", description: "Pushes the string length of the top element of the stack (without popping it)." }, //	in	in size	Pushes the string length of the top element of the stack (without popping it).
 
   /*

@@ -26,9 +26,26 @@ const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: I
   throw "OP_SUBSTR Error: Index and size must be number!";
 };
 
+const OP_RIGHT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
+  if (stackData1.numberValue !== undefined) {
+    const data = stackData2.byteValue.substr(2);
+    const size = stackData1.numberValue * 2;
+
+    if (size < 0) throw "OP_RIGHT Error: Size must be integer!";
+    if (data.length < size) throw "OP_RIGHT Error: Size can't higher than data length!";
+    if (size === 0) return [stackNumber("0")];
+
+    const resultByteValue = "0x" + data.slice(size * -1);
+
+    return [stackHex(resultByteValue)];
+  }
+
+  throw "OP_RIGHT Error: Size must be number!";
+};
+
 const OP_SIZE = (stackData: IStackData): IStackData[] => {
   const numberValue = stackData.byteValue.substr(2).length / 2;
   return [stackNumber(numberValue.toString())];
 };
 
-export { OP_CAT, OP_SUBSTR, OP_SIZE };
+export { OP_CAT, OP_SUBSTR, OP_RIGHT, OP_SIZE };

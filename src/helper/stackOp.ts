@@ -345,6 +345,15 @@ const OP = (word: string, stackDataList: StackDataList): ParseResult => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_RIGHT") {
+    if (mainStackDataArrayLength < 2) throw "OP_RIGHT Error: stack data array must include min 2 data!";
+
+    const addDataArray: StackData[] = splices.OP_RIGHT(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   if (word === "OP_SIZE") {
     if (mainStackDataArrayLength < 1) throw "OP_SIZE Error: stack data array must include min 1 data!";
     const addDataArray: StackData[] = splices.OP_SIZE(mainStackDataArray[mainStackDataArrayLength - 1]);
