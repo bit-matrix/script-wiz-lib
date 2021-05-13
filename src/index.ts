@@ -3,6 +3,7 @@ import { StackDataList, ParseResult } from "./model";
 import parseToStack from "./parse";
 import opWordCodes from "./constant/opWordCodes";
 import parseFinalInput from "./parseFinalInput";
+import compileFinalInput from "./compileFinalInput";
 
 const initialStackDataList: StackDataList = { main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
 let stackDataList: StackDataList = initialStackDataList;
@@ -51,4 +52,4 @@ const clearStack = () => {
   stackDataList = initialStackDataList;
 };
 
-export { parse, clearStack, opWordCodes, stackDataList, parseFinalInput };
+export { compileFinalInput, parse, parseFinalInput, clearStack, opWordCodes, stackDataList };
