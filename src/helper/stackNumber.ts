@@ -2,7 +2,16 @@ import { hexLittleEndian } from "./index";
 import { StackData } from "../model";
 import { MAX_INTEGER } from "../constant";
 
-const getNumberByteLength = (x: number): number => {
+const log = (base: number, x: number) => Math.log(x) / Math.log(base);
+
+const getNumberByteLength = (x: number) => {
+  if (x === 0) return 0;
+  else if (0 < x) return Math.ceil((log(2, x + 1) + 1) / 8);
+  else if (x < 0) return Math.floor((log(2, -x) + 1) / 8 + 1);
+  return 0;
+};
+
+const getNumberByteLengthEx = (x: number): number => {
   /*
     Byte length for number x;
     
@@ -55,10 +64,10 @@ const getNumberByteLength = (x: number): number => {
 const hexNumber = (number: number): string => {
   if (number === 0) return "";
 
-  const byteLength = getNumberByteLength(number); // 0,1,2,3,4
+  const byteLength = getNumberByteLength(number); // 0,1,2,3,4,...
 
   let numberInput = number;
-  if (number < 0 && byteLength !== 0) numberInput = Math.pow(2, 8 * byteLength - 1) - number;
+  if (number < 0) numberInput = Math.pow(2, 8 * byteLength - 1) - number;
 
   let numberHexString = numberInput.toString(16);
 
@@ -103,10 +112,16 @@ const stackNumber = (input: string): StackData => {
 
 /*
 <'Test'>
+<-1234567890123456789012345678901234567890>
+<-12345678901234567890>
+<-123456789012345>
+<-12345678901234>
+<-1234567890123>
+<-123456789012>
+
+<-2147483648>
 <-2147483647>
 <-2147483646>
-
-
 
 <-8388609>
 <-8388608>
@@ -153,6 +168,14 @@ const stackNumber = (input: string): StackData => {
 <2147483647>
 <2147483648>
 <2147483649>
+
+<123456789012>
+<1234567890123>
+<12345678901234>
+<123456789012345>
+<12345678901234567890>
+<1234567890123456789012345678901234567890>
+
 */
 
 export default stackNumber;
