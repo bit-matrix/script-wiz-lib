@@ -110,6 +110,19 @@ const stackNumber = (input: string): StackData => {
   };
 };
 
+const hexToByteArray = (hexString: string): Uint8Array => {
+  const byteArray: number[] = [];
+  const hexByteArray = hexString.match(/.{1,2}/g)?.map((b) => b.toString());
+  if (hexByteArray === undefined) throw "hexToByteArray: Invalid hex string";
+
+  for (let i = 1; i < hexByteArray.length; i++) {
+    const byte = parseInt(hexByteArray[i], 16);
+    byteArray.push(byte);
+  }
+
+  return new Uint8Array(byteArray);
+};
+
 /*
 <'Test'>
 <-1234567890123456789012345678901234567890>
@@ -178,5 +191,5 @@ const stackNumber = (input: string): StackData => {
 
 */
 
-export { log, getNumberByteLength, getNumberByteLengthEx, hexNumber };
+export { log, getNumberByteLength, getNumberByteLengthEx, hexNumber, hexToByteArray };
 export default stackNumber;

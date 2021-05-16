@@ -1,7 +1,7 @@
 import { MAX_INTEGER } from "../constant";
 
 const stackNumberTestData = [
-  { inputNumber: -2147483650, numberValue: false, byteLength: 5, hexValue: "0x0200008080" },
+  /* { inputNumber: -2147483650, numberValue: false, byteLength: 5, hexValue: "0x0200008080" },
   { inputNumber: -2147483649, numberValue: false, byteLength: 5, hexValue: "0x0100008080" },
   { inputNumber: -2147483648, numberValue: false, byteLength: 5, hexValue: "0x0000008080" },
   // MIN_INTEGER
@@ -26,12 +26,17 @@ const stackNumberTestData = [
 
   { inputNumber: -129, numberValue: true, byteLength: 2, hexValue: "0x8180" },
   { inputNumber: -128, numberValue: true, byteLength: 2, hexValue: "0x8080" },
+   
   { inputNumber: -127, numberValue: true, byteLength: 1, hexValue: "0xff" },
+  
   { inputNumber: -126, numberValue: true, byteLength: 1, hexValue: "0xfe" },
-
+  
   { inputNumber: -2, numberValue: true, byteLength: 1, hexValue: "0x82" },
   { inputNumber: -1, numberValue: true, byteLength: 1, hexValue: "0x81" },
+  */
+
   { inputNumber: 0, numberValue: true, byteLength: 0, hexValue: "0x" },
+
   { inputNumber: 1, numberValue: true, byteLength: 1, hexValue: "0x01" },
   { inputNumber: 2, numberValue: true, byteLength: 1, hexValue: "0x02" },
 
@@ -52,15 +57,18 @@ const stackNumberTestData = [
 
   { inputNumber: 8388606, numberValue: true, byteLength: 3, hexValue: "0xfeff7f" },
   { inputNumber: 8388607, numberValue: true, byteLength: 3, hexValue: "0xffff7f" },
+
+  { inputNumber: 8388607, numberValue: true, byteLength: 3, hexValue: "0xffff7f" },
   { inputNumber: 8388608, numberValue: true, byteLength: 4, hexValue: "0x00008000" },
   { inputNumber: 8388609, numberValue: true, byteLength: 4, hexValue: "0x01008000" },
 
   { inputNumber: 2147483646, numberValue: true, byteLength: 4, hexValue: "0xfeffff7f" },
   { inputNumber: 2147483647, numberValue: true, byteLength: 4, hexValue: "0xffffff7f" },
+
   // MAX_INTEGER
-  { inputNumber: 2147483648, numberValue: false, byteLength: 5, hexValue: "0x0000008000" },
+  /* { inputNumber: 2147483648, numberValue: false, byteLength: 5, hexValue: "0x0000008000" },
   { inputNumber: 2147483649, numberValue: false, byteLength: 5, hexValue: "0x0100008000" },
-  { inputNumber: 2147483650, numberValue: false, byteLength: 5, hexValue: "0x0200008000" },
+  { inputNumber: 2147483650, numberValue: false, byteLength: 5, hexValue: "0x0200008000" }, */
 ];
 
 export default stackNumberTestData;

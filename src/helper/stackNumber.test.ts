@@ -2,7 +2,8 @@ import { hexLittleEndian } from "./index";
 import { StackData } from "../model";
 import { MAX_INTEGER } from "../constant";
 import stackNumberTestData from "./stackNumberTestData";
-import stackNumber, { log, getNumberByteLength, getNumberByteLengthEx, hexNumber } from "./stackNumber";
+import stackNumber, { log, getNumberByteLength, getNumberByteLengthEx, hexNumber, hexToByteArray } from "./stackNumber";
+import { resizeUint8Array } from "../intArray";
 
 test("log(2,8) to equal 3", () => {
   expect(log(2, 8)).toBe(3);
@@ -52,6 +53,25 @@ test("hexNumber test", () => {
   });
 });
 
+test("hexToByteArray test", () => {
+  /* console.log("0x01", hexToByteArray("0x01"));
+  console.log("0x80", hexToByteArray("0x80"));
+  console.log("0xff", hexToByteArray("0xff"));
+  console.log("0x0180", hexToByteArray("0x0180")); */
+
+  stackNumberTestData.forEach((d) => {
+    const byteArray: Uint8Array = hexToByteArray(d.hexValue);
+    const resizedByteArray = resizeUint8Array(byteArray, 4);
+    // console.log(d.inputNumber, byteArray, resizedByteArray);
+
+    const dataView = new DataView(resizedByteArray.buffer, 0);
+    const byteArrayToNumberValue = dataView.getInt32(0, true);
+
+    // console.log(d.inputNumber, byteArray, resizedByteArray, byteArrayToNumberValue);
+    // if (d.inputNumber !== byteArrayToNumberValue) console.error(d.inputNumber, byteArrayToNumberValue, byteArray);
+    expect(d.inputNumber).toBe(byteArrayToNumberValue);
+  });
+});
 /*
     Byte length for number x;
     
