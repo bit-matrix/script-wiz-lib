@@ -97,7 +97,7 @@ const stackNumber = (input: string): StackData => {
   let numberValue: number | undefined = undefined;
   let byteValueDisplay = littleEndianNumber;
 
-  if (inputNumber <= MAX_INTEGER && inputNumber >= -1 * MAX_INTEGER) {
+  if (-MAX_INTEGER <= inputNumber && inputNumber <= MAX_INTEGER) {
     numberValue = inputNumber;
     byteValueDisplay = input;
   }

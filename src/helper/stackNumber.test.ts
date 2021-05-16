@@ -41,6 +41,17 @@ test("getNumberByteLength to equal byteLength", () => {
   });
 });
 
+test("hexNumber test", () => {
+  stackNumberTestData.forEach((d) => {
+    const hexNumberValue = hexNumber(d.inputNumber);
+    const leHexNumberValue = hexLittleEndian(hexNumberValue);
+    if (d.numberValue) {
+      if (leHexNumberValue !== d.hexValue) console.log(d.inputNumber, leHexNumberValue, d.hexValue);
+      expect(leHexNumberValue).toBe(d.hexValue);
+    }
+  });
+});
+
 /*
     Byte length for number x;
     

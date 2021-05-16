@@ -55,7 +55,7 @@ const stackNumberTestData = [
   { inputNumber: 8388608, numberValue: true, byteLength: 4, hexValue: "0x00008000" },
   { inputNumber: 8388609, numberValue: true, byteLength: 4, hexValue: "0x01008000" },
 
-  { inputNumber: 2147483646, numberValue: true, byteLength: 4, hexValue: "0xfeffffff" },
+  { inputNumber: 2147483646, numberValue: true, byteLength: 4, hexValue: "0xfeffff7f" },
   { inputNumber: 2147483647, numberValue: true, byteLength: 4, hexValue: "0xffffff7f" },
   // MAX_INTEGER
   { inputNumber: 2147483648, numberValue: false, byteLength: 5, hexValue: "0x0000008000" },
