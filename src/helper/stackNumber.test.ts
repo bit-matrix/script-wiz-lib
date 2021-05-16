@@ -1,10 +1,44 @@
 import { hexLittleEndian } from "./index";
 import { StackData } from "../model";
 import { MAX_INTEGER } from "../constant";
+import stackNumberTestData from "./stackNumberTestData";
 import stackNumber, { log, getNumberByteLength, getNumberByteLengthEx, hexNumber } from "./stackNumber";
 
 test("log(2,8) to equal 3", () => {
   expect(log(2, 8)).toBe(3);
+});
+
+test("stackNumberTestData is valid", () => {
+  stackNumberTestData.forEach((d) => {
+    if (-MAX_INTEGER <= d.inputNumber && d.inputNumber <= MAX_INTEGER) expect(d.numberValue).toBe(true);
+    else expect(d.numberValue).toBe(false);
+
+    expect(d.hexValue.length % 2).toBe(0);
+
+    const hexToByteLength = d.hexValue.length / 2 - 1;
+    expect(hexToByteLength).toBe(d.byteLength);
+  });
+});
+
+test("getNumberByteLength to equal getNumberByteLengthEx for integer range", () => {
+  stackNumberTestData.forEach((d) => {
+    if (-MAX_INTEGER <= d.inputNumber && d.inputNumber <= MAX_INTEGER) {
+      const l1 = getNumberByteLength(d.inputNumber);
+      const l2 = getNumberByteLengthEx(d.inputNumber);
+      if (l1 !== l2) console.log(d.inputNumber, l1, l2);
+
+      expect(l1).toBe(l2);
+    }
+  });
+});
+
+test("getNumberByteLength to equal byteLength", () => {
+  stackNumberTestData.forEach((d) => {
+    const byteLength = getNumberByteLength(d.inputNumber);
+    if (byteLength !== d.byteLength) console.log(d.inputNumber, byteLength, d.byteLength);
+
+    expect(byteLength).toBe(d.byteLength);
+  });
 });
 
 /*
