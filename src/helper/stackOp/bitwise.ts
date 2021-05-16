@@ -8,6 +8,31 @@ const OP_INVERT = (stackData: StackData): StackData[] => {
 };
 
 const OP_AND = (stackData1: StackData, stackData2: StackData): StackData[] => {
+  const x = stackData1.byteValue;
+  const y = stackData2.byteValue;
+  if (x.length !== y.length) throw "OP_XOR Error: Script attempted a bitwise operation on operands of different lengths.";
+
+  let resultHex = "0x";
+
+  const xHexArray = x
+    .match(/.{1,2}/g)
+    ?.slice(1)
+    .map((m) => m.toString());
+  const yHexArray = y
+    .match(/.{1,2}/g)
+    ?.slice(1)
+    .map((m) => m.toString());
+  if (xHexArray && yHexArray) {
+    const xorUInt8Array = xHexArray.map((xHex, i) => parseInt(xHex, 16) & parseInt(yHexArray[i], 16));
+    const xorHexArray = xorUInt8Array.map((xorUInt8) => xorUInt8.toString(16).padStart(2, "0"));
+    resultHex += xorHexArray.join("");
+  }
+  resultHex = resultHex.padEnd(x.length, "0");
+
+  return [stackHex(resultHex)];
+};
+
+/* const OP_AND = (stackData1: StackData, stackData2: StackData): StackData[] => {
   if (stackData1.byteValue.length !== stackData2.byteValue.length) throw "OP_AND Error: Script attempted a bitwise operation on operands of different lengths.";
   const number1 = stackData1.numberValue;
   const number2 = stackData2.numberValue;
@@ -18,7 +43,7 @@ const OP_AND = (stackData1: StackData, stackData2: StackData): StackData[] => {
     return [stackNumber(logic.toString())];
   }
   throw "OP_AND Error: Counld't convert to number";
-};
+}; */
 
 const OP_OR = (stackData1: StackData, stackData2: StackData): StackData[] => {
   const x = stackData1.byteValue;
