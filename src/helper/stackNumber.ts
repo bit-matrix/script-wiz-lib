@@ -178,4 +178,5 @@ const stackNumber = (input: string): StackData => {
 
 */
 
+export { log, getNumberByteLength, getNumberByteLengthEx, hexNumber };
 export default stackNumber;
