@@ -63,9 +63,10 @@ const hexToNumber = (inputHex: string): number | undefined => {
   const numberHex: number = Number(inputHex);
 
   const boundries = hexBoundries(byteLenght);
+
   if (boundries === undefined) return;
 
-  if (boundries.minPos <= numberHex && numberHex <= boundries.maxPos) return numberHex;
+  if ((boundries.minPos <= numberHex && numberHex <= boundries.maxPos) || numberHex === 0) return numberHex;
 
   // if (boundries.minNeg <= numberHex && numberHex <= boundries.maxNeg)
   return Math.pow(2, 8 * byteLenght - 1) - numberHex;
