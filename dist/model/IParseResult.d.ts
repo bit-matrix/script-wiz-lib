@@ -1,5 +1,5 @@
 import IStackData from "./IStackData";
-interface IParseResult {
+interface IParseResultData {
     main: {
         addDataArray: IStackData[];
         removeLastSize: number;
@@ -12,4 +12,7 @@ interface IParseResult {
     altFlow?: boolean[];
     isStackFailed?: boolean;
 }
-export default IParseResult;
+interface IParseResult extends IParseResultData {
+    inputHex: string;
+}
+export { IParseResultData, IParseResult };
