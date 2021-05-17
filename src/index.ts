@@ -1,11 +1,11 @@
 import { currentScope } from "./helper";
-import { StackDataList, ParseResult } from "./model";
+import { StackDataList, IParseResult } from "./model";
 import parseToStack from "./parse";
 import opWordCodes from "./constant/opWordCodes";
 import parseFinalInput from "./parseFinalInput";
 import compileFinalInput from "./compileFinalInput";
 
-const initialStackDataList: StackDataList = { main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
+const initialStackDataList: StackDataList = { inputHexes: [], main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
 let stackDataList: StackDataList = initialStackDataList;
 
 const parse = (input: string): StackDataList => {
@@ -15,7 +15,14 @@ const parse = (input: string): StackDataList => {
     if (input !== "OP_IF" && input !== "OP_NOTIF" && input !== "OP_ELSE" && input !== "OP_ENDIF") return stackDataList;
   }
 
-  const parseResult: ParseResult = parseToStack(input, stackDataList);
+  const parseResult: IParseResult = parseToStack(input, stackDataList);
+
+  // add input hexes
+  stackDataList = { ...stackDataList, inputHexes: [...stackDataList.inputHexes, parseResult.inputHex] };
+
+  if (!currentScope(stackDataList)) {
+    if (input !== "OP_IF" && input !== "OP_NOTIF" && input !== "OP_ELSE" && input !== "OP_ENDIF") return stackDataList;
+  }
 
   // remove item(s) from main stack
   if (parseResult.main.removeLastSize > 0) {

@@ -1,15 +1,15 @@
-import { opcodeToWord } from "./helper";
+import { opcodeToWord, opWordToHex } from "./helper";
 import OP from "./helper/stackOp";
-import { ParseResult, StackDataList } from "./model";
+import { IParseResult, IParseResultData, StackDataList } from "./model";
 import parseFinalInput from "./ParseFinalInput";
 
-const parse = (input: string, stackDataList: StackDataList): ParseResult => {
+const parse = (input: string, stackDataList: StackDataList): IParseResult => {
   try {
     // Data
     if (input.startsWith("<") && input.endsWith(">")) {
       const finalInput = input.substr(1, input.length - 2);
-      const addDataArray = parseFinalInput(finalInput);
-      const parseResult: ParseResult = { main: { addDataArray, removeLastSize: 0 }, alt: { removeLastStackData: false } };
+      const addStackData = parseFinalInput(finalInput);
+      const parseResult: IParseResult = { inputHex: addStackData.byteValue, main: { addDataArray: [addStackData], removeLastSize: 0 }, alt: { removeLastStackData: false } };
       return parseResult;
     }
 
@@ -23,7 +23,8 @@ const parse = (input: string, stackDataList: StackDataList): ParseResult => {
         if (word === "") throw "Unknown OP code number";
       }
 
-      return OP(word, stackDataList);
+      const parseResultData: IParseResultData = OP(word, stackDataList);
+      return { ...parseResultData, inputHex: opWordToHex(word) };
     }
   } catch (ex) {
     console.error(ex);
