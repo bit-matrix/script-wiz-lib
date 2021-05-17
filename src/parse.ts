@@ -1,3 +1,4 @@
+import { compileData, cropTwo } from "./compileAll";
 import { opcodeToWord, opWordToHex } from "./helper";
 import OP from "./helper/stackOp";
 import { IParseResult, IParseResultData, StackDataList } from "./model";
@@ -9,7 +10,11 @@ const parse = (input: string, stackDataList: StackDataList): IParseResult => {
     if (input.startsWith("<") && input.endsWith(">")) {
       const finalInput = input.substr(1, input.length - 2);
       const addStackData = parseFinalInput(finalInput);
-      const parseResult: IParseResult = { inputHex: addStackData.byteValue, main: { addDataArray: [addStackData], removeLastSize: 0 }, alt: { removeLastStackData: false } };
+      const parseResult: IParseResult = {
+        inputHex: compileData(addStackData.byteValue),
+        main: { addDataArray: [addStackData], removeLastSize: 0 },
+        alt: { removeLastStackData: false },
+      };
       return parseResult;
     }
 
@@ -24,7 +29,7 @@ const parse = (input: string, stackDataList: StackDataList): IParseResult => {
       }
 
       const parseResultData: IParseResultData = OP(word, stackDataList);
-      return { ...parseResultData, inputHex: opWordToHex(word) };
+      return { ...parseResultData, inputHex: cropTwo(opWordToHex(word)) };
     }
   } catch (ex) {
     console.error(ex);

@@ -4,16 +4,13 @@ import parseToStack from "./parse";
 import opWordCodes from "./constant/opWordCodes";
 import parseFinalInput from "./parseFinalInput";
 import compileFinalInput from "./compileFinalInput";
+import { compileData, compileJoin } from "./compileAll";
 
 const initialStackDataList: StackDataList = { inputHexes: [], main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
 let stackDataList: StackDataList = initialStackDataList;
 
 const parse = (input: string): StackDataList => {
   if (stackDataList.isStackFailed) throw "Stack failed an OP_VERIFY operation.";
-
-  if (!currentScope(stackDataList)) {
-    if (input !== "OP_IF" && input !== "OP_NOTIF" && input !== "OP_ELSE" && input !== "OP_ENDIF") return stackDataList;
-  }
 
   const parseResult: IParseResult = parseToStack(input, stackDataList);
 
@@ -59,4 +56,4 @@ const clearStack = () => {
   stackDataList = initialStackDataList;
 };
 
-export { compileFinalInput, parse, parseFinalInput, clearStack, opWordCodes, stackDataList };
+export { compileFinalInput, parse, parseFinalInput, clearStack, opWordCodes, stackDataList, compileData, compileJoin };
