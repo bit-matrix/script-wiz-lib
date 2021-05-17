@@ -13,6 +13,8 @@ const OP_CAT = (stackData2: IStackData, stackData1: IStackData): IStackData[] =>
 
   firstByte2 = stackData1.byteValue !== emptyByte && firstByte2 === "00" ? "" : firstByte2;
 
+  if (firstByte1 === "" && firstByte2 === "") return [stackNumber("0")];
+
   return [stackHex(byteValue + firstByte1 + firstByte2)];
 };
 
