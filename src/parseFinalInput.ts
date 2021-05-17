@@ -1,3 +1,4 @@
+import { EMOJI_REGEX } from "./constant";
 import { opWordToHex } from "./helper";
 import stackHex from "./helper/stackHex";
 import stackNumber from "./helper/stackNumber";
@@ -16,16 +17,15 @@ const parseFinalInput = (input: string): StackData[] => {
     return [stackHex(input)];
   }
 
-  // EMOJI BY AHMET :)
-  // if (input.match(EMOJI_REGEX)) {
-  //   const byteValueDisplay = input.replace(/'/g, "");
-  //   const charCode = input.charCodeAt(0);
-  //   return {
-  //     input,
-  //     byteValueDisplay,
-  //     byteValue: "",
-  //   };
-  // }
+  // EMOJI INPUT
+  if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
+    if (input.match(EMOJI_REGEX)) {
+      const formattedInput = input.substr(1, input.length - 2);
+      // const byteValueDisplay = input.replace(/'/g, "");
+      // const charCode = input.charCodeAt(0);
+      return [{ input, byteValue: "0xf09f8c8e", byteValueDisplay: formattedInput }];
+    }
+  }
 
   // STRING INPUT
   if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
