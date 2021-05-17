@@ -52,8 +52,10 @@ const parse = (input: string): StackDataList => {
   return stackDataList;
 };
 
+const compileScript = () => compileJoin(stackDataList.inputHexes);
+
 const clearStack = () => {
   stackDataList = initialStackDataList;
 };
 
-export { compileFinalInput, parse, parseFinalInput, clearStack, opWordCodes, stackDataList, compileData, compileJoin };
+export { compileFinalInput, parse, parseFinalInput, clearStack, opWordCodes, stackDataList, compileData, compileJoin, compileScript };
