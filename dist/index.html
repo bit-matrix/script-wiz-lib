@@ -159,9 +159,9 @@
             } else {
               stackDataList = scriptWiz.parse(inputText);
               stackData = stackDataList.main[stackDataList.main.length - 1];
+              if (stackDataList.errorMessage) outputs.push(`<span id="display3">${stackDataList.errorMessage}</span><br/>`);
             }
           } catch (e) {
-            outputs.push(`<span id="display3">${e}</span><br/>`);
             continue;
           } finally {
             if (inputText !== "") {
