@@ -51,7 +51,7 @@ const ECDSAVerify = (signature: string, message: string, publicKey: string): boo
   const secp256k1 = new elliptic.ec("secp256k1");
   const hashedMessage = SHA256(message);
 
-  if (publicKey.length < 68) throw "ECDSA Verify error : invalid public key length";
+  if (publicKey.length !== 68) throw "ECDSA Verify error : invalid public key length";
 
   if (!signature.startsWith("0x30")) throw "ECDSA Verify error : signature must start with 0x30";
 
