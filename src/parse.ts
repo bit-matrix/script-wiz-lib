@@ -10,12 +10,14 @@ const parse = (input: string, stackDataList: StackDataList, currentScopeParse: b
     alt: { removeLastStackData: false },
   };
 
+  let inputHex: string = "";
+
   try {
     // Data
     if (input.startsWith("<") && input.endsWith(">")) {
       const finalInput = input.substr(1, input.length - 2);
       const addStackData = parseFinalInput(finalInput);
-      const inputHex = compileData(addStackData.byteValue);
+      inputHex = compileData(addStackData.byteValue);
 
       if (currentScopeParse)
         return {
@@ -36,15 +38,16 @@ const parse = (input: string, stackDataList: StackDataList, currentScopeParse: b
         if (word === "") throw "Unknown OP code number";
       }
 
+      inputHex = cropTwo(opWordToHex(word));
+
       if (currentScopeParse || currentScopeParseException) emptyParseResultData = OP(word, stackDataList);
-      return { ...emptyParseResultData, inputHex: cropTwo(opWordToHex(word)) };
+      return { ...emptyParseResultData, inputHex };
     }
   } catch (ex) {
-    console.error(ex);
-    throw ex;
+    return { inputHex, errorMessage: ex, main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
   }
 
-  throw "it is not a valid input script";
+  return { inputHex, errorMessage: "it is not a valid input script", main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
 };
 
 export default parse;
