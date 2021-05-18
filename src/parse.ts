@@ -4,18 +4,26 @@ import OP from "./helper/stackOp";
 import { IParseResult, IParseResultData, StackDataList } from "./model";
 import parseFinalInput from "./ParseFinalInput";
 
-const parse = (input: string, stackDataList: StackDataList): IParseResult => {
+const parse = (input: string, stackDataList: StackDataList, currentScopeParse: boolean, currentScopeParseException: boolean): IParseResult => {
+  let emptyParseResultData: IParseResultData = {
+    main: { addDataArray: [], removeLastSize: 0 },
+    alt: { removeLastStackData: false },
+  };
+
   try {
     // Data
     if (input.startsWith("<") && input.endsWith(">")) {
       const finalInput = input.substr(1, input.length - 2);
       const addStackData = parseFinalInput(finalInput);
-      const parseResult: IParseResult = {
-        inputHex: compileData(addStackData.byteValue),
-        main: { addDataArray: [addStackData], removeLastSize: 0 },
-        alt: { removeLastStackData: false },
-      };
-      return parseResult;
+      const inputHex = compileData(addStackData.byteValue);
+
+      if (currentScopeParse)
+        return {
+          inputHex,
+          main: { addDataArray: [addStackData], removeLastSize: 0 },
+          alt: { removeLastStackData: false },
+        };
+      else return { ...emptyParseResultData, inputHex };
     }
 
     // OP Word or OP Code
@@ -28,8 +36,8 @@ const parse = (input: string, stackDataList: StackDataList): IParseResult => {
         if (word === "") throw "Unknown OP code number";
       }
 
-      const parseResultData: IParseResultData = OP(word, stackDataList);
-      return { ...parseResultData, inputHex: cropTwo(opWordToHex(word)) };
+      if (currentScopeParse || currentScopeParseException) emptyParseResultData = OP(word, stackDataList);
+      return { ...emptyParseResultData, inputHex: cropTwo(opWordToHex(word)) };
     }
   } catch (ex) {
     console.error(ex);
