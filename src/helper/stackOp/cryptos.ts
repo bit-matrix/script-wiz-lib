@@ -31,6 +31,25 @@ const OP_HASH256 = (stackData: IStackData): IStackData[] => {
   return [{ byteValue: hashedData, byteValueDisplay: hashedData, input: hashedData }];
 };
 
+const OP_CHECKSIG = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
+  // stackData 1 = signature
+  // stackData 2 = pubkey
+  const signature = stackData1.byteValue;
+  const publicKey = stackData2.byteValue;
+
+  if (publicKey.length !== 68) return [stackNumber("0")];
+
+  if (!signature.startsWith("0x30")) return [stackNumber("0")];
+
+  const rAndSDataSize = Number("0x" + signature.substr(4, 2));
+
+  const signatureStringLength = rAndSDataSize * 2 + 6;
+
+  if (signature.length !== signatureStringLength) return [stackNumber("0")];
+
+  return [stackNumber("1")];
+};
+
 const OP_CHECKSIGFROMSTACK = (stackData1: IStackData, stackData2: IStackData, stackData3: IStackData): IStackData[] => {
   // stackData1 = signature
   // stackData 2 = message
@@ -42,4 +61,4 @@ const OP_CHECKSIGFROMSTACK = (stackData1: IStackData, stackData2: IStackData, st
   return [stackNumber("0")];
 };
 
-export { OP_RIPEMD160, OP_SHA1, OP_SHA256, OP_HASH160, OP_HASH256, OP_CHECKSIGFROMSTACK };
+export { OP_RIPEMD160, OP_SHA1, OP_SHA256, OP_HASH160, OP_HASH256, OP_CHECKSIG, OP_CHECKSIGFROMSTACK };
