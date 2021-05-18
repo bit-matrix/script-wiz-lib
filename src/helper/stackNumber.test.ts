@@ -3,7 +3,7 @@ import { StackData } from "../model";
 import { MAX_INTEGER } from "../constant";
 import stackNumberTestData from "./stackNumberTestData";
 import stackNumber, { log, getNumberByteLength, getNumberByteLengthEx, hexNumber, hexToByteArray } from "./stackNumber";
-import { resizeUint8Array } from "../intArray";
+import { resizeUint8Array } from "../bytes";
 
 test("log(2,8) to equal 3", () => {
   expect(log(2, 8)).toBe(3);
