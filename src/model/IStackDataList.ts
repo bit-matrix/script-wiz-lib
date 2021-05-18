@@ -1,6 +1,7 @@
 import IStackData from "./IStackData";
 
 interface IStackDataList {
+  inputHexes: string[];
   main: IStackData[];
   alt: IStackData[];
   flow: boolean[];

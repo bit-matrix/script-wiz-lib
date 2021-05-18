@@ -1,6 +1,6 @@
 import { currentScope, opcodeToData } from ".";
 import { IOpWordCode } from "../constant/opWordCodes";
-import { StackData, ParseResult, StackDataList } from "../model";
+import { StackData, IParseResultData, StackDataList } from "../model";
 
 import * as constants from "./stackOp/constants";
 import * as stacks from "./stackOp/stacks";
@@ -10,7 +10,7 @@ import * as cryptos from "./stackOp/cryptos";
 import { OP_ELSE, OP_ENDIF, OP_IF, OP_NOTIF, OP_VERIFY } from "./stackOp/flow";
 import { OP_AND, OP_EQUAL, OP_EQUALVERIFY, OP_INVERT, OP_OR, OP_XOR } from "./stackOp/bitwise";
 
-const OP = (word: string, stackDataList: StackDataList): ParseResult => {
+const OP = (word: string, stackDataList: StackDataList): IParseResultData => {
   const mainStackDataArray: StackData[] = stackDataList.main;
 
   const opData: IOpWordCode | undefined = opcodeToData(word);
