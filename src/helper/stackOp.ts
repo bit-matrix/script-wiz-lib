@@ -738,6 +738,19 @@ const OP = (word: string, stackDataList: StackDataList): IParseResultData => {
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+  if (word === "OP_CHECKSIGVERIFY") {
+    if (mainStackDataArrayLength < 2) throw "OP_CHECKSIGVERIFY Error: stack data array must include min 2 data!";
+
+    let isStackFailed: boolean = false;
+
+    const addDataArray: StackData[] = cryptos.OP_CHECKSIG(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    if (addDataArray[0].numberValue === 0) isStackFailed = true;
+
+    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+  }
   if (word === "OP_CHECKSIGFROMSTACK") {
     if (mainStackDataArrayLength < 3) throw "OP_CHECKSIGFROMSTACK Error: stack data array must include min 3 data!";
 
