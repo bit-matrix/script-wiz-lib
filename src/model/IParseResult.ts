@@ -16,6 +16,7 @@ interface IParseResultData {
 
 interface IParseResult extends IParseResultData {
   inputHex: string;
+  errorMessage?: string;
 }
 
 export { IParseResultData, IParseResult };
