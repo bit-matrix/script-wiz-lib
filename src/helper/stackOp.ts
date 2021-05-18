@@ -14,7 +14,7 @@ const OP = (word: string, stackDataList: StackDataList): IParseResultData => {
   const mainStackDataArray: StackData[] = stackDataList.main;
 
   const opData: IOpWordCode | undefined = opcodeToData(word);
-  if (opData === undefined) throw "Unknown OP word!";
+  if (opData === undefined) throw "Unknown OP code!";
   const mainStackDataArrayLength = mainStackDataArray.length;
 
   /*
