@@ -182,6 +182,13 @@ const opWordCodes: IOpWordCode[] = [
     description:
       "Pop the top 3 items from the stack. Treat the top as a public key, the second as a message, and the third as a signature. If the signature is valid, push a Script Number 1, otherwise push a Script Number 0.",
   },
+  {
+    word: "OP_CHECKSIGFROMSTACKVERIFY",
+    opcode: 194,
+    hex: "0xc2",
+    description:
+      "Pop the top 3 items from the stack. Treat the top as a public key, the second as a message, and the third as a signature. If the signature is valid, push a Script Number 1, otherwise push a Script Number 0.",
+  },
 
   /*
    * Locktime
