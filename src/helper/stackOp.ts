@@ -7,6 +7,7 @@ import * as stacks from "./stackOp/stacks";
 import * as splices from "./stackOp/splices";
 import * as arithmetics from "./stackOp/arithmetics";
 import * as cryptos from "./stackOp/cryptos";
+import * as locktime from "./stackOp/locktime";
 import { OP_ELSE, OP_ENDIF, OP_IF, OP_NOTIF, OP_VERIFY } from "./stackOp/flow";
 import { OP_AND, OP_EQUAL, OP_EQUALVERIFY, OP_INVERT, OP_OR, OP_XOR } from "./stackOp/bitwise";
 
@@ -729,7 +730,7 @@ const OP = (word: string, stackDataList: StackDataList): IParseResultData => {
     return { main: { addDataArray, removeLastSize }, alt };
   }
   if (word === "OP_CHECKSIG") {
-    if (mainStackDataArrayLength < 2) throw "OP_CHECKSIG Error: stack data array must include min 3 data!";
+    if (mainStackDataArrayLength < 2) throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
 
     const addDataArray: StackData[] = cryptos.OP_CHECKSIG(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
     const removeLastSize: number = 2;
@@ -763,6 +764,34 @@ const OP = (word: string, stackDataList: StackDataList): IParseResultData => {
     if (addDataArray[0].numberValue === 0) isStackFailed = true;
 
     const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+  }
+
+  /*
+   * Locktime
+   * 177 - 178
+   */
+  if (word === "OP_CHECKLOCKTIMEVERIFY") {
+    if (mainStackDataArrayLength < 1) throw "OP_CHECKLOCKTIMEVERIFY Error: stack data array must include min 1 data!";
+    let isStackFailed: boolean = false;
+
+    const addDataArray: StackData[] = locktime.OP_CHECKLOCKTIMEVERIFY(mainStackDataArray[mainStackDataArrayLength - 1]);
+
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+  }
+
+  if (word === "OP_CHECKSEQUENCEVERIFY") {
+    if (mainStackDataArrayLength < 1) throw "OP_CHECKSEQUENCEVERIFY Error: stack data array must include min 1 data!";
+    let isStackFailed: boolean = false;
+
+    const addDataArray: StackData[] = locktime.OP_CHECKSEQUENCEVERIFY(mainStackDataArray[mainStackDataArrayLength - 1]);
+
+    const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt, isStackFailed };

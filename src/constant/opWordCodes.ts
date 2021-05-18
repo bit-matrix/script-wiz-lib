@@ -195,9 +195,9 @@ const opWordCodes: IOpWordCode[] = [
    * 177 - 178
    */
   // (previously OP_NOP2)
-  // { word: "OP_CHECKLOCKTIMEVERIFY", opcode: 177, hex: "0xb1" }, //	x	x / fail	Marks transaction as invalid if the top stack item is greater than the transaction's nLockTime field, otherwise script evaluation continues as though an OP_NOP was executed. Transaction is also invalid if 1. the stack is empty; or 2. the top stack item is negative; or 3. the top stack item is greater than or equal to 500000000 while the transaction's nLockTime field is less than 500000000, or vice versa; or 4. the input's nSequence field is equal to 0xffffffff. The precise semantics are described in BIP 0065.
+  { word: "OP_CHECKLOCKTIMEVERIFY", opcode: 177, hex: "0xb1" }, //	x	x / fail	Marks transaction as invalid if the top stack item is greater than the transaction's nLockTime field, otherwise script evaluation continues as though an OP_NOP was executed. Transaction is also invalid if 1. the stack is empty; or 2. the top stack item is negative; or 3. the top stack item is greater than or equal to 500000000 while the transaction's nLockTime field is less than 500000000, or vice versa; or 4. the input's nSequence field is equal to 0xffffffff. The precise semantics are described in BIP 0065.
   // (previously OP_NOP3)
-  // { word: "OP_CHECKSEQUENCEVERIFY", opcode: 178, hex: "0xb2" }, //	x	x / fail	Marks transaction as invalid if the relative lock time of the input (enforced by BIP 0068 with nSequence) is not equal to or longer than the value of the top stack item. The precise semantics are described in BIP 0112.
+  { word: "OP_CHECKSEQUENCEVERIFY", opcode: 178, hex: "0xb2" }, //	x	x / fail	Marks transaction as invalid if the relative lock time of the input (enforced by BIP 0068 with nSequence) is not equal to or longer than the value of the top stack item. The precise semantics are described in BIP 0112.
 
   /*
    * Reserved words
