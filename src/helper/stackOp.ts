@@ -109,6 +109,9 @@ const OP = (word: string, stackDataList: StackDataList): IParseResultData => {
       return { main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false }, isStackFailed: true };
     }
   }
+  if (word === "OP_RETURN") {
+    throw "Program called on OP_RETURN operation";
+  }
 
   /*
    * Stack
