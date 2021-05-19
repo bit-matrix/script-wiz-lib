@@ -2,7 +2,7 @@ const BIT_8 = 8;
 const BIT_16 = 16;
 const BIT_32 = 32;
 
-export const resizeUint8Array = (uint8Array: Uint8Array, byteLength: number): Uint8Array => {
+const resizeBytes = (uint8Array: Uint8Array, byteLength: number): Uint8Array => {
   const resizedUint8Array = new Uint8Array(byteLength);
   if (uint8Array.length > byteLength) {
     const maxNumber: number = Math.pow(2, BIT_8) - 1;
@@ -13,13 +13,13 @@ export const resizeUint8Array = (uint8Array: Uint8Array, byteLength: number): Ui
   return resizedUint8Array;
 };
 
-export const numeralNextValue = (value: number, base: number): { numeral: number; nextValue: number } => {
+const numeralNextValue = (value: number, base: number): { numeral: number; nextValue: number } => {
   const numeral: number = value % base;
   const nextValue: number = (value - numeral) / base;
   return { numeral, nextValue };
 };
 
-export const toUint8Array = (value: number): Uint8Array => {
+export const numberToBytes = (value: number): Uint8Array => {
   const baseNumber = Math.pow(2, BIT_8);
   let lastValue = value;
   const numeralArray: number[] = [];
@@ -35,21 +35,21 @@ export const toUint8Array = (value: number): Uint8Array => {
   return result;
 };
 
-export const toUint8ArrayResizedUint16 = (value: number): Uint8Array => {
-  const uint8Array = toUint8Array(value);
-  const resizedUint8Array = resizeUint8Array(uint8Array, 2);
+export const numberToBytesResizedUint16 = (value: number): Uint8Array => {
+  const uint8Array = numberToBytes(value);
+  const resizedUint8Array = resizeBytes(uint8Array, 2);
   return resizedUint8Array;
 };
 
-export const toUint8ArrayResizedUint32 = (value: number): Uint8Array => {
-  const uint8Array = toUint8Array(value);
-  const resizedUint8Array = resizeUint8Array(uint8Array, 4);
+export const numberToBytesResizedUint32 = (value: number): Uint8Array => {
+  const uint8Array = numberToBytes(value);
+  const resizedUint8Array = resizeBytes(uint8Array, 4);
   return resizedUint8Array;
 };
 
-export const toUint8ArrayResizedUint64 = (value: number): Uint8Array => {
-  const uint8Array = toUint8Array(value);
-  const resizedUint8Array = resizeUint8Array(uint8Array, 8);
+export const numberToBytesResizedUint64 = (value: number): Uint8Array => {
+  const uint8Array = numberToBytes(value);
+  const resizedUint8Array = resizeBytes(uint8Array, 8);
   return resizedUint8Array;
 };
 
