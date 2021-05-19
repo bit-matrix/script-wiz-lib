@@ -10,16 +10,15 @@ const initialStackDataList: StackDataList = { inputHexes: [], main: [], alt: [],
 let stackDataList: StackDataList = initialStackDataList;
 
 const parse = (input: string): StackDataList => {
-  if (stackDataList.isStackFailed) throw "Stack failed an OP_VERIFY operation.";
+  if (stackDataList.isStackFailed) return { ...stackDataList, isStackFailed: true, errorMessage: "Stack failed an OP_VERIFY operation." };
 
-  const parseResult: IParseResult = parseToStack(input, stackDataList);
+  const currentScopeParse: boolean = currentScope(stackDataList);
+  const currentScopeParseException: boolean = input === "OP_IF" || input === "OP_NOTIF" || input === "OP_ELSE" || input === "OP_ENDIF";
+
+  const parseResult: IParseResult = parseToStack(input, stackDataList, currentScopeParse, currentScopeParseException);
 
   // add input hexes
-  stackDataList = { ...stackDataList, inputHexes: [...stackDataList.inputHexes, parseResult.inputHex] };
-
-  if (!currentScope(stackDataList)) {
-    if (input !== "OP_IF" && input !== "OP_NOTIF" && input !== "OP_ELSE" && input !== "OP_ENDIF") return stackDataList;
-  }
+  stackDataList = { ...stackDataList, inputHexes: [...stackDataList.inputHexes, parseResult.inputHex], errorMessage: parseResult.errorMessage };
 
   // remove item(s) from main stack
   if (parseResult.main.removeLastSize > 0) {
@@ -45,8 +44,7 @@ const parse = (input: string): StackDataList => {
 
   // stack failed
   if (parseResult.isStackFailed) {
-    stackDataList = { ...stackDataList, isStackFailed: parseResult.isStackFailed };
-    throw "Stack failed an OP_VERIFY operation.";
+    stackDataList = { ...stackDataList, isStackFailed: parseResult.isStackFailed, errorMessage: "Stack failed an OP_VERIFY operation." };
   }
 
   return stackDataList;
