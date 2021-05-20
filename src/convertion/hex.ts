@@ -1,3 +1,5 @@
+import { bytesToHex, bytesToString } from "./bytes";
+
 const validHex = (hex: string) => hex.length % 2 === 0 && !/[^a-fA-F0-9]/u.test(hex);
 
 const hexLE = (hex: string): string => bytesToHex(hexToBytes(hex).reverse());
@@ -14,6 +16,6 @@ const hexToByte = (hex: string): number => {
   return parseInt(hex, 16);
 };
 
-const hexToBytes = (hex: string): Uint8Array => Uint8Array.from(hexToHexBytes(hex).map((byte) => hexToByte(byte)));
+export const hexToBytes = (hex: string): Uint8Array => Uint8Array.from(hexToHexBytes(hex).map((byte) => hexToByte(byte)));
 
 const hexToString = (hex: string): string => bytesToString(hexToBytes(hex));
