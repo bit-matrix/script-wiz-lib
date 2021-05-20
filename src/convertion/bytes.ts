@@ -7,7 +7,7 @@ const byteToHex = (byte: number): string => {
   return byte.toString(16).padStart(2, "0");
 };
 
-const bytesToHex = (bytes: Uint8Array): string => bytes.reduce((hexString, currentByte) => hexString + byteToHex(currentByte), "");
+export const bytesToHex = (bytes: Uint8Array): string => bytes.reduce((hexString, currentByte) => hexString + byteToHex(currentByte), "");
 
 /**
  * This implementations is derived from:
@@ -27,7 +27,7 @@ const bytesToHex = (bytes: Uint8Array): string => bytes.reduce((hexString, curre
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const bytesToString = (bytes: Uint8Array) => {
+export const bytesToString = (bytes: Uint8Array) => {
   var out = [],
     pos = 0,
     c = 0;
