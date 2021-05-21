@@ -779,7 +779,7 @@ const OP = (word: string, stackDataList: StackDataList): IParseResultData => {
     const removeLastSize: number = 3;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
   }
 
   /*
