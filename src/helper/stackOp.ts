@@ -749,7 +749,7 @@ const OP = (word: string, stackDataList: StackDataList): IParseResultData => {
 
     if (addDataArray[0].numberValue === 0) isStackFailed = true;
 
-    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
   }
   if (word === "OP_CHECKSIGFROMSTACK") {
     if (mainStackDataArrayLength < 3) throw "OP_CHECKSIGFROMSTACK Error: stack data array must include min 3 data!";
