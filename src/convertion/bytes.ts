@@ -1,4 +1,4 @@
-import { hexBoundaries } from "./hex";
+import { hexBoundaries, hexLE } from "./hex";
 import { numberIsValid } from "./number";
 
 const validByte = (byte: number): boolean => 0 <= byte || byte <= 255;
@@ -59,7 +59,8 @@ export const bytesToString = (bytes: Uint8Array): string => {
 };
 
 export const bytesToNumber = (bytes: Uint8Array): number | undefined => {
-  if (bytes.length == 0 || 4 < bytes.length) return;
+  if (bytes.length == 0) return 0;
+  if (4 < bytes.length) return;
 
   const hex = bytesToHex(bytes);
   if (!numberIsValid(hex, bytes.length)) return;
@@ -67,7 +68,7 @@ export const bytesToNumber = (bytes: Uint8Array): number | undefined => {
   const boundaries = hexBoundaries(bytes.length);
   if (boundaries === undefined) return;
 
-  const numberHex: number = parseInt(hex, 16);
+  const numberHex: number = parseInt(hexLE(hex), 16);
   if ((boundaries.minPos <= numberHex && numberHex <= boundaries.maxPos) || numberHex === 0) return numberHex;
 
   // if (boundaries.minNeg <= numberHex && numberHex <= boundaries.maxNeg)
