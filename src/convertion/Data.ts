@@ -1,7 +1,8 @@
 import { MAX_INTEGER } from "../constant";
-import { bytesToHex, bytesToNumber, bytesToString } from "./bytes";
+import { bytesToHex, bytesToNumber } from "./bytes";
 import { hexToBytes } from "./hex";
 import { numberToBytes } from "./number";
+import { stringToBytes } from "./string";
 
 class Data {
   bytes: Uint8Array;

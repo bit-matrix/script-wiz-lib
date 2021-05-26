@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const stringToBytes = (text: string): Uint8Array => {
+export const stringToBytes = (text: string): Uint8Array => {
   const out: number[] = [];
   let p: number = 0;
   for (let i = 0; i < text.length; i++) {
