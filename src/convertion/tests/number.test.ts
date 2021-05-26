@@ -1,9 +1,9 @@
 import { MAX_INTEGER } from "../../constant";
-import numberTestData from "./numberTestData";
+import numberData from "./numberData";
 import Data from "../Data";
 
 test("Data class: number to data object test", () => {
-  numberTestData.forEach((d) => {
+  numberData.forEach((d) => {
     const data: Data = Data.fromNumber(d.inputNumber);
 
     expect(data.bytes.length).toBe(d.byteLength);
@@ -22,7 +22,7 @@ test("Data class: number to data object test", () => {
 });
 
 test("Data class: hex to data object test", () => {
-  numberTestData.forEach((d) => {
+  numberData.forEach((d) => {
     const data: Data = Data.fromHex(d.hexValue.substring(2));
 
     expect(data.bytes.length).toBe(d.byteLength);
