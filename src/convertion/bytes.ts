@@ -1,6 +1,9 @@
-const validByte = (byte: number) => 0 <= byte || byte <= 255;
+import { hexBoundaries } from "./hex";
+import { numberIsValid } from "./number";
 
-const bytesLE = (bytes: Uint8Array): Uint8Array => bytes.reverse();
+const validByte = (byte: number): boolean => 0 <= byte || byte <= 255;
+
+// const bytesLE = (bytes: Uint8Array): Uint8Array => bytes.reverse();
 
 const byteToHex = (byte: number): string => {
   if (!validByte(byte)) throw "byteToHex: invalid byte number";
@@ -27,30 +30,46 @@ export const bytesToHex = (bytes: Uint8Array): string => bytes.reduce((hexString
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const bytesToString = (bytes: Uint8Array) => {
-  var out = [],
-    pos = 0,
-    c = 0;
+export const bytesToString = (bytes: Uint8Array): string => {
+  const out: string[] = [];
+  let pos: number = 0,
+    c: number = 0;
   while (pos < bytes.length) {
-    var c1 = bytes[pos++];
+    const c1: number = bytes[pos++];
     if (c1 < 128) {
       out[c++] = String.fromCharCode(c1);
     } else if (c1 > 191 && c1 < 224) {
-      var c2 = bytes[pos++];
+      const c2: number = bytes[pos++];
       out[c++] = String.fromCharCode(((c1 & 31) << 6) | (c2 & 63));
     } else if (c1 > 239 && c1 < 365) {
       // Surrogate Pair
-      var c2 = bytes[pos++];
-      var c3 = bytes[pos++];
-      var c4 = bytes[pos++];
-      var u = (((c1 & 7) << 18) | ((c2 & 63) << 12) | ((c3 & 63) << 6) | (c4 & 63)) - 0x10000;
+      const c2: number = bytes[pos++];
+      const c3: number = bytes[pos++];
+      const c4: number = bytes[pos++];
+      const u: number = (((c1 & 7) << 18) | ((c2 & 63) << 12) | ((c3 & 63) << 6) | (c4 & 63)) - 0x10000;
       out[c++] = String.fromCharCode(0xd800 + (u >> 10));
       out[c++] = String.fromCharCode(0xdc00 + (u & 1023));
     } else {
-      var c2 = bytes[pos++];
-      var c3 = bytes[pos++];
+      const c2: number = bytes[pos++];
+      const c3: number = bytes[pos++];
       out[c++] = String.fromCharCode(((c1 & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
     }
   }
   return out.join("");
+};
+
+export const bytesToNumber = (bytes: Uint8Array): number | undefined => {
+  if (bytes.length == 0 || 4 < bytes.length) return;
+
+  const hex = bytesToHex(bytes);
+  if (!numberIsValid(hex, bytes.length)) return;
+
+  const boundaries = hexBoundaries(bytes.length);
+  if (boundaries === undefined) return;
+
+  const numberHex: number = parseInt(hex, 16);
+  if ((boundaries.minPos <= numberHex && numberHex <= boundaries.maxPos) || numberHex === 0) return numberHex;
+
+  // if (boundaries.minNeg <= numberHex && numberHex <= boundaries.maxNeg)
+  return Math.pow(2, 8 * bytes.length - 1) - numberHex;
 };
