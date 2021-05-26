@@ -1,3 +1,5 @@
+/* import { bytesToHex } from "./bytes"; */
+
 /**
  * This implementations is derived from:
  * https://github.com/google/closure-library/blob/8598d87242af59aac233270742c8984e2b2bdbe0/closure/goog/crypt/crypt.js
@@ -16,12 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 const stringToBytes = (text: string): Uint8Array => {
-  const out = [];
-  let p = 0;
+  const out: number[] = [];
+  let p: number = 0;
   for (let i = 0; i < text.length; i++) {
-    let c = text.charCodeAt(i);
+    let c: number = text.charCodeAt(i);
     if (c < 128) {
       out[p++] = c;
     } else if (c < 2048) {
@@ -42,4 +43,4 @@ const stringToBytes = (text: string): Uint8Array => {
   return new Uint8Array(out);
 };
 
-const stringToHex = (text: string): string => bytesToHex(stringToBytes(text));
+// export const stringToHex = (text: string): string => bytesToHex(stringToBytes(text));
