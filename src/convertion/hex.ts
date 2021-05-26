@@ -1,8 +1,8 @@
-// import { bytesToHex, bytesToString } from "./bytes";
+import { bytesToHex } from "./bytes";
 
 const validHex = (hex: string) => hex.length % 2 === 0 && !/[^a-fA-F0-9]/u.test(hex);
 
-// const hexLE = (hex: string): string => bytesToHex(hexToBytes(hex).reverse());
+export const hexLE = (hex: string): string => bytesToHex(hexToBytes(hex).reverse());
 
 const hexToHexBytes = (hex: string): string[] => {
   if (!validHex(hex)) throw "hexToHexBytes: invalid hex string";
