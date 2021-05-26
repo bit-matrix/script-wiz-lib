@@ -1,3 +1,5 @@
+import { hexLE } from "./hex";
+
 const BIT_8 = 8;
 const BIT_16 = 16;
 const BIT_32 = 32;
@@ -52,7 +54,7 @@ export const numberToBytes = (value: number): Uint8Array => {
 };
 
 export const numberIsValid = (hex: string, byteLength: number): boolean => {
-  const numberHex: number = parseInt(hex, 16);
+  const numberHex: number = parseInt(hexLE(hex), 16);
 
   // 1 byte
   // n = 0x00
