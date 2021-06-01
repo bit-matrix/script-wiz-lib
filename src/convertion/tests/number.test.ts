@@ -7,6 +7,10 @@ test("Data class: number to data object test", () => {
     const data: Data = Data.fromNumber(d.inputNumber);
 
     expect(data.bytes.length).toBe(d.byteLength);
+    expect(data.bin.length / 8).toBe(d.byteLength);
+    expect(data.hex.length / 2).toBe(d.byteLength);
+
+    expect(data.bin).toBe(d.binValue.substring(2));
     expect(data.hex).toBe(d.hexValue.substring(2));
 
     if (-MAX_INTEGER <= d.inputNumber && d.inputNumber <= MAX_INTEGER) {
