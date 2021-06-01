@@ -1,18 +1,21 @@
 import { MAX_INTEGER } from "../constant";
-import { bytesToHex, bytesToNumber } from "./bytes";
+import { binToBytes } from "./bin";
+import { bytesToBin, bytesToHex, bytesToNumber } from "./bytes";
 import { hexToBytes } from "./hex";
 import { numberToBytes } from "./number";
 import { stringToBytes } from "./string";
 
 class Data {
   bytes: Uint8Array;
+  bin: string;
   hex: string;
 
   number?: number;
   text?: string;
 
-  private constructor(hex?: string, number?: number, text?: string) {
+  private constructor(hex?: string, bin?: string, number?: number, text?: string) {
     let bytesVal: Uint8Array = new Uint8Array([]);
+    let binVal: string = "";
     let hexVal: string = "";
 
     let numberVal: number | undefined = undefined;
@@ -21,7 +24,17 @@ class Data {
     // fromHex
     if (hex !== undefined) {
       bytesVal = hexToBytes(hex);
+      binVal = bytesToBin(bytesVal);
       hexVal = hex;
+      numberVal = bytesToNumber(bytesVal);
+      // textVal = bytesToString(bytesVal); // TODO get from stack cache
+    }
+
+    // fromBin
+    else if (bin !== undefined) {
+      bytesVal = binToBytes(bin);
+      binVal = bin;
+      hexVal = bytesToHex(bytesVal);
       numberVal = bytesToNumber(bytesVal);
       // textVal = bytesToString(bytesVal); // TODO get from stack cache
     }
@@ -29,6 +42,7 @@ class Data {
     // fromNumber
     else if (number !== undefined) {
       bytesVal = numberToBytes(number);
+      binVal = bytesToBin(bytesVal);
       hexVal = bytesToHex(bytesVal);
       numberVal = number;
       // textVal = bytesToString(bytesVal); // TODO get from stack cache
@@ -37,6 +51,7 @@ class Data {
     // fromText
     else if (text !== undefined) {
       bytesVal = stringToBytes(text);
+      binVal = bytesToBin(bytesVal);
       hexVal = bytesToHex(bytesVal);
       numberVal = bytesToNumber(bytesVal);
       textVal = text; // TODO set to stack cache
@@ -44,21 +59,26 @@ class Data {
 
     // set props
     this.bytes = bytesVal;
+    this.bin = binVal;
     this.hex = hexVal;
     if (numberVal !== undefined && -MAX_INTEGER <= numberVal && numberVal <= MAX_INTEGER) this.number = numberVal;
     this.text = textVal;
   }
 
   public static fromHex(hex: string): Data {
-    return new Data(hex, undefined, undefined);
+    return new Data(hex, undefined, undefined, undefined);
+  }
+
+  public static fromBin(bin: string): Data {
+    return new Data(undefined, bin, undefined, undefined);
   }
 
   public static fromNumber(number: number): Data {
-    return new Data(undefined, number, undefined);
+    return new Data(undefined, undefined, number, undefined);
   }
 
   public static fromText(text: string): Data {
-    return new Data(undefined, undefined, text);
+    return new Data(undefined, undefined, undefined, text);
   }
 }
 
