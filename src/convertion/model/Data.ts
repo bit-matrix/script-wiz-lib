@@ -6,6 +6,9 @@ import { numberToBytes } from "../number";
 import { stringToBytes } from "../string";
 
 class Data {
+  input: string | number;
+  output: string | number;
+
   bytes: Uint8Array;
   bin: string;
   hex: string;
@@ -14,6 +17,9 @@ class Data {
   text?: string;
 
   private constructor(hex?: string, bin?: string, number?: number, text?: string) {
+    let inputVal: string | number = "";
+    let outputVal: string | number = "";
+
     let bytesVal: Uint8Array = new Uint8Array([]);
     let binVal: string = "";
     let hexVal: string = "";
@@ -23,6 +29,7 @@ class Data {
 
     // fromHex
     if (hex !== undefined) {
+      inputVal = hex;
       bytesVal = hexToBytes(hex);
       binVal = bytesToBin(bytesVal);
       hexVal = hex;
@@ -32,6 +39,7 @@ class Data {
 
     // fromBin
     else if (bin !== undefined) {
+      inputVal = bin;
       bytesVal = binToBytes(bin);
       binVal = bin;
       hexVal = bytesToHex(bytesVal);
@@ -41,6 +49,7 @@ class Data {
 
     // fromNumber
     else if (number !== undefined) {
+      inputVal = number;
       bytesVal = numberToBytes(number);
       binVal = bytesToBin(bytesVal);
       hexVal = bytesToHex(bytesVal);
@@ -50,6 +59,7 @@ class Data {
 
     // fromText
     else if (text !== undefined) {
+      inputVal = text;
       bytesVal = stringToBytes(text);
       binVal = bytesToBin(bytesVal);
       hexVal = bytesToHex(bytesVal);
@@ -58,11 +68,17 @@ class Data {
     }
 
     // set props
+    this.input = inputVal;
     this.bytes = bytesVal;
     this.bin = binVal;
     this.hex = hexVal;
     if (numberVal !== undefined && -MAX_INTEGER <= numberVal && numberVal <= MAX_INTEGER) this.number = numberVal;
     this.text = textVal;
+
+    if (this.text !== undefined) outputVal = this.text;
+    else if (this.number !== undefined) outputVal = this.number;
+    else outputVal = this.hex;
+    this.output = outputVal;
   }
 
   public static fromHex(hex: string): Data {
