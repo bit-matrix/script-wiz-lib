@@ -75,4 +75,4 @@ export const bytesToNumber = (bytes: Uint8Array): number | undefined => {
   return Math.pow(2, 8 * bytes.length - 1) - numberHex;
 };
 
-export const bytesToBin = (bytes: Uint8Array): string => bytes.reduce((str, byte) => str + byte.toString(2).padStart(8, "0"), "");
+export const bytesToBin = (bytes: Uint8Array): string => bytes.reduce((bin, byte) => byte.toString(2).padStart(8, "0") + bin, "");

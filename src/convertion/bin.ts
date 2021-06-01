@@ -11,4 +11,9 @@ const binToBinBytes = (bin: string): string[] => {
 
 const binToByte = (bin: string): number => parseInt(bin, 2);
 
-export const binToBytes = (bin: string) => Uint8Array.from(binToBinBytes(bin).map((binByte) => binToByte(binByte)));
+export const binToBytes = (bin: string) =>
+  Uint8Array.from(
+    binToBinBytes(bin)
+      .reverse()
+      .map((binByte) => binToByte(binByte))
+  );
