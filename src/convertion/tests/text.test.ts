@@ -6,6 +6,10 @@ test("Data class: hex to data object test", () => {
     const data: Data = Data.fromHex(d.hexValue.substring(2));
 
     expect(data.bytes.length).toBe(d.byteLength);
+    expect(data.bin.length / 8).toBe(d.byteLength);
+    expect(data.hex.length / 2).toBe(d.byteLength);
+
+    expect(data.bin).toBe(d.binValue.substring(2));
     expect(data.hex).toBe(d.hexValue.substring(2));
     expect(data.number).toBe(d.numberValue);
     // expect(data.text).toBe(d.inputText); // TODO get from stack cache
