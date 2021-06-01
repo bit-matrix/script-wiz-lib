@@ -1,5 +1,5 @@
-import textData from "./textData";
-import Data from "../Data";
+import textData from "./data/text";
+import Data from "../model/Data";
 
 test("Data class: hex to data object test", () => {
   textData.forEach((d) => {

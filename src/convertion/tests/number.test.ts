@@ -1,6 +1,6 @@
 import { MAX_INTEGER } from "../../constant";
-import numberData from "./numberData";
-import Data from "../Data";
+import numberData from "./data/number";
+import Data from "../model/Data";
 
 test("Data class: number to data object test", () => {
   numberData.forEach((d) => {

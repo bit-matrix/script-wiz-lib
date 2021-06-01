@@ -1,9 +1,9 @@
-import { MAX_INTEGER } from "../constant";
-import { binToBytes } from "./bin";
-import { bytesToBin, bytesToHex, bytesToNumber } from "./bytes";
-import { hexToBytes } from "./hex";
-import { numberToBytes } from "./number";
-import { stringToBytes } from "./string";
+import { MAX_INTEGER } from "../../constant";
+import { binToBytes } from "../bin";
+import { bytesToBin, bytesToHex, bytesToNumber } from "../bytes";
+import { hexToBytes } from "../hex";
+import { numberToBytes } from "../number";
+import { stringToBytes } from "../string";
 
 class Data {
   bytes: Uint8Array;
