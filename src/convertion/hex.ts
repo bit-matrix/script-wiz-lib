@@ -1,5 +1,7 @@
 import { bytesToHex } from "./bytes";
 
+export const hexFixBytes = (hex: string) => (hex.length % 2 === 0 ? hex : hex.padStart(Math.ceil(hex.length / 2) * 2, "0"));
+
 const validHex = (hex: string) => hex.length % 2 === 0 && !/[^a-fA-F0-9]/u.test(hex);
 
 export const hexLE = (hex: string): string => bytesToHex(hexToBytes(hex).reverse());
