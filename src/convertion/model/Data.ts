@@ -1,11 +1,11 @@
-import { MAX_INTEGER } from "../../constant";
+import { MAX_INTEGER } from "../const";
 import { binToBytes } from "../bin";
 import { bytesToBin, bytesToHex, bytesToNumber } from "../bytes";
 import { hexToBytes } from "../hex";
 import { numberToBytes } from "../number";
 import { stringToBytes } from "../string";
 
-class Data {
+export class Data {
   input: string | number;
   output: string | number;
 
@@ -97,5 +97,3 @@ class Data {
     return new Data(undefined, undefined, undefined, text);
   }
 }
-
-export default Data;

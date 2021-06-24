@@ -1,4 +1,4 @@
-const numberTestData = [
+export const numberTestData = [
   { inputNumber: -2147483650, numberValue: false, byteLength: 5, hexValue: "0x0200008080", binValue: "0b1000000010000000000000000000000000000010" },
   { inputNumber: -2147483649, numberValue: false, byteLength: 5, hexValue: "0x0100008080", binValue: "0b1000000010000000000000000000000000000001" },
   { inputNumber: -2147483648, numberValue: false, byteLength: 5, hexValue: "0x0000008080", binValue: "0b1000000010000000000000000000000000000000" },
@@ -67,5 +67,3 @@ const numberTestData = [
   { inputNumber: 2147483649, numberValue: false, byteLength: 5, hexValue: "0x0100008000", binValue: "0b0000000010000000000000000000000000000001" },
   { inputNumber: 2147483650, numberValue: false, byteLength: 5, hexValue: "0x0200008000", binValue: "0b0000000010000000000000000000000000000010" },
 ];
-
-export default numberTestData;

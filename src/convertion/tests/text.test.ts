@@ -1,8 +1,8 @@
-import textData from "./data/text";
-import Data from "../model/Data";
+import { textTestData } from "./data/text";
+import { Data } from "../model/Data";
 
 test("Data class: hex to data object test", () => {
-  textData.forEach((d) => {
+  textTestData.forEach((d) => {
     const data: Data = Data.fromHex(d.hexValue.substring(2));
 
     expect(data.input).toBe(d.hexValue.substring(2));
@@ -22,7 +22,7 @@ test("Data class: hex to data object test", () => {
 });
 
 test("Data class: text to data object test", () => {
-  textData.forEach((d) => {
+  textTestData.forEach((d) => {
     const data: Data = Data.fromText(d.inputText);
 
     expect(data.input).toBe(d.inputText);
