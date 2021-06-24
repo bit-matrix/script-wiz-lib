@@ -5,7 +5,7 @@ import { opcodesBitcoinTapscript } from "./BITCOIN_TAPSCRIPT";
 import { opcodesLiquidSegwit } from "./LIQUID_SEGWIT";
 import { opcodesLiquidTapscript } from "./LIQUID_TAPSCRIPT";
 
-export const opCodes = (vm: VM): Opcode[] => {
+const opcodes = (vm: VM): Opcode[] => {
   if (vm.network === VM_NETWORK.BTC) {
     if (vm.ver === VM_NETWORK_VERSION.SEGWIT) return opcodesBitcoinSegwit;
     // else if(vm.ver === VM_NETWORK_VERSION.TAPSCRIPT)
@@ -19,3 +19,23 @@ export const opCodes = (vm: VM): Opcode[] => {
   // }
   // }
 };
+
+export class Opcodes {
+  vm: VM;
+  data: Opcode[];
+
+  constructor(vm: VM) {
+    this.vm = vm;
+    this.data = opcodes(vm);
+  }
+
+  wordData = (word: string): Opcode | undefined => this.data.find((d) => d.word === word);
+  wordCode = (word: string): number => {
+    const code = this.wordData(word)?.opcode;
+    return code === undefined ? -1 : code;
+  };
+  wordHex = (word: string): string => this.wordData(word)?.hex || "";
+
+  codeData = (code: number): Opcode | undefined => this.data.find((d) => d.opcode === code);
+  codeWord = (code: number): string => this.codeData(code)?.word || "";
+}
