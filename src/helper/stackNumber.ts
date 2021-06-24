@@ -1,6 +1,6 @@
 import { hexLittleEndian } from "./index";
 import { StackData } from "../model";
-import { MAX_INTEGER } from "../constant";
+import { MAX_INTEGER } from "../convertion/const";
 
 const log = (base: number, x: number) => Math.log(x) / Math.log(base);
 

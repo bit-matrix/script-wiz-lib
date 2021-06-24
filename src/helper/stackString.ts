@@ -1,4 +1,4 @@
-import { MAX_INTEGER } from "../constant";
+import { MAX_INTEGER } from "../convertion/const";
 import { StackData } from "../model";
 import stackHex from "./stackHex";
 

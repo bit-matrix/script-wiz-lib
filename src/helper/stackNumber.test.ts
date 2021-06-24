@@ -1,6 +1,6 @@
 import { hexLittleEndian } from "./index";
 import { StackData } from "../model";
-import { MAX_INTEGER } from "../constant";
+import { MAX_INTEGER } from "../convertion/const";
 import stackNumberTestData from "./stackNumberTestData";
 import stackNumber, { log, getNumberByteLength, getNumberByteLengthEx, hexNumber, hexToByteArray } from "./stackNumber";
 import { resizeUint8Array } from "../bytes";

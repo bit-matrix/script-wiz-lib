@@ -1,5 +1,5 @@
 import { hexLittleEndian } from "./index";
-import { MAX_INTEGER } from "../constant";
+import { MAX_INTEGER } from "../convertion/const";
 import { StackData } from "../model";
 
 interface NumberBoundries {

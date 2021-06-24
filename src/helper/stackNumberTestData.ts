@@ -1,4 +1,4 @@
-import { MAX_INTEGER } from "../constant";
+import { MAX_INTEGER } from "../convertion/const";
 
 const stackNumberTestData = [
   /* { inputNumber: -2147483650, numberValue: false, byteLength: 5, hexValue: "0x0200008080" },

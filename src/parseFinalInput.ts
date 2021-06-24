@@ -1,4 +1,4 @@
-import { EMOJI_REGEX } from "./constant";
+import { EMOJI_REGEX } from "./convertion/const";
 import { opWordToHex } from "./helper";
 import stackHex from "./helper/stackHex";
 import stackNumber from "./helper/stackNumber";
