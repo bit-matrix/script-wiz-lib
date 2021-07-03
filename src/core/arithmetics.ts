@@ -1,64 +1,62 @@
-import { Data } from "../convertion/model/Data";
+import WizData from "../convertion";
 
-export const add1 = (data: Data): Data => {
-  if (data.number !== undefined) {
-    const numberValue: number = data.number + 1;
-    return Data.fromNumber(numberValue);
+export const add1 = (wizData: WizData): WizData => {
+  if (wizData.number !== undefined) {
+    const numberValue: number = wizData.number + 1;
+    return WizData.fromNumber(numberValue);
   }
 
-  throw "Error: this operation requires 1 valid number data";
+  throw "Error: this operation requires 1 valid number wizData";
 };
 
-export const sub1 = (data: Data): Data => {
-  if (data.number !== undefined) {
-    const numberValue: number = data.number - 1;
-    return Data.fromNumber(numberValue);
+export const sub1 = (wizData: WizData): WizData => {
+  if (wizData.number !== undefined) {
+    const numberValue: number = wizData.number - 1;
+    return WizData.fromNumber(numberValue);
   }
 
-  throw "Error: this operation requires 1 valid number data";
+  throw "Error: this operation requires 1 valid number wizData";
 };
 
-/* const OP_NEGATE = (stackData: IStackData): IStackData[] => {
-  if (stackData.numberValue !== undefined) {
-    const totalValue: number = stackData.numberValue * -1;
-    return [stackNumber(totalValue.toString())];
+export const negate = (wizData: WizData): WizData => {
+  if (wizData.number !== undefined) {
+    const negateValue: number = wizData.number * -1;
+    return WizData.fromNumber(negateValue);
   }
 
-  throw "OP_NEGATE Error: this operation requires 1 valid number data";
+  throw "Error: this operation requires 1 valid number wizData";
 };
 
-const OP_ABS = (stackData: IStackData): IStackData[] => {
-  if (stackData.numberValue !== undefined) {
-    const totalValue: number = Math.abs(stackData.numberValue);
-
-    return [stackNumber(totalValue.toString())];
+export const abs = (wizData: WizData): WizData => {
+  if (wizData.number !== undefined) {
+    const absValue: number = Math.abs(wizData.number);
+    return WizData.fromNumber(absValue);
   }
 
-  throw "OP_ABS Error: this operation requires 1 valid number data";
+  throw "Error: this operation requires 1 valid number wizData";
 };
 
-const OP_NOT = (stackData: IStackData): IStackData[] => {
-  if (stackData.numberValue !== undefined) {
-    const isNotTrue: boolean = !stackData.numberValue;
+export const not = (wizData: WizData): WizData => {
+  if (wizData.number !== undefined) {
+    const isfalse: boolean = !wizData.number;
 
-    if (isNotTrue) return [stackNumber("1")];
-    return [stackNumber("0")];
+    return WizData.fromNumber(isfalse ? 1 : 0);
   }
 
-  throw "OP_NOT Error: this operation requires 1 valid number data";
+  throw "Error: this operation requires 1 valid number wizData";
 };
 
-const OP_0NOTEQUAL = (stackData: IStackData): IStackData[] => {
-  if (stackData.numberValue !== undefined) {
-    const isNotTrue: boolean = !stackData.numberValue;
+export const notEqual0 = (wizData: WizData): WizData => {
+  if (wizData.number !== undefined) {
+    const isfalse: boolean = !wizData.number;
 
-    if (!isNotTrue) return [stackNumber("1")];
-    return [stackNumber("0")];
+    return WizData.fromNumber(isfalse ? 0 : 1);
   }
 
-  throw "OP_0NOTEQUAL Error: this operation requires 1 valid number data";
+  throw "Error: this operation requires 1 valid number wizData";
 };
 
+/* 
 const OP_ADD = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     const totalValue: number = stackData1.numberValue + stackData2.numberValue;
