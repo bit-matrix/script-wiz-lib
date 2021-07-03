@@ -56,16 +56,16 @@ export const notEqual0 = (wizData: WizData): WizData => {
   throw "Error: this operation requires 1 valid number wizData";
 };
 
-/* 
-const OP_ADD = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    const totalValue: number = stackData1.numberValue + stackData2.numberValue;
-    return [stackNumber(totalValue.toString())];
+export const add = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    const addedValue: number = wizData.number + wizData2.number;
+    return WizData.fromNumber(addedValue);
   }
 
-  throw "OP_ADD Error: this operation requires 2 valid number data";
+  throw "Error: this operation requires 2 valid number wizData";
 };
 
+/* 
 const OP_SUB = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     const totalValue: number = stackData2.numberValue - stackData1.numberValue;
