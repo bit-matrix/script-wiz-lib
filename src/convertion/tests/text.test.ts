@@ -1,41 +1,41 @@
 import { textTestData } from "./data/text";
-import { Data } from "../model/Data";
+import { WizData } from "../model/WizData";
 
-test("Data class: hex to data object test", () => {
+test("WizData class: hex to wizData object test", () => {
   textTestData.forEach((d) => {
-    const data: Data = Data.fromHex(d.hexValue.substring(2));
+    const wizData: WizData = WizData.fromHex(d.hexValue.substring(2));
 
-    expect(data.input).toBe(d.hexValue.substring(2));
+    expect(wizData.input).toBe(d.hexValue.substring(2));
 
-    expect(data.bytes.length).toBe(d.byteLength);
-    expect(data.bin.length / 8).toBe(d.byteLength);
-    expect(data.hex.length / 2).toBe(d.byteLength);
+    expect(wizData.bytes.length).toBe(d.byteLength);
+    expect(wizData.bin.length / 8).toBe(d.byteLength);
+    expect(wizData.hex.length / 2).toBe(d.byteLength);
 
-    expect(data.bin).toBe(d.binValue.substring(2));
-    expect(data.hex).toBe(d.hexValue.substring(2));
-    expect(data.number).toBe(d.numberValue);
+    expect(wizData.bin).toBe(d.binValue.substring(2));
+    expect(wizData.hex).toBe(d.hexValue.substring(2));
+    expect(wizData.number).toBe(d.numberValue);
     // expect(data.text).toBe(d.inputText); // TODO get from stack cache
 
-    if (d.numberValue !== undefined) expect(data.output).toBe(d.numberValue);
-    else expect(data.output).toBe(d.hexValue.substring(2));
+    if (d.numberValue !== undefined) expect(wizData.output).toBe(d.numberValue);
+    else expect(wizData.output).toBe(d.hexValue.substring(2));
   });
 });
 
-test("Data class: text to data object test", () => {
+test("WizData class: text to wizData object test", () => {
   textTestData.forEach((d) => {
-    const data: Data = Data.fromText(d.inputText);
+    const wizData: WizData = WizData.fromText(d.inputText);
 
-    expect(data.input).toBe(d.inputText);
+    expect(wizData.input).toBe(d.inputText);
 
-    expect(data.bytes.length).toBe(d.byteLength);
-    expect(data.bin.length / 8).toBe(d.byteLength);
-    expect(data.hex.length / 2).toBe(d.byteLength);
+    expect(wizData.bytes.length).toBe(d.byteLength);
+    expect(wizData.bin.length / 8).toBe(d.byteLength);
+    expect(wizData.hex.length / 2).toBe(d.byteLength);
 
-    expect(data.bin).toBe(d.binValue.substring(2));
-    expect(data.hex).toBe(d.hexValue.substring(2));
-    expect(data.number).toBe(d.numberValue);
-    expect(data.text).toBe(d.inputText);
+    expect(wizData.bin).toBe(d.binValue.substring(2));
+    expect(wizData.hex).toBe(d.hexValue.substring(2));
+    expect(wizData.number).toBe(d.numberValue);
+    expect(wizData.text).toBe(d.inputText);
 
-    expect(data.output).toBe(d.inputText);
+    expect(wizData.output).toBe(d.inputText);
   });
 });

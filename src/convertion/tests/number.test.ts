@@ -1,57 +1,57 @@
 import { MAX_INTEGER } from "../const";
 import { numberTestData } from "./data/number";
-import { Data } from "../model/Data";
+import { WizData } from "../model/WizData";
 
-test("Data class: number to data object test", () => {
+test("WizData class: number to wizData object test", () => {
   numberTestData.forEach((d) => {
-    const data: Data = Data.fromNumber(d.inputNumber);
+    const wizData: WizData = WizData.fromNumber(d.inputNumber);
 
-    expect(data.input).toBe(d.inputNumber);
+    expect(wizData.input).toBe(d.inputNumber);
 
-    expect(data.bytes.length).toBe(d.byteLength);
-    expect(data.bin.length / 8).toBe(d.byteLength);
-    expect(data.hex.length / 2).toBe(d.byteLength);
+    expect(wizData.bytes.length).toBe(d.byteLength);
+    expect(wizData.bin.length / 8).toBe(d.byteLength);
+    expect(wizData.hex.length / 2).toBe(d.byteLength);
 
-    expect(data.bin).toBe(d.binValue.substring(2));
-    expect(data.hex).toBe(d.hexValue.substring(2));
+    expect(wizData.bin).toBe(d.binValue.substring(2));
+    expect(wizData.hex).toBe(d.hexValue.substring(2));
 
     if (-MAX_INTEGER <= d.inputNumber && d.inputNumber <= MAX_INTEGER) {
       expect(d.numberValue).toBe(true);
-      expect(data.number).toBe(d.inputNumber);
-      expect(data.output).toBe(d.inputNumber);
+      expect(wizData.number).toBe(d.inputNumber);
+      expect(wizData.output).toBe(d.inputNumber);
     } else {
       expect(d.numberValue).toBe(false);
-      expect(data.number).toBe(undefined);
-      expect(data.output).toBe(d.hexValue.substring(2));
+      expect(wizData.number).toBe(undefined);
+      expect(wizData.output).toBe(d.hexValue.substring(2));
     }
 
-    expect(data.text).toBe(undefined);
+    expect(wizData.text).toBe(undefined);
   });
 });
 
-test("Data class: hex to data object test", () => {
+test("WizData class: hex to wizData object test", () => {
   numberTestData.forEach((d) => {
-    const data: Data = Data.fromHex(d.hexValue.substring(2));
+    const wizData: WizData = WizData.fromHex(d.hexValue.substring(2));
 
-    expect(data.input).toBe(d.hexValue.substring(2));
+    expect(wizData.input).toBe(d.hexValue.substring(2));
 
-    expect(data.bytes.length).toBe(d.byteLength);
-    expect(data.bin.length / 8).toBe(d.byteLength);
-    expect(data.hex.length / 2).toBe(d.byteLength);
+    expect(wizData.bytes.length).toBe(d.byteLength);
+    expect(wizData.bin.length / 8).toBe(d.byteLength);
+    expect(wizData.hex.length / 2).toBe(d.byteLength);
 
-    expect(data.bin).toBe(d.binValue.substring(2));
-    expect(data.hex).toBe(d.hexValue.substring(2));
+    expect(wizData.bin).toBe(d.binValue.substring(2));
+    expect(wizData.hex).toBe(d.hexValue.substring(2));
 
     if (-MAX_INTEGER <= d.inputNumber && d.inputNumber <= MAX_INTEGER) {
       expect(d.numberValue).toBe(true);
-      expect(data.number).toBe(d.inputNumber);
-      expect(data.output).toBe(d.inputNumber);
+      expect(wizData.number).toBe(d.inputNumber);
+      expect(wizData.output).toBe(d.inputNumber);
     } else {
       expect(d.numberValue).toBe(false);
-      expect(data.number).toBe(undefined);
-      expect(data.output).toBe(d.hexValue.substring(2));
+      expect(wizData.number).toBe(undefined);
+      expect(wizData.output).toBe(d.hexValue.substring(2));
     }
 
-    expect(data.text).toBe(undefined);
+    expect(wizData.text).toBe(undefined);
   });
 });

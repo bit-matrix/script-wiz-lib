@@ -5,7 +5,7 @@ import { hexToBytes } from "../hex";
 import { numberToBytes } from "../number";
 import { stringToBytes } from "../string";
 
-export class Data {
+export class WizData {
   input: string | number;
   output: string | number;
 
@@ -81,19 +81,19 @@ export class Data {
     this.output = outputVal;
   }
 
-  public static fromHex(hex: string): Data {
-    return new Data(hex, undefined, undefined, undefined);
+  public static fromHex(hex: string): WizData {
+    return new WizData(hex, undefined, undefined, undefined);
   }
 
-  public static fromBin(bin: string): Data {
-    return new Data(undefined, bin, undefined, undefined);
+  public static fromBin(bin: string): WizData {
+    return new WizData(undefined, bin, undefined, undefined);
   }
 
-  public static fromNumber(number: number): Data {
-    return new Data(undefined, undefined, number, undefined);
+  public static fromNumber(number: number): WizData {
+    return new WizData(undefined, undefined, number, undefined);
   }
 
-  public static fromText(text: string): Data {
-    return new Data(undefined, undefined, undefined, text);
+  public static fromText(text: string): WizData {
+    return new WizData(undefined, undefined, undefined, text);
   }
 }
