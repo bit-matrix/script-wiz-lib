@@ -94,25 +94,25 @@ export const div = (wizData: WizData, wizData2: WizData): WizData => {
   throw "Error: this operation requires 2 valid number wizData";
 };
 
+export const lshift = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    const lShiftValue: number = wizData.number << wizData2.number;
+    return WizData.fromNumber(lShiftValue);
+  }
+
+  throw "Error: this operation requires 2 valid number wizData";
+};
+
+export const rshift = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    const rShiftValue: number = wizData.number >> wizData2.number;
+    return WizData.fromNumber(rShiftValue);
+  }
+
+  throw "Error: this operation requires 2 valid number wizData";
+};
+
 /* 
-const OP_LSHIFT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    const lShiftValue: number = stackData2.numberValue << stackData1.numberValue;
-    return [stackNumber(lShiftValue.toString())];
-  }
-
-  throw "OP_SUB Error: this operation requires 2 valid number data";
-};
-
-const OP_RSHIFT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    const rShiftValue: number = stackData2.numberValue >> stackData1.numberValue;
-    return [stackNumber(rShiftValue.toString())];
-  }
-
-  throw "OP_SUB Error: this operation requires 2 valid number data";
-};
-
 const OP_BOOLAND = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     if (stackData1.numberValue === 0 || stackData2.numberValue === 0) {
