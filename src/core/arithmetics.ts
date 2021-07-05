@@ -112,59 +112,41 @@ export const rshift = (wizData: WizData, wizData2: WizData): WizData => {
   throw "Error: this operation requires 2 valid number wizData";
 };
 
+export const boolAnd = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    if (wizData.number === 0 || wizData2.number === 0) return WizData.fromNumber(0);
+    return WizData.fromNumber(1);
+  }
+
+  throw "Error: this operation requires 2 valid number wizData";
+};
+
+export const boolOr = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    if (wizData.number === 0 && wizData2.number === 0) return WizData.fromNumber(0);
+    return WizData.fromNumber(1);
+  }
+
+  throw "Error: this operation requires 2 valid number wizData";
+};
+
+export const numEqualVerify = (wizData: WizData, wizData2: WizData): boolean => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) return wizData.number === wizData2.number;
+
+  throw "Error: this operation requires 2 valid number wizData";
+};
+
+export const numEqual = (wizData: WizData, wizData2: WizData): WizData => {
+  const equal = numEqualVerify(wizData, wizData2);
+  return WizData.fromNumber(equal ? 1 : 0);
+};
+
+export const numNotEqual = (wizData: WizData, wizData2: WizData): WizData => {
+  const equal = numEqualVerify(wizData, wizData2);
+  return WizData.fromNumber(equal ? 0 : 1);
+};
+
 /* 
-const OP_BOOLAND = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData1.numberValue === 0 || stackData2.numberValue === 0) {
-      return [stackNumber("0")];
-    }
-    return [stackNumber("1")];
-  }
-
-  throw "OP_BOOLAND Error: this operation requires 2 valid number data";
-};
-
-const OP_BOOLOR = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData1.numberValue === 0 && stackData2.numberValue === 0) {
-      return [stackNumber("0")];
-    }
-    return [stackNumber("1")];
-  }
-
-  throw "OP_BOOLOR Error: this operation requires 2 valid number data";
-};
-
-const OP_NUMEQUAL = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData1.numberValue === stackData2.numberValue) {
-      return [stackNumber("1")];
-    }
-    return [stackNumber("0")];
-  }
-
-  throw "OP_NUMEQUAL Error: this operation requires 2 valid number data";
-};
-
-const OP_NUMEQUALVERIFY = (stackData2: IStackData, stackData1: IStackData): boolean => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    return stackData1.numberValue === stackData2.numberValue;
-  }
-
-  throw "OP_NUMEQUALVERIFY Error: this operation requires 2 valid number data";
-};
-
-const OP_NUMNOTEQUAL = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData1.numberValue !== stackData2.numberValue) {
-      return [stackNumber("1")];
-    }
-    return [stackNumber("0")];
-  }
-
-  throw "OP_NUMNOTEQUAL Error: this operation requires 2 valid number data";
-};
-
 const OP_LESSTHAN = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     if (stackData1.numberValue > stackData2.numberValue) {
