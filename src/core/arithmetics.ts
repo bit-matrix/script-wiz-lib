@@ -65,36 +65,36 @@ export const add = (wizData: WizData, wizData2: WizData): WizData => {
   throw "Error: this operation requires 2 valid number wizData";
 };
 
+export const sub = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    const subValue: number = wizData.number - wizData2.number;
+    return WizData.fromNumber(subValue);
+  }
+
+  throw "Error: this operation requires 2 valid number wizData";
+};
+
+export const mul = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    const mulValue: number = wizData.number * wizData2.number;
+    return WizData.fromNumber(mulValue);
+  }
+
+  throw "Error: this operation requires 2 valid number wizData";
+};
+
+export const div = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    if (wizData2.number === 0) throw "Error: dividing can't be eqaul 0.";
+
+    const divValue: number = wizData.number / wizData2.number;
+    return WizData.fromNumber(divValue);
+  }
+
+  throw "Error: this operation requires 2 valid number wizData";
+};
+
 /* 
-const OP_SUB = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    const totalValue: number = stackData2.numberValue - stackData1.numberValue;
-    return [stackNumber(totalValue.toString())];
-  }
-
-  throw "OP_SUB Error: this operation requires 2 valid number data";
-};
-
-const OP_MUL = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    const mulValue: number = stackData1.numberValue * stackData2.numberValue;
-    return [stackNumber(mulValue.toString())];
-  }
-
-  throw "OP_MUL Error: this operation requires 2 valid number data";
-};
-
-const OP_DIV = (stackData1: IStackData, stackData2: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData2.numberValue === 0) throw "OP_DIV Error: dividing can't be eqaul 0.";
-
-    const divValue: number = stackData1.numberValue / stackData2.numberValue;
-    return [stackNumber(divValue.toString())];
-  }
-
-  throw "OP_DIV Error: this operation requires 2 valid number data";
-};
-
 const OP_LSHIFT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
     const lShiftValue: number = stackData2.numberValue << stackData1.numberValue;
