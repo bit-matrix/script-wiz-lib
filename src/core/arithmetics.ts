@@ -146,17 +146,16 @@ export const numNotEqual = (wizData: WizData, wizData2: WizData): WizData => {
   return WizData.fromNumber(equal ? 0 : 1);
 };
 
-/* 
-const OP_LESSTHAN = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData1.numberValue > stackData2.numberValue) {
-      return [stackNumber("1")];
-    }
-    return [stackNumber("0")];
+export const lessThan = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    return WizData.fromNumber(wizData.number < wizData2.number ? 1 : 0);
   }
 
-  throw "OP_LESSTHAN Error: this operation requires 2 valid number data";
+  throw "Error: this operation requires 2 valid number wizData";
 };
+
+/* 
+
 
 const OP_GREATERTHAN = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
   if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
