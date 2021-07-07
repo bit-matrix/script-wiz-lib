@@ -154,101 +154,60 @@ export const lessThan = (wizData: WizData, wizData2: WizData): WizData => {
   throw "Error: this operation requires 2 valid number wizData";
 };
 
-/* 
-
-
-const OP_GREATERTHAN = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData2.numberValue > stackData1.numberValue) {
-      return [stackNumber("1")];
-    }
-    return [stackNumber("0")];
+export const graterThan = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    return WizData.fromNumber(wizData.number > wizData2.number ? 1 : 0);
   }
 
-  throw "OP_GREATERTHAN Error: this operation requires 2 valid number data";
+  throw "Error: this operation requires 2 valid number wizData";
 };
 
-const OP_LESSTHANOREQUAL = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData1.numberValue >= stackData2.numberValue) {
-      return [stackNumber("1")];
-    }
-
-    return [stackNumber("0")];
+export const lessThanOrEqual = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    return WizData.fromNumber(wizData.number <= wizData2.number ? 1 : 0);
   }
 
-  throw "OP_SUB Error: this operation requires 2 valid number data";
+  throw "Error: this operation requires 2 valid number wizData";
 };
 
-const OP_GREATERTHANOREQUAL = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData2.numberValue >= stackData1.numberValue) {
-      return [stackNumber("1")];
-    }
-
-    return [stackNumber("0")];
+export const graterThanOrEqual = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    return WizData.fromNumber(wizData.number >= wizData2.number ? 1 : 0);
   }
 
-  throw "OP_SUB Error: this operation requires 2 valid number data";
+  throw "Error: this operation requires 2 valid number wizData";
 };
 
-const OP_MIN = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData2.numberValue >= stackData1.numberValue) return [stackData1];
+export const min = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    if (wizData.number >= wizData2.number) return wizData2;
 
-    if (stackData1.numberValue > stackData2.numberValue) return [stackData2];
+    if (wizData2.number > wizData.number) return wizData;
   }
 
-  throw "OP_MIN Error: this operation requires 2 valid number data";
+  throw "Error: this operation requires 2 valid number wizData";
 };
 
-const OP_MAX = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined && stackData2.numberValue !== undefined) {
-    if (stackData2.numberValue >= stackData1.numberValue) return [stackData2];
+export const max = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    if (wizData.number >= wizData2.number) return wizData;
 
-    if (stackData1.numberValue > stackData2.numberValue) return [stackData1];
+    if (wizData2.number > wizData.number) return wizData2;
   }
 
-  throw "OP_MAX Error: this operation requires 2 valid number data";
+  throw "Error: this operation requires 2 valid number wizData";
 };
 
-const OP_WITHIN = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  const currentNumber = stackData3.numberValue;
-  const minValue = stackData2.numberValue;
-  const maxValue = stackData1.numberValue;
+export const withIn = (wizData: WizData, wizData2: WizData, wizData3: WizData): WizData => {
+  const currentNumber = wizData.number;
+  const minValue = wizData2.number;
+  const maxValue = wizData3.number;
 
   if (currentNumber !== undefined && minValue !== undefined && maxValue !== undefined) {
-    if (currentNumber >= minValue && currentNumber <= maxValue) return [stackNumber("1")];
+    if (currentNumber >= minValue && currentNumber <= maxValue) return WizData.fromNumber(1);
 
-    return [stackNumber("0")];
+    return WizData.fromNumber(0);
   }
 
-  throw "OP_WITHIN Error: this operation requires 3 valid number data";
+  throw "Error: this operation requires 3 valid number wizData";
 };
-
-export {
-  OP_1ADD,
-  OP_1SUB,
-  OP_NEGATE,
-  OP_ABS,
-  OP_NOT,
-  OP_0NOTEQUAL,
-  OP_ADD,
-  OP_SUB,
-  OP_MUL,
-  OP_DIV,
-  OP_LSHIFT,
-  OP_RSHIFT,
-  OP_BOOLAND,
-  OP_BOOLOR,
-  OP_NUMEQUAL,
-  OP_NUMEQUALVERIFY,
-  OP_NUMNOTEQUAL,
-  OP_LESSTHAN,
-  OP_GREATERTHAN,
-  OP_LESSTHANOREQUAL,
-  OP_GREATERTHANOREQUAL,
-  OP_MIN,
-  OP_MAX,
-  OP_WITHIN,
-}; */
