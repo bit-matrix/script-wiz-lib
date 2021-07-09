@@ -40,13 +40,13 @@ const opWordCodes: IOpWordCode[] = [
   { word: "OP_7", opcode: 87, hex: "0x57", output: 7, description: "The number 7 is pushed onto the stack." }, // Nothing.	7	The number 7 is pushed onto the stack.
   { word: "OP_8", opcode: 88, hex: "0x58", output: 8, description: "The number 8 is pushed onto the stack." }, // Nothing.	8	The number 8 is pushed onto the stack.
   { word: "OP_9", opcode: 89, hex: "0x59", output: 9, description: "The number 9 is pushed onto the stack." }, // Nothing.	9	The number 9 is pushed onto the stack.
-  { word: "OP_10", opcode: 90, hex: "0x60", output: 10, description: "The number 10 is pushed onto the stack." }, // Nothing.	10	The number 10 is pushed onto the stack.
-  { word: "OP_11", opcode: 91, hex: "0x61", output: 11, description: "The number 11 is pushed onto the stack." }, // Nothing.	11	The number 11 is pushed onto the stack.
-  { word: "OP_12", opcode: 92, hex: "0x62", output: 12, description: "The number 12 is pushed onto the stack." }, // Nothing.	12	The number 12 is pushed onto the stack.
-  { word: "OP_13", opcode: 93, hex: "0x63", output: 13, description: "The number 13 is pushed onto the stack." }, // Nothing.	13	The number 13 is pushed onto the stack.
-  { word: "OP_14", opcode: 94, hex: "0x64", output: 14, description: "The number 14 is pushed onto the stack." }, // Nothing.	14	The number 14 is pushed onto the stack.
-  { word: "OP_15", opcode: 95, hex: "0x65", output: 15, description: "The number 15 is pushed onto the stack." }, // Nothing.	15	The number 15 is pushed onto the stack.
-  { word: "OP_16", opcode: 96, hex: "0x66", output: 16, description: "The number 16 is pushed onto the stack." }, // Nothing.	16	The number 16 is pushed onto the stack.
+  { word: "OP_10", opcode: 90, hex: "0x5a", output: 10, description: "The number 10 is pushed onto the stack." }, // Nothing.	10	The number 10 is pushed onto the stack.
+  { word: "OP_11", opcode: 91, hex: "0x5b", output: 11, description: "The number 11 is pushed onto the stack." }, // Nothing.	11	The number 11 is pushed onto the stack.
+  { word: "OP_12", opcode: 92, hex: "0x5c", output: 12, description: "The number 12 is pushed onto the stack." }, // Nothing.	12	The number 12 is pushed onto the stack.
+  { word: "OP_13", opcode: 93, hex: "0x5d", output: 13, description: "The number 13 is pushed onto the stack." }, // Nothing.	13	The number 13 is pushed onto the stack.
+  { word: "OP_14", opcode: 94, hex: "0x5e", output: 14, description: "The number 14 is pushed onto the stack." }, // Nothing.	14	The number 14 is pushed onto the stack.
+  { word: "OP_15", opcode: 95, hex: "0x5f", output: 15, description: "The number 15 is pushed onto the stack." }, // Nothing.	15	The number 15 is pushed onto the stack.
+  { word: "OP_16", opcode: 96, hex: "0x60", output: 16, description: "The number 16 is pushed onto the stack." }, // Nothing.	16	The number 16 is pushed onto the stack.
 
   /*
    * Flow control
