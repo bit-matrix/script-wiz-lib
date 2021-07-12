@@ -130,19 +130,20 @@ export const boolOr = (wizData: WizData, wizData2: WizData): WizData => {
   throw "Error: this operation requires 2 valid number wizData";
 };
 
-export const numEqualVerify = (wizData: WizData, wizData2: WizData): boolean => {
-  if (wizData.number !== undefined && wizData2.number !== undefined) return wizData.number === wizData2.number;
+export const numEqual = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.number !== undefined && wizData2.number !== undefined) {
+    return WizData.fromNumber(wizData.number === wizData2.number ? 1 : 0);
+  }
 
   throw "Error: this operation requires 2 valid number wizData";
 };
 
-export const numEqual = (wizData: WizData, wizData2: WizData): WizData => {
-  const equal = numEqualVerify(wizData, wizData2);
-  return WizData.fromNumber(equal ? 1 : 0);
+export const numEqualVerify = (wizData: WizData, wizData2: WizData): WizData => {
+  return numEqual(wizData, wizData2);
 };
 
 export const numNotEqual = (wizData: WizData, wizData2: WizData): WizData => {
-  const equal = numEqualVerify(wizData, wizData2);
+  const equal = numEqual(wizData, wizData2).number === 1;
   return WizData.fromNumber(equal ? 0 : 1);
 };
 
