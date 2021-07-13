@@ -6,7 +6,11 @@ export const concatenate = (wizData: WizData, wizData2: WizData): WizData => {
   return WizData.fromHex(wizData.hex + wizData2.hex);
 };
 
-export const substr = (wizData: WizData, wizData2: WizData, wizData3: WizData): WizData => {
+export const substr = (
+  wizData: WizData,
+  wizData2: WizData,
+  wizData3: WizData
+): WizData => {
   const message = wizData.hex;
   const index = wizData2.number;
   const size = wizData3.number;
@@ -20,78 +24,73 @@ export const substr = (wizData: WizData, wizData2: WizData, wizData3: WizData): 
   throw "Index and size must be number!";
 };
 
-const OP_SUBSTR = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData2.numberValue !== undefined && stackData1.numberValue !== undefined) {
-    const resultByteValue = "0x" + stackData3.byteValue.substr(2 + stackData2.numberValue * 2, stackData1.numberValue * 2);
+export const right = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData2.number !== undefined) {
+    const message = wizData.hex;
+    const size = wizData2.number * 2;
 
-    return [stackHex(resultByteValue)];
+    if (size < 0) throw "Error: Size can't be negative integer!";
+    if (message.length < size)
+      throw "Error: Size can't higher than data length!";
+    if (size === 0) return WizData.fromNumber(0);
+
+    const result = message.slice(size * -1);
+
+    return WizData.fromHex(result);
   }
 
-  throw "OP_SUBSTR Error: Index and size must be number!";
+  throw "Size must be number!";
 };
 
-const OP_RIGHT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined) {
-    const data = stackData2.byteValue.substr(2);
-    const size = stackData1.numberValue * 2;
+export const left = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData2.number !== undefined) {
+    const message = wizData.hex;
+    const size = wizData2.number * 2;
 
-    if (size < 0) throw "OP_RIGHT Error: Size can't be negative integer!";
-    if (data.length < size) throw "OP_RIGHT Error: Size can't higher than data length!";
-    if (size === 0) return [stackNumber("0")];
+    if (size < 0) throw "Error: Size can't be negative integer.!";
+    if (message.length < size)
+      throw "Error: Size can't higher than data length!";
+    if (size === 0) WizData.fromNumber(0);
 
-    const resultByteValue = "0x" + data.slice(size * -1);
+    const result = message.substr(0, size);
 
-    return [stackHex(resultByteValue)];
+    return WizData.fromHex(result);
   }
 
-  throw "OP_RIGHT Error: Size must be number!";
+  throw "Error: Size must be number!";
 };
 
-const OP_LEFT = (stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData1.numberValue !== undefined) {
-    const data = stackData2.byteValue.substr(2);
-    const size = stackData1.numberValue * 2;
-
-    if (size < 0) throw "OP_LEFT Error: Size can't be negative integer.!";
-    if (data.length < size) throw "OP_LEFT Error: Size can't higher than data length!";
-    if (size === 0) return [stackNumber("0")];
-
-    const resultByteValue = "0x" + data.substr(0, size);
-
-    return [stackHex(resultByteValue)];
-  }
-
-  throw "OP_LEFT Error: Size must be number!";
+export const size = (wizData: WizData): WizData => {
+  const numberValue = wizData.hex.length / 2;
+  return WizData.fromNumber(numberValue);
 };
 
-const OP_SIZE = (stackData: IStackData): IStackData[] => {
-  const numberValue = stackData.byteValue.substr(2).length / 2;
-  return [stackNumber(numberValue.toString())];
-};
+export const substr_lazy = (
+  wizData: WizData,
+  wizData2: WizData,
+  wizData3: WizData
+): WizData => {
+  if (wizData2.number !== undefined && wizData3.number !== undefined) {
+    const message = wizData.hex;
+    let index = wizData2.number * 2;
+    let length = wizData3.number * 2;
 
-const OP_SUBSTR_LAZY = (stackData3: IStackData, stackData2: IStackData, stackData1: IStackData): IStackData[] => {
-  if (stackData2.numberValue !== undefined && stackData1.numberValue !== undefined) {
-    let start = stackData2.numberValue * 2;
-    let length = stackData1.numberValue * 2;
-    const data = stackData3.byteValue.substr(2);
-    const dataSize = data.length;
+    const messageSize = message.length;
 
-    if (start < 0) start = 0;
+    if (index < 0) index = 0;
 
     if (length < 0) length = 0;
 
-    if (start >= dataSize) return [stackNumber("0")];
+    if (index >= messageSize) WizData.fromNumber(0);
 
-    if (start + length > dataSize) {
-      length = dataSize - start;
+    if (index + length > messageSize) {
+      length = messageSize - index;
     }
 
-    const resultByteValue = "0x" + data.substr(start, length);
+    const result = message.substr(index, length);
 
-    return [stackHex(resultByteValue)];
+    return WizData.fromHex(result);
   }
 
-  throw "OP_SUBSTR Error: Index and size must be number!";
+  throw "Error: Index and size must be number!";
 };
-
-export { OP_SUBSTR, OP_RIGHT, OP_LEFT, OP_SIZE, OP_SUBSTR_LAZY };
