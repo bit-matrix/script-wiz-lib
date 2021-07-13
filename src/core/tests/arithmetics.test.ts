@@ -39,17 +39,30 @@ test("Arithmetic add1 test", () => {
 test("Arithmetic sub1 test", () => {
   const wizData: WizData = WizData.fromNumber(12);
   const sub1WizData: WizData = sub1(wizData);
-
   expect(sub1WizData.number).toBe(11);
   expect(wizData.text).toBe(undefined);
+
+  const wizData2: WizData = WizData.fromNumber(-999);
+  const sub1WizData2: WizData = sub1(wizData2);
+  expect(sub1WizData2.number).toBe(-1000);
+  expect(wizData2.text).toBe(undefined);
 });
 
 test("Arithmetic negate test", () => {
   const wizData: WizData = WizData.fromNumber(12);
   const negateWizData: WizData = negate(wizData);
-
   expect(negateWizData.number).toBe(-12);
   expect(wizData.text).toBe(undefined);
+
+  const wizData2: WizData = WizData.fromNumber(-890);
+  const negateWizData2: WizData = negate(wizData2);
+  expect(negateWizData2.number).toBe(890);
+  expect(wizData2.text).toBe(undefined);
+
+  const wizData3: WizData = WizData.fromNumber(0);
+  const negateWizData3: WizData = negate(wizData3);
+  expect(negateWizData3.number === 0).toEqual(true);
+  expect(wizData3.text).toBe(undefined);
 });
 
 test("Arithmetic absolute test", () => {
@@ -193,9 +206,7 @@ test("Arithmetic boolOr test", () => {
 
 test("Arithmetic numEqualVerify test", () => {
   const firstWizData: WizData = WizData.fromNumber(5);
-  const secondWizData: WizData = WizData.fromNumber(
-    abs(WizData.fromNumber(-5)).number || 0
-  );
+  const secondWizData: WizData = WizData.fromNumber(abs(WizData.fromNumber(-5)).number || 0);
   const thirdWizData: WizData = WizData.fromText("scriptwiz");
 
   const firstResult: WizData = numEqualVerify(firstWizData, secondWizData);
@@ -215,9 +226,7 @@ test("Arithmetic numEqualVerify test", () => {
 
 test("Arithmetic numEqual test", () => {
   const firstWizData: WizData = WizData.fromNumber(5);
-  const secondWizData: WizData = WizData.fromNumber(
-    abs(WizData.fromNumber(-5)).number || 0
-  );
+  const secondWizData: WizData = WizData.fromNumber(abs(WizData.fromNumber(-5)).number || 0);
   const thirdWizData: WizData = WizData.fromText("scriptwiz");
   const fourthWizData: WizData = WizData.fromNumber(30);
 
@@ -242,9 +251,7 @@ test("Arithmetic numEqual test", () => {
 
 test("Arithmetic numNotEqual test", () => {
   const firstWizData: WizData = WizData.fromNumber(5);
-  const secondWizData: WizData = WizData.fromNumber(
-    abs(WizData.fromNumber(-5)).number || 0
-  );
+  const secondWizData: WizData = WizData.fromNumber(abs(WizData.fromNumber(-5)).number || 0);
   const thirdWizData: WizData = WizData.fromText("scriptwiz");
   const fourthWizData: WizData = WizData.fromNumber(30);
 
