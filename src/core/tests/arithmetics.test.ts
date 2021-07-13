@@ -54,19 +54,13 @@ test("Arithmetic negate test", () => {
 
 test("Arithmetic absolute test", () => {
   const wizData: WizData = WizData.fromNumber(-12);
+  const wizData2: WizData = WizData.fromNumber(5);
 
   const absoluteResult: WizData = abs(wizData);
+  const absoluteResult2: WizData = abs(wizData2);
 
   expect(absoluteResult.number).toBe(12);
-  expect(wizData.text).toBe(undefined);
-});
-
-test("Arithmetic absolute test", () => {
-  const wizData: WizData = WizData.fromNumber(-12);
-
-  const absoluteResult: WizData = abs(wizData);
-
-  expect(absoluteResult.number).toBe(12);
+  expect(absoluteResult2.number).toBe(5);
   expect(wizData.text).toBe(undefined);
 });
 
@@ -199,7 +193,9 @@ test("Arithmetic boolOr test", () => {
 
 test("Arithmetic numEqualVerify test", () => {
   const firstWizData: WizData = WizData.fromNumber(5);
-  const secondWizData: WizData = WizData.fromNumber(abs(WizData.fromNumber(-5)).number || 0);
+  const secondWizData: WizData = WizData.fromNumber(
+    abs(WizData.fromNumber(-5)).number || 0
+  );
   const thirdWizData: WizData = WizData.fromText("scriptwiz");
 
   const firstResult: WizData = numEqualVerify(firstWizData, secondWizData);
@@ -219,7 +215,9 @@ test("Arithmetic numEqualVerify test", () => {
 
 test("Arithmetic numEqual test", () => {
   const firstWizData: WizData = WizData.fromNumber(5);
-  const secondWizData: WizData = WizData.fromNumber(abs(WizData.fromNumber(-5)).number || 0);
+  const secondWizData: WizData = WizData.fromNumber(
+    abs(WizData.fromNumber(-5)).number || 0
+  );
   const thirdWizData: WizData = WizData.fromText("scriptwiz");
   const fourthWizData: WizData = WizData.fromNumber(30);
 
@@ -244,7 +242,9 @@ test("Arithmetic numEqual test", () => {
 
 test("Arithmetic numNotEqual test", () => {
   const firstWizData: WizData = WizData.fromNumber(5);
-  const secondWizData: WizData = WizData.fromNumber(abs(WizData.fromNumber(-5)).number || 0);
+  const secondWizData: WizData = WizData.fromNumber(
+    abs(WizData.fromNumber(-5)).number || 0
+  );
   const thirdWizData: WizData = WizData.fromText("scriptwiz");
   const fourthWizData: WizData = WizData.fromNumber(30);
 
