@@ -12,150 +12,62 @@ export const and = (wizData: WizData, wizData2: WizData): WizData => {
   const sBinary = wizData2.bin;
 
   if (fBinary.length === sBinary.length) {
-    const binaryAnd = (fBinary as any) & (sBinary as any);
-    console.log("binaryAnd", binaryAnd);
+    const fBinaryArray = fBinary.split("").map((x) => +x);
+    const sBinaryArray = sBinary.split("").map((x) => +x);
+    let resultBinary: string = "";
 
-    return WizData.fromBin(binaryAnd.toString());
+    for (let i in fBinaryArray) {
+      resultBinary += fBinaryArray[i] & sBinaryArray[i];
+    }
+
+    return WizData.fromBin(resultBinary);
   }
 
   // stack bump
   throw "Bitwise operation on operands of different lengths.";
 };
 
-// const OP_AND = (stackData1: StackData, stackData2: StackData): StackData[] => {
-//   const x = stackData1.byteValue;
-//   const y = stackData2.byteValue;
-//   if (x.length !== y.length) throw "OP_XOR Error: Script attempted a bitwise operation on operands of different lengths.";
+export const or = (wizData: WizData, wizData2: WizData): WizData => {
+  const fBinary = wizData.bin;
+  const sBinary = wizData2.bin;
 
-//   let resultHex = "0x";
+  if (fBinary.length === sBinary.length) {
+    const fBinaryArray = fBinary.split("").map((x) => +x);
+    const sBinaryArray = sBinary.split("").map((x) => +x);
+    let resultBinary: string = "";
 
-//   const xHexArray = x
-//     .match(/.{1,2}/g)
-//     ?.slice(1)
-//     .map((m) => m.toString());
-//   const yHexArray = y
-//     .match(/.{1,2}/g)
-//     ?.slice(1)
-//     .map((m) => m.toString());
-//   if (xHexArray && yHexArray) {
-//     const xorUInt8Array = xHexArray.map((xHex, i) => parseInt(xHex, 16) & parseInt(yHexArray[i], 16));
-//     const xorHexArray = xorUInt8Array.map((xorUInt8) => xorUInt8.toString(16).padStart(2, "0"));
-//     resultHex += xorHexArray.join("");
-//   }
-//   resultHex = resultHex.padEnd(x.length, "0");
+    for (let i in fBinaryArray) {
+      resultBinary += fBinaryArray[i] | sBinaryArray[i];
+    }
 
-//   return [stackHex(resultHex)];
-// };
-
-/* const OP_AND = (stackData1: StackData, stackData2: StackData): StackData[] => {
-  if (stackData1.byteValue.length !== stackData2.byteValue.length) throw "OP_AND Error: Script attempted a bitwise operation on operands of different lengths.";
-  const number1 = stackData1.numberValue;
-  const number2 = stackData2.numberValue;
-  if (number1 && number2) {
-    const isNegative = number1 < 0 && number2 < 0;
-    let logic = Math.abs(number1) & Math.abs(number2);
-    logic = isNegative ? logic * -1 : logic;
-    return [stackNumber(logic.toString())];
+    return WizData.fromBin(resultBinary);
   }
-  throw "OP_AND Error: Counld't convert to number";
-}; */
 
-const OP_OR = (stackData1: StackData, stackData2: StackData): StackData[] => {
-  const x = stackData1.byteValue;
-  const y = stackData2.byteValue;
-  if (x.length !== y.length) throw "OP_XOR Error: Script attempted a bitwise operation on operands of different lengths.";
-
-  let resultHex = "0x";
-
-  const xHexArray = x
-    .match(/.{1,2}/g)
-    ?.slice(1)
-    .map((m) => m.toString());
-  const yHexArray = y
-    .match(/.{1,2}/g)
-    ?.slice(1)
-    .map((m) => m.toString());
-  if (xHexArray && yHexArray) {
-    const xorUInt8Array = xHexArray.map((xHex, i) => parseInt(xHex, 16) | parseInt(yHexArray[i], 16));
-    const xorHexArray = xorUInt8Array.map((xorUInt8) => xorUInt8.toString(16).padStart(2, "0"));
-    resultHex += xorHexArray.join("");
-  }
-  resultHex = resultHex.padEnd(x.length, "0");
-
-  return [stackHex(resultHex)];
+  // stack bump
+  throw "Bitwise operation on operands of different lengths.";
 };
 
-/* const OP_OR = (stackData1: StackData, stackData2: StackData): StackData[] => {
-  if (stackData1.byteValue.length !== stackData2.byteValue.length) throw "OP_OR Error: Script attempted a bitwise operation on operands of different lengths.";
-  const number1 = stackData1.numberValue;
-  const number2 = stackData2.numberValue;
-  if (number1 && number2) {
-    const isNegative = number1 < 0 || number2 < 0;
-    let logic = Math.abs(number1) | Math.abs(number2);
-    logic = isNegative ? logic * -1 : logic;
-    return [stackNumber(logic.toString())];
+export const xor = (wizData: WizData, wizData2: WizData): WizData => {
+  const fBinary = wizData.bin;
+  const sBinary = wizData2.bin;
+
+  if (fBinary.length === sBinary.length) {
+    const fBinaryArray = fBinary.split("").map((x) => +x);
+    const sBinaryArray = sBinary.split("").map((x) => +x);
+    let resultBinary: string = "";
+
+    for (let i in fBinaryArray) {
+      resultBinary += fBinaryArray[i] ^ sBinaryArray[i];
+    }
+
+    return WizData.fromBin(resultBinary);
   }
-  throw "OP_OR Error: Counld't convert to number";
-}; */
 
-const OP_XOR = (stackData1: StackData, stackData2: StackData): StackData[] => {
-  const x = stackData1.byteValue;
-  const y = stackData2.byteValue;
-  if (x.length !== y.length) throw "OP_XOR Error: Script attempted a bitwise operation on operands of different lengths.";
-
-  let resultHex = "0x";
-
-  const xHexArray = x
-    .match(/.{1,2}/g)
-    ?.slice(1)
-    .map((m) => m.toString());
-  const yHexArray = y
-    .match(/.{1,2}/g)
-    ?.slice(1)
-    .map((m) => m.toString());
-  if (xHexArray && yHexArray) {
-    const xorUInt8Array = xHexArray.map((xHex, i) => parseInt(xHex, 16) ^ parseInt(yHexArray[i], 16));
-    const xorHexArray = xorUInt8Array.map((xorUInt8) => xorUInt8.toString(16).padStart(2, "0"));
-    resultHex += xorHexArray.join("");
-  }
-  resultHex = resultHex.padEnd(x.length, "0");
-
-  return [stackHex(resultHex)];
+  // stack bump
+  throw "Bitwise operation on operands of different lengths.";
 };
 
-// const OP_XOR = (stackData1: StackData, stackData2: StackData): StackData[] => {
-//   if (stackData1.byteValue.length !== stackData2.byteValue.length) throw "OP_XOR Error: Script attempted a bitwise operation on operands of different lengths.";
-//   const number1 = stackData1.numberValue;
-//   const number2 = stackData2.numberValue;
-
-//   if (number1 !== undefined && number2 !== undefined) {
-//     const isNegative = number1 * number2 < 0;
-
-//     let logic = Math.abs(number1) ^ Math.abs(number2);
-//     logic = isNegative ? logic * -1 : logic;
-
-//     let logicByteValue = stackNumber(logic.toString()).byteValue;
-
-//     //higher than byte
-//     if (stackData1.byteValue.length > 4 && stackData1.byteValue.length !== logicByteValue.length) {
-//       logicByteValue = logicByteValue + "00";
-//     }
-
-//     return [stackHex(logicByteValue)];
-//   }
-//   throw "OP_XOR Error: Counld't convert to number";
-// };
-
-const OP_EQUAL = (stackData1: StackData, stackData2: StackData): StackData[] => {
-  const expression = stackData1.byteValue === stackData2.byteValue;
-
-  if (expression) {
-    return [stackNumber("1")];
-  }
-
-  return [stackNumber("0")];
+export const equal = (wizData: WizData, wizData2: WizData): WizData => {
+  const expression = wizData.hex === wizData2.hex && wizData.bin === wizData2.bin;
+  return WizData.fromNumber(expression ? 1 : 0);
 };
-
-const OP_EQUALVERIFY = (stackData1: StackData, stackData2: StackData): boolean => stackData1.byteValue === stackData2.byteValue;
-
-export { OP_OR, OP_XOR, OP_EQUAL, OP_EQUALVERIFY };
