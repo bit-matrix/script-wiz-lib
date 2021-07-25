@@ -1,9 +1,11 @@
 import WizData from "../convertion";
 import { ParseResult, ParseResultData, WizDataList } from "../model";
+import { VM } from "../opcodes/model/VM";
+import { cropTwo, opcodeToWord, opWordToHex } from "../utils";
 import { compileData } from "./compileAll";
 import { parseFinalInput } from "./parseFinalInput";
 
-export const parse = (input: string, stackDataList: WizDataList, currentScopeParse: boolean, currentScopeParseException: boolean): ParseResult => {
+export const parse = (input: string, vm: VM, stackDataList: WizDataList, currentScopeParse: boolean, currentScopeParseException: boolean): ParseResult => {
   let emptyParseResultData: ParseResultData = {
     main: { addDataArray: [], removeLastSize: 0 },
     alt: { removeLastStackData: false },
@@ -28,20 +30,20 @@ export const parse = (input: string, stackDataList: WizDataList, currentScopePar
     }
 
     // OP Word or OP Code
-    // if (input.startsWith("OP_") || !isNaN(input as any)) {
-    //   // OP Word
-    //   let word = input;
-    //   // Op Code
-    //   if (!isNaN(input as any)) {
-    //     word = opcodeToWord(Number(input));
-    //     if (word === "") throw "Unknown OP code number";
-    //   }
+    if (input.startsWith("OP_") || !isNaN(input as any)) {
+      // OP Word
+      let word = input;
+      // Op Code
+      if (!isNaN(input as any)) {
+        word = opcodeToWord(Number(input), vm);
+        if (word === "") throw "Unknown OP code number";
+      }
 
-    //   inputHex = cropTwo(opWordToHex(word));
+      inputHex = cropTwo(opWordToHex(word, vm));
 
-    //   if (currentScopeParse || currentScopeParseException) emptyParseResultData = OP(word, stackDataList);
-    //   return { ...emptyParseResultData, inputHex };
-    // }
+      if (currentScopeParse || currentScopeParseException) emptyParseResultData = OP(word, stackDataList);
+      return { ...emptyParseResultData, inputHex };
+    }
   } catch (ex) {
     return { inputHex, errorMessage: ex, main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
   }

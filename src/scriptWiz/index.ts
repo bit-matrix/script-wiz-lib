@@ -1,4 +1,5 @@
 import { ParseResult, WizDataList } from "../model";
+import { VM } from "../opcodes/model/VM";
 import { currentScope } from "../utils";
 import { compileJoin } from "./compileAll";
 import { parse } from "./parse";
@@ -6,11 +7,12 @@ import { parse } from "./parse";
 const initialStackDataList: WizDataList = { inputHexes: [], main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
 let stackDataList: WizDataList = initialStackDataList;
 
-export const parseFromInput = (input: string): WizDataList => {
+// verison temp
+export const init = (input: string, version: VM): WizDataList => {
   const currentScopeParse: boolean = currentScope(stackDataList);
   const currentScopeParseException: boolean = input === "OP_IF" || input === "OP_NOTIF" || input === "OP_ELSE" || input === "OP_ENDIF";
 
-  const parseResult: ParseResult = parse(input, stackDataList, currentScopeParse, currentScopeParseException);
+  const parseResult: ParseResult = parse(input, version, stackDataList, currentScopeParse, currentScopeParseException);
 
   // add input hexes
   stackDataList = { ...stackDataList, inputHexes: [...stackDataList.inputHexes, parseResult.inputHex], errorMessage: parseResult.errorMessage };

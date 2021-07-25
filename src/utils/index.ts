@@ -1,4 +1,6 @@
 import { WizDataList } from "../model";
+import { Opcodes } from "../opcodes";
+import { VM, VM_NETWORK } from "../opcodes/model/VM";
 
 export const hexLittleEndian = (hex: string): string => {
   if (hex.length % 2 === 0) {
@@ -28,6 +30,26 @@ export const flipbits = (str: string): string => {
 };
 
 export const cropTwo = (hex: string): string => hex.substring(2);
+
+export const opWordToHex = (word: string, vm: VM): string => {
+  const opCodes = new Opcodes(vm);
+
+  const hex = opCodes.data.find((owc) => owc.word === word)?.hex;
+  return hex || "";
+};
+
+export const opWordToCode = (word: string, vm: VM): number => {
+  const opCodes = new Opcodes(vm);
+
+  const opcode = opCodes.data.find((owc) => owc.word === word)?.opcode;
+  return opcode === undefined ? -1 : opcode;
+};
+
+export const opcodeToWord = (opcode: number, vm: VM): string => {
+  const opCodes = new Opcodes(vm);
+
+  return opCodes.data.find((owc) => owc.opcode === opcode)?.word || "";
+};
 
 // supports all opcodes
 export const currentScope = (wizDataList: WizDataList): boolean => wizDataList.flow[wizDataList.flow.length - 1];

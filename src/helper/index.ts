@@ -1,6 +1,3 @@
-import opWordCodes, { IOpWordCode } from "../constant/opWordCodes";
-import { StackDataList } from "../model";
-
 const hexLittleEndian = (hex: string): string => {
   if (hex.length % 2 === 0) {
     let str = "0x";
