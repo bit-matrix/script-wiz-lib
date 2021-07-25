@@ -1,6 +1,6 @@
 import { ParseResult, WizDataList } from "../model";
 import { currentScope } from "../utils";
-import parse from "./parse";
+import { parse } from "./parse";
 
 const initialStackDataList: WizDataList = { inputHexes: [], main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
 let stackDataList: WizDataList = initialStackDataList;

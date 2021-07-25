@@ -1,8 +1,9 @@
 import WizData from "../convertion";
 import { ParseResult, ParseResultData, WizDataList } from "../model";
+import { compileData } from "./compileAll";
 import { parseFinalInput } from "./parseFinalInput";
 
-const parse = (input: string, stackDataList: WizDataList, currentScopeParse: boolean, currentScopeParseException: boolean): ParseResult => {
+export const parse = (input: string, stackDataList: WizDataList, currentScopeParse: boolean, currentScopeParseException: boolean): ParseResult => {
   let emptyParseResultData: ParseResultData = {
     main: { addDataArray: [], removeLastSize: 0 },
     alt: { removeLastStackData: false },
@@ -15,7 +16,7 @@ const parse = (input: string, stackDataList: WizDataList, currentScopeParse: boo
     if (input.startsWith("<") && input.endsWith(">")) {
       const finalInput = input.substr(1, input.length - 2);
       const addStackData: WizData = parseFinalInput(finalInput);
-      // inputHex = compileData(addStackData.byteValue);
+      inputHex = compileData(addStackData.hex);
 
       if (currentScopeParse)
         return {
@@ -47,5 +48,3 @@ const parse = (input: string, stackDataList: WizDataList, currentScopeParse: boo
 
   return { inputHex, errorMessage: "it is not a valid input script", main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
 };
-
-export default parse;
