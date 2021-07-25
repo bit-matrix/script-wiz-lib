@@ -1,6 +1,6 @@
 import { currentScope } from "..";
 import { StackData } from "../../model";
-import IStackDataList from "../../model/IStackDataList";
+import IStackDataList from "../../model/WizDataList";
 
 const OP_IF = (stackDataList: IStackDataList): { flow: boolean[]; altFlow: boolean[] } => {
   const lastStackData = stackDataList.main[stackDataList.main.length - 1];
