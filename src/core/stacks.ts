@@ -43,18 +43,17 @@ export const nip = (wizData: WizData): WizData => wizData;
 
 export const over = (wizData: WizData): WizData => wizData;
 
-// const OP_PICK = (stackDataArray: IStackData[], stackIndex: number): IStackData[] => [...stackDataArray, stackDataArray.reverse()[stackIndex]];
+export const pick = (wizDataArray: WizData[], stackIndex: number): WizData[] => [...wizDataArray, wizDataArray.reverse()[stackIndex]];
 
-// const OP_ROLL = (stackDataArray: IStackData[], stackIndex: number): IStackData[] => {
-//   const newStackDataArray: IStackData[] = [...stackDataArray].reverse();
-//   const currentItem: IStackData = newStackDataArray[stackIndex];
+export const roll = (wizDataArray: WizData[], stackIndex: number): WizData[] => {
+  const newWizDataArray: WizData[] = [...wizDataArray].reverse();
+  const currentItem: WizData = newWizDataArray[stackIndex];
 
-//   newStackDataArray.splice(stackIndex, 1);
+  newWizDataArray.splice(stackIndex, 1);
+  newWizDataArray.unshift(currentItem);
 
-//   newStackDataArray.unshift(currentItem);
-
-//   return newStackDataArray.reverse();
-// };
+  return newWizDataArray.reverse();
+};
 
 export const swap = (wizData: WizData, wizData2: WizData): WizData[] => [wizData, wizData2];
 
