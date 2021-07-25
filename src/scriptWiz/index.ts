@@ -1,5 +1,6 @@
 import { ParseResult, WizDataList } from "../model";
 import { currentScope } from "../utils";
+import { compileJoin } from "./compileAll";
 import { parse } from "./parse";
 
 const initialStackDataList: WizDataList = { inputHexes: [], main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
@@ -47,7 +48,7 @@ export const parseFromInput = (input: string): WizDataList => {
   return stackDataList;
 };
 
-// const compileScript = () => compileJoin(stackDataList.inputHexes);
+export const compileScript = () => compileJoin(stackDataList.inputHexes);
 
 export const clearStack = () => {
   stackDataList = initialStackDataList;

@@ -1,24 +1,20 @@
-import stackHex from "./helper/stackHex";
-import stackNumber from "./helper/stackNumber";
-import stackString from "./helper/stackString";
+import WizData from "../convertion";
 
-const compileFinalInput = (input: string): string => {
+export const compileFinalInput = (input: string): WizData => {
   // HEX DATA INPUT
   if (input.startsWith("0x")) {
-    return stackHex(input).byteValue;
+    return WizData.fromHex(input);
   }
 
   if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) {
     const formattedInput = input.substr(1, input.length - 2);
-    return stackString(formattedInput).byteValue;
+    return WizData.fromText(formattedInput);
   }
 
   // NUMBER INPUT
   if (!isNaN(input as any)) {
-    return stackNumber(input).byteValue;
+    return WizData.fromNumber(Number(input));
   }
 
   throw "Compile Final Input Error: it is not a valid final input string!";
 };
-
-export default compileFinalInput;
