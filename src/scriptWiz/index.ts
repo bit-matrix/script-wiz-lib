@@ -1,5 +1,7 @@
 import { ParseResult, WizDataList } from "../model";
-import { VM } from "../opcodes/model/VM";
+import { Opcodes } from "../opcodes";
+import { Opcode } from "../opcodes/model/Opcode";
+import { VM, VM_NETWORK, VM_NETWORK_VERSION } from "../opcodes/model/VM";
 import { currentScope } from "../utils";
 import { compileJoin } from "./compileAll";
 import { parse } from "./parse";
@@ -7,12 +9,21 @@ import { parse } from "./parse";
 const initialStackDataList: WizDataList = { inputHexes: [], main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
 let stackDataList: WizDataList = initialStackDataList;
 
-// verison temp
-export const init = (input: string, version: VM): WizDataList => {
+let programVersion: VM = { network: VM_NETWORK.BTC, ver: VM_NETWORK_VERSION.SEGWIT };
+
+export let opWordCodes: Opcode[] = [];
+
+export const init = (version: VM) => {
+  programVersion = version;
+
+  opWordCodes = new Opcodes(version).data;
+};
+
+export const parseInput = (input: string): WizDataList => {
   const currentScopeParse: boolean = currentScope(stackDataList);
   const currentScopeParseException: boolean = input === "OP_IF" || input === "OP_NOTIF" || input === "OP_ELSE" || input === "OP_ENDIF";
 
-  const parseResult: ParseResult = parse(input, version, stackDataList, currentScopeParse, currentScopeParseException);
+  const parseResult: ParseResult = parse(input, programVersion, stackDataList, currentScopeParse, currentScopeParseException);
 
   // add input hexes
   stackDataList = { ...stackDataList, inputHexes: [...stackDataList.inputHexes, parseResult.inputHex], errorMessage: parseResult.errorMessage };

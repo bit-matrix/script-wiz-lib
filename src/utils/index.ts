@@ -1,6 +1,6 @@
 import { WizDataList } from "../model";
 import { Opcodes } from "../opcodes";
-import { VM, VM_NETWORK } from "../opcodes/model/VM";
+import { VM } from "../opcodes/model/VM";
 
 export const hexLittleEndian = (hex: string): string => {
   if (hex.length % 2 === 0) {
