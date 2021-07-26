@@ -6,11 +6,7 @@ export const concatenate = (wizData: WizData, wizData2: WizData): WizData => {
   return WizData.fromHex(wizData.hex + wizData2.hex);
 };
 
-export const substr = (
-  wizData: WizData,
-  wizData2: WizData,
-  wizData3: WizData
-): WizData => {
+export const substr = (wizData: WizData, wizData2: WizData, wizData3: WizData): WizData => {
   const message = wizData.hex;
   const index = wizData2.number;
   const size = wizData3.number;
@@ -30,8 +26,7 @@ export const right = (wizData: WizData, wizData2: WizData): WizData => {
     const size = wizData2.number * 2;
 
     if (size < 0) throw "Error: Size can't be negative integer!";
-    if (message.length < size)
-      throw "Error: Size can't higher than data length!";
+    if (message.length < size) throw "Error: Size can't higher than data length!";
     if (size === 0) return WizData.fromNumber(0);
 
     const result = message.slice(size * -1);
@@ -48,8 +43,7 @@ export const left = (wizData: WizData, wizData2: WizData): WizData => {
     const size = wizData2.number * 2;
 
     if (size < 0) throw "Error: Size can't be negative integer.!";
-    if (message.length < size)
-      throw "Error: Size can't higher than data length!";
+    if (message.length < size) throw "Error: Size can't higher than data length!";
     if (size === 0) WizData.fromNumber(0);
 
     const result = message.substr(0, size);
@@ -65,11 +59,7 @@ export const size = (wizData: WizData): WizData => {
   return WizData.fromNumber(numberValue);
 };
 
-export const substr_lazy = (
-  wizData: WizData,
-  wizData2: WizData,
-  wizData3: WizData
-): WizData => {
+export const substrLazy = (wizData: WizData, wizData2: WizData, wizData3: WizData): WizData => {
   if (wizData2.number !== undefined && wizData3.number !== undefined) {
     const message = wizData.hex;
     let index = wizData2.number * 2;
