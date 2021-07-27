@@ -1,5 +1,5 @@
 import WizData from "../convertion";
-import { EMOJI_REGEX } from "../utils";
+import { cropTwo, EMOJI_REGEX } from "../utils";
 
 export const parseFinalInput = (input: string): WizData => {
   // 0x1245
@@ -10,7 +10,8 @@ export const parseFinalInput = (input: string): WizData => {
 
   // HEX DATA INPUT
   if (input.startsWith("0x")) {
-    return WizData.fromHex(input);
+    const cropedInput = cropTwo(input);
+    return WizData.fromHex(cropedInput);
   }
 
   // EMOJI INPUT

@@ -8,6 +8,6 @@ beforeAll(() => {
 });
 
 test("Scrip wiz index test", () => {
-  const init = parseInput("OP_15");
+  const init = parseInput("<0x4655>");
   console.log(init);
 });
