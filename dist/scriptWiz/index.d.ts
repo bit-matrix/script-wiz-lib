@@ -1,8 +1,12 @@
 import { WizDataList } from "../model";
-import { Opcode } from "../opcodes/model/Opcode";
+import { Opcodes } from "../opcodes";
 import { VM } from "../opcodes/model/VM";
-export declare let opWordCodes: Opcode[];
-export declare const init: (version: VM) => void;
-export declare const parseInput: (input: string) => WizDataList;
-export declare const compileScript: () => string;
-export declare const clearStack: () => void;
+export declare class ScriptWiz {
+    vm: VM;
+    opCodes: Opcodes;
+    stackDataList: WizDataList;
+    constructor(vm: VM);
+    clearStackDataList: () => void;
+    compile: () => string;
+    parseInput: (input: string) => void;
+}
