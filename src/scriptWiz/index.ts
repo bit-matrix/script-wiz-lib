@@ -7,9 +7,10 @@ import { compileJoin } from "./compileAll";
 import { parse } from "./parse";
 
 const initialStackDataList: WizDataList = { inputHexes: [], main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
-let stackDataList: WizDataList = initialStackDataList;
 
 let programVersion: VM = { network: VM_NETWORK.BTC, ver: VM_NETWORK_VERSION.SEGWIT };
+
+let stackDataList: WizDataList = initialStackDataList;
 
 export let opWordCodes: Opcode[] = [];
 

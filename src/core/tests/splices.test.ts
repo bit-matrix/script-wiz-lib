@@ -1,13 +1,6 @@
 // import { numberTestData } from "./data/number";
 import WizData from "../../convertion";
-import {
-  concatenate,
-  left,
-  right,
-  size,
-  substr,
-  substr_lazy,
-} from "../splices";
+import { concatenate, left, right, size, substr, substrLazy } from "../splices";
 
 test("Splices concatenate test", () => {
   const wizData: WizData = WizData.fromHex("0001");
@@ -65,7 +58,7 @@ test("Splices substr_lazy test", () => {
   const index: WizData = WizData.fromNumber(2);
   const size: WizData = WizData.fromNumber(3);
 
-  const result: WizData = substr_lazy(message, index, size);
+  const result: WizData = substrLazy(message, index, size);
 
   expect(result.hex).toBe("726970");
 });
