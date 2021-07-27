@@ -7,7 +7,7 @@ module.exports = (env) => {
   return {
     // mode: env.mod,
     entry: {
-      scriptWiz: "./src/index.ts",
+      scriptWizLib: "./src/index.ts",
     },
     output: {
       filename: "[name].umd.js",
