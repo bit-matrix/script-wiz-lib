@@ -1,13 +1,17 @@
-import { init, parseInput } from "..";
+import { ScriptWiz } from "..";
 import { VM, VM_NETWORK, VM_NETWORK_VERSION } from "../../opcodes/model/VM";
+
+let scriptWiz: ScriptWiz;
 
 beforeAll(() => {
   const testVm: VM = { network: VM_NETWORK.LIQUID, ver: VM_NETWORK_VERSION.SEGWIT };
 
-  init(testVm);
+  scriptWiz = new ScriptWiz(testVm);
 });
 
-test("Scrip wiz index test", () => {
-  const init = parseInput("<0x4655>");
-  console.log(init);
+test("ScripWiz class test", () => {
+  scriptWiz.parseInput("<0x4655>");
+  console.log(scriptWiz.vm);
+  console.log(scriptWiz.opCodes);
+  console.log(scriptWiz.stackDataList);
 });
