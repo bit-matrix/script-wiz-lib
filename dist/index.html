@@ -125,6 +125,10 @@
       const lineDom = document.getElementById("lines");
       const line2Dom = document.getElementById("lines2");
 
+      const testVm = { network: "LIQUID", ver: "00" };
+
+      scriptWiz.lib.init(testVm);
+
       let stackDataList = { main: [], alt: [] };
       let outputs = [];
       let lines = [];
@@ -142,7 +146,7 @@
         line2Dom.innerHTML = lines.join("");
 
         // timer = setTimeout(function () {
-        scriptWiz.clearStack();
+        scriptWiz.lib.clearStack();
         stackDataList = { main: [], alt: [] };
         outputs = [];
 
@@ -157,7 +161,8 @@
             if (inputText === "") {
               output = "<br/>";
             } else {
-              stackDataList = scriptWiz.parse(inputText);
+              stackDataList = scriptWiz.lib.parseInput(inputText);
+              console.log(stackDataList);
               stackData = stackDataList.main[stackDataList.main.length - 1];
               if (stackDataList.errorMessage) outputs.push(`<span id="display3">${stackDataList.errorMessage}</span><br/>`);
             }
@@ -168,8 +173,7 @@
               if (stackData) {
                 output = "";
                 for (let j = 0; j < stackDataList.main.length; j++) {
-                  output +=
-                    '<span id="display1">' + stackDataList.main[j].byteValueDisplay + '</span><span id="display2">(' + stackDataList.main[j].byteValue + ")</span>&nbsp;&nbsp;";
+                  output += '<span id="display1">' + stackDataList.main[j].output + '</span><span id="display2">(' + "0x" + stackDataList.main[j].hex + ")</span>&nbsp;&nbsp;";
                 }
                 output += "<br/>";
               }

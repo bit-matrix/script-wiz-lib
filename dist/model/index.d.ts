@@ -1,4 +1,3 @@
-import StackData from "./IStackData";
-import StackDataList from "./IStackDataList";
-import { IParseResult, IParseResultData } from "./IParseResult";
-export { StackData, StackDataList, IParseResult, IParseResultData };
+import { ParseResult, ParseResultData } from "./ParseResult";
+import { WizDataList } from "./WizDataList";
+export { WizDataList, ParseResult, ParseResultData };
