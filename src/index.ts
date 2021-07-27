@@ -1,5 +1,5 @@
 import WizData from "./convertion";
 import { WizDataList } from "./model";
-import * as lib from "./scriptWiz";
+import { ScriptWiz } from "./scriptWiz";
 
-export { lib, WizData, WizDataList };
+export { ScriptWiz, WizData, WizDataList };
