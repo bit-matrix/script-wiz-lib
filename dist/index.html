@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Script Wiz &#10024;</title>
-    <script type="text/javascript" src="scriptWiz.umd.js"></script>
+    <script type="text/javascript" src="scriptWizLib.umd.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XH7VQK0DKJ"></script>
     <script>
@@ -127,7 +127,7 @@
 
       const testVm = { network: "LIQUID", ver: "00" };
 
-      scriptWiz.lib.init(testVm);
+      const sw = new scriptWizLib.ScriptWiz(testVm);
 
       let stackDataList = { main: [], alt: [] };
       let outputs = [];
@@ -146,7 +146,7 @@
         line2Dom.innerHTML = lines.join("");
 
         // timer = setTimeout(function () {
-        scriptWiz.lib.clearStack();
+        sw.clearStackDataList();
         stackDataList = { main: [], alt: [] };
         outputs = [];
 
@@ -161,7 +161,8 @@
             if (inputText === "") {
               output = "<br/>";
             } else {
-              stackDataList = scriptWiz.lib.parseInput(inputText);
+              sw.parseInput(inputText);
+              stackDataList = sw.stackDataList;
               console.log(stackDataList);
               stackData = stackDataList.main[stackDataList.main.length - 1];
               if (stackDataList.errorMessage) outputs.push(`<span id="display3">${stackDataList.errorMessage}</span><br/>`);
