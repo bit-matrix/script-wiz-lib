@@ -23,7 +23,7 @@ export const parseInput = (input: string): WizDataList => {
   const currentScopeParse: boolean = currentScope(stackDataList);
   const currentScopeParseException: boolean = input === "OP_IF" || input === "OP_NOTIF" || input === "OP_ELSE" || input === "OP_ENDIF";
 
-  const parseResult: ParseResult = parse(input, programVersion, stackDataList, currentScopeParse, currentScopeParseException);
+  const parseResult: ParseResult = parse(input, opWordCodes, stackDataList, currentScopeParse, currentScopeParseException);
 
   // add input hexes
   stackDataList = { ...stackDataList, inputHexes: [...stackDataList.inputHexes, parseResult.inputHex], errorMessage: parseResult.errorMessage };

@@ -1,11 +1,11 @@
 import WizData from "../convertion";
 import { ParseResult, ParseResultData, WizDataList } from "../model";
-import { VM } from "../opcodes/model/VM";
+import { Opcode } from "../opcodes/model/Opcode";
 import { cropTwo, opcodeToWord, opWordToHex } from "../utils";
 import { compileData } from "./compileAll";
 import { parseFinalInput } from "./parseFinalInput";
 
-export const parse = (input: string, vm: VM, stackDataList: WizDataList, currentScopeParse: boolean, currentScopeParseException: boolean): ParseResult => {
+export const parse = (input: string, opWordCodes: Opcode[], stackDataList: WizDataList, currentScopeParse: boolean, currentScopeParseException: boolean): ParseResult => {
   let emptyParseResultData: ParseResultData = {
     main: { addDataArray: [], removeLastSize: 0 },
     alt: { removeLastStackData: false },
@@ -35,11 +35,11 @@ export const parse = (input: string, vm: VM, stackDataList: WizDataList, current
       let word = input;
       // Op Code
       if (!isNaN(input as any)) {
-        word = opcodeToWord(Number(input), vm);
+        word = opcodeToWord(Number(input), opWordCodes);
         if (word === "") throw "Unknown OP code number";
       }
 
-      inputHex = cropTwo(opWordToHex(word, vm));
+      inputHex = cropTwo(opWordToHex(word, opWordCodes));
 
       if (currentScopeParse || currentScopeParseException) emptyParseResultData = OP(word, stackDataList);
       return { ...emptyParseResultData, inputHex };

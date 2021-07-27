@@ -1,5 +1,6 @@
 import { WizDataList } from "../model";
 import { Opcodes } from "../opcodes";
+import { Opcode } from "../opcodes/model/Opcode";
 import { VM } from "../opcodes/model/VM";
 
 export const hexLittleEndian = (hex: string): string => {
@@ -31,24 +32,20 @@ export const flipbits = (str: string): string => {
 
 export const cropTwo = (hex: string): string => hex.substring(2);
 
-export const opWordToHex = (word: string, vm: VM): string => {
-  const opCodes = new Opcodes(vm);
-
-  const hex = opCodes.data.find((owc) => owc.word === word)?.hex;
+export const opWordToHex = (word: string, opWordCodes: Opcode[]): string => {
+  const hex = opWordCodes.find((owc) => owc.word === word)?.hex;
   return hex || "";
 };
 
-export const opWordToCode = (word: string, vm: VM): number => {
-  const opCodes = new Opcodes(vm);
+// export const opWordToCode = (word: string, vm: VM): number => {
+//   const opCodes = new Opcodes(vm);
 
-  const opcode = opCodes.data.find((owc) => owc.word === word)?.opcode;
-  return opcode === undefined ? -1 : opcode;
-};
+//   const opcode = opCodes.data.find((owc) => owc.word === word)?.opcode;
+//   return opcode === undefined ? -1 : opcode;
+// };
 
-export const opcodeToWord = (opcode: number, vm: VM): string => {
-  const opCodes = new Opcodes(vm);
-
-  return opCodes.data.find((owc) => owc.opcode === opcode)?.word || "";
+export const opcodeToWord = (opcode: number, opWordCodes: Opcode[]): string => {
+  return opWordCodes.find((owc) => owc.opcode === opcode)?.word || "";
 };
 
 // supports all opcodes
