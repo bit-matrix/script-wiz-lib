@@ -3,6 +3,7 @@ import { ParseResult, ParseResultData, WizDataList } from "../model";
 import { Opcode } from "../opcodes/model/Opcode";
 import { cropTwo, opcodeToWord, opWordToHex } from "../utils";
 import { compileData } from "./compileAll";
+import { opFuncs } from "./opFuncs";
 import { parseFinalInput } from "./parseFinalInput";
 
 export const parse = (input: string, opWordCodes: Opcode[], stackDataList: WizDataList, currentScopeParse: boolean, currentScopeParseException: boolean): ParseResult => {
@@ -41,7 +42,9 @@ export const parse = (input: string, opWordCodes: Opcode[], stackDataList: WizDa
 
       inputHex = cropTwo(opWordToHex(word, opWordCodes));
 
-      if (currentScopeParse || currentScopeParseException) emptyParseResultData = OP(word, stackDataList);
+      if (inputHex === "") throw "Unknown OP code";
+
+      if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFuncs(word, stackDataList, opWordCodes);
       return { ...emptyParseResultData, inputHex };
     }
   } catch (ex) {

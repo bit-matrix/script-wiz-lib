@@ -14,7 +14,7 @@ export type ParseResultData = {
   isStackFailed?: boolean;
 };
 
-export interface ParseResult extends ParseResultData {
+export type ParseResult = ParseResultData & {
   inputHex: string;
   errorMessage?: string;
-}
+};
