@@ -127,7 +127,7 @@
 
       const testVm = { network: "LIQUID", ver: "00" };
 
-      const sw = new scriptWizLib.ScriptWiz(testVm);
+      const scriptWiz = new scriptWizLib.ScriptWiz(testVm);
 
       let stackDataList = { main: [], alt: [] };
       let outputs = [];
@@ -146,7 +146,7 @@
         line2Dom.innerHTML = lines.join("");
 
         // timer = setTimeout(function () {
-        sw.clearStackDataList();
+        scriptWiz.clearStackDataList();
         stackDataList = { main: [], alt: [] };
         outputs = [];
 
@@ -161,8 +161,8 @@
             if (inputText === "") {
               output = "<br/>";
             } else {
-              sw.parseInput(inputText);
-              stackDataList = sw.stackDataList;
+              scriptWiz.parseInput(inputText);
+              stackDataList = scriptWiz.stackDataList;
               console.log(stackDataList);
               stackData = stackDataList.main[stackDataList.main.length - 1];
               if (stackDataList.errorMessage) outputs.push(`<span id="display3">${stackDataList.errorMessage}</span><br/>`);
