@@ -4,31 +4,31 @@ import BN from "bn.js";
 import WizData from "../convertion";
 
 export const ripemd160 = (wizData: WizData): CryptoJS.lib.WordArray => {
-  return CryptoJS.RIPEMD160(wizData.hex);
+  return CryptoJS.RIPEMD160(CryptoJS.enc.Hex.parse(wizData.hex));
 };
 
 export const sha1 = (wizData: WizData): CryptoJS.lib.WordArray => {
-  return CryptoJS.SHA1(wizData.hex);
+  return CryptoJS.SHA1(CryptoJS.enc.Hex.parse(wizData.hex));
 };
 
 export const sha256 = (wizData: WizData): CryptoJS.lib.WordArray => {
-  return CryptoJS.SHA256(wizData.hex);
+  return CryptoJS.SHA256(CryptoJS.enc.Hex.parse(wizData.hex));
 };
 
 export const hash160 = (wizData: WizData): CryptoJS.lib.WordArray => {
-  const dataWithSha256Hashed = CryptoJS.SHA256(wizData.hex);
+  const dataWithSha256Hashed = CryptoJS.SHA256(CryptoJS.enc.Hex.parse(wizData.hex));
   const dataWithRipemd160Hashed = CryptoJS.RIPEMD160(dataWithSha256Hashed);
   return dataWithRipemd160Hashed;
 };
 
 export const hash256 = (wizData: WizData): CryptoJS.lib.WordArray => {
-  const firstSHAHash = CryptoJS.SHA256(wizData.hex);
+  const firstSHAHash = CryptoJS.SHA256(CryptoJS.enc.Hex.parse(wizData.hex));
   const secondSHAHash = CryptoJS.SHA256(firstSHAHash);
 
   return secondSHAHash;
 };
 
-export const ecdsaVerify = (signature: WizData, message: WizData, publicKey: WizData): boolean => {
+export const ecdsaVerify = (signature: WizData, message: WizData, publicKey: WizData): WizData => {
   const secp256k1 = new elliptic.ec("secp256k1");
 
   const hashedMessage = sha256(message);
@@ -61,10 +61,29 @@ export const ecdsaVerify = (signature: WizData, message: WizData, publicKey: Wiz
   const sBn = new BN(sValue, "hex");
 
   try {
-    return secp256k1.verify(hashedMessage.toString(), { r: rBn, s: sBn }, secp256k1.keyFromPublic(publicKey.hex, "hex"));
+    return WizData.fromNumber(secp256k1.verify(hashedMessage.toString(), { r: rBn, s: sBn }, secp256k1.keyFromPublic(publicKey.hex, "hex")) ? 1 : 0);
   } catch {
     throw "ECDSA Verify error : something went wrong";
   }
+};
+
+export const checkSig = (wizData: WizData, wizData2: WizData): WizData => {
+  // stackData 1 = signature
+  // stackData 2 = pubkey
+  const signature = wizData.hex;
+  const publicKey = wizData2.hex;
+
+  if (publicKey.length !== 68) return WizData.fromNumber(0);
+
+  if (!signature.startsWith("0x30")) return WizData.fromNumber(0);
+
+  const rAndSDataSize = Number("0x" + signature.substr(4, 2));
+
+  const signatureStringLength = rAndSDataSize * 2 + 6;
+
+  if (signature.length !== signatureStringLength) return WizData.fromNumber(0);
+
+  return WizData.fromNumber(1);
 };
 
 // const ECDSA = (messageHash: string, publicKey: string): string => {

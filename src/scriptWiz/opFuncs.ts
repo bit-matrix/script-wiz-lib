@@ -1,5 +1,6 @@
 import WizData from "../convertion";
 import * as arithmetics from "../core/arithmetics";
+import * as crypto from "../core/crypto";
 import { ParseResultData, WizDataList } from "../model";
 import { Opcode } from "../opcodes/model/Opcode";
 
@@ -702,103 +703,110 @@ export const opFuncs = (word: string, stackDataList: WizDataList, opCodes: Opcod
    * Crypto
    * 166 - 175
    */
-  // if (word === "OP_SHA1") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_SHA1 Error: stack data array must include min 1 data!";
+  if (word === "OP_SHA1") {
+    if (mainStackDataArrayLength < 1) throw "OP_SHA1 Error: stack data array must include min 1 data!";
 
-  //   const addDataArray: StackData[] = cryptos.OP_SHA1(mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 1;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = [WizData.fromHex(crypto.sha1(mainStackDataArray[mainStackDataArrayLength - 1]).toString())];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_SHA256") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_SHA256 Error: stack data array must include min 1 data!";
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const addDataArray: StackData[] = cryptos.OP_SHA256(mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 1;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_SHA256") {
+    if (mainStackDataArrayLength < 1) throw "OP_SHA256 Error: stack data array must include min 1 data!";
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_RIPEMD160") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_RIPEMD160 Error: stack data array must include min 1 data!";
+    const addDataArray: WizData[] = [WizData.fromHex(crypto.sha256(mainStackDataArray[mainStackDataArrayLength - 1]).toString())];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
 
-  //   const addDataArray: StackData[] = cryptos.OP_RIPEMD160(mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 1;
-  //   const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_HASH160") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_HASH160 Error: stack data array must include min 1 data!";
+  if (word === "OP_RIPEMD160") {
+    if (mainStackDataArrayLength < 1) throw "OP_RIPEMD160 Error: stack data array must include min 1 data!";
 
-  //   const addDataArray: StackData[] = cryptos.OP_HASH160(mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 1;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = [WizData.fromHex(crypto.ripemd160(mainStackDataArray[mainStackDataArrayLength - 1]).toString())];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_HASH256") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_HASH256 Error: stack data array must include min 1 data!";
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const addDataArray: StackData[] = cryptos.OP_HASH256(mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 1;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_HASH160") {
+    if (mainStackDataArrayLength < 1) throw "OP_HASH160 Error: stack data array must include min 1 data!";
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_CHECKSIG") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
+    const addDataArray: WizData[] = [WizData.fromHex(crypto.hash160(mainStackDataArray[mainStackDataArrayLength - 1]).toString())];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
 
-  //   const addDataArray: StackData[] = cryptos.OP_CHECKSIG(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_CHECKSIGVERIFY") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_CHECKSIGVERIFY Error: stack data array must include min 2 data!";
+  if (word === "OP_HASH256") {
+    if (mainStackDataArrayLength < 1) throw "OP_HASH256 Error: stack data array must include min 1 data!";
 
-  //   let isStackFailed: boolean = false;
+    const addDataArray: WizData[] = [WizData.fromHex(crypto.hash256(mainStackDataArray[mainStackDataArrayLength - 1]).toString())];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
 
-  //   const addDataArray: StackData[] = cryptos.OP_CHECKSIG(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   if (addDataArray[0].numberValue === 0) isStackFailed = true;
+  if (word === "OP_CHECKSIG") {
+    if (mainStackDataArrayLength < 2) throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
 
-  //   return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
-  // }
-  // if (word === "OP_CHECKSIGFROMSTACK") {
-  //   if (mainStackDataArrayLength < 3) throw "OP_CHECKSIGFROMSTACK Error: stack data array must include min 3 data!";
+    const addDataArray: WizData[] = [crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   const addDataArray: StackData[] = cryptos.OP_CHECKSIGFROMSTACK(
-  //     mainStackDataArray[mainStackDataArrayLength - 3],
-  //     mainStackDataArray[mainStackDataArrayLength - 2],
-  //     mainStackDataArray[mainStackDataArrayLength - 1]
-  //   );
-  //   const removeLastSize: number = 3;
-  //   const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_CHECKSIGFROMSTACKVERIFY") {
-  //   if (mainStackDataArrayLength < 3) throw "OP_CHECKSIGFROMSTACKVERIFY Error: stack data array must include min 3 data!";
-  //   let isStackFailed: boolean = false;
+  if (word === "OP_CHECKSIGVERIFY") {
+    if (mainStackDataArrayLength < 2) throw "OP_CHECKSIGVERIFY Error: stack data array must include min 2 data!";
 
-  //   const addDataArray: StackData[] = cryptos.OP_CHECKSIGFROMSTACK(
-  //     mainStackDataArray[mainStackDataArrayLength - 3],
-  //     mainStackDataArray[mainStackDataArrayLength - 2],
-  //     mainStackDataArray[mainStackDataArrayLength - 1]
-  //   );
+    let isStackFailed: boolean = false;
 
-  //   if (addDataArray[0].numberValue === 0) isStackFailed = true;
+    const checkSigResult: WizData = crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   const removeLastSize: number = 3;
-  //   const alt = { removeLastStackData: false };
+    if (checkSigResult.number === 0) isStackFailed = true;
 
-  //   return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
-  // }
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
+  }
+
+  if (word === "OP_CHECKSIGFROMSTACK") {
+    if (mainStackDataArrayLength < 3) throw "OP_CHECKSIGFROMSTACK Error: stack data array must include min 3 data!";
+
+    const addDataArray: WizData[] = [
+      crypto.ecdsaVerify(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]),
+    ];
+
+    const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_CHECKSIGFROMSTACKVERIFY") {
+    if (mainStackDataArrayLength < 3) throw "OP_CHECKSIGFROMSTACKVERIFY Error: stack data array must include min 3 data!";
+    let isStackFailed: boolean = false;
+
+    const verifyResult: WizData = crypto.ecdsaVerify(
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 1]
+    );
+
+    if (verifyResult.number === 0) isStackFailed = true;
+
+    const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
+  }
 
   /*
    * Locktime
