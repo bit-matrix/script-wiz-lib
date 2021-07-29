@@ -20,23 +20,23 @@ export const compileData = (hex: string): string => {
     if (0 < n && n < 17) {
       return (n + 80).toString(16);
     } else {
-      return "01" + cropTwo(hex);
+      return "01" + hex;
     }
   }
 
   // 1 < byte <= 75
   else if (1 < byteLength && byteLength <= 75) {
-    return toLEPadByte(byteLength) + cropTwo(hex);
+    return toLEPadByte(byteLength) + hex;
   }
 
   // 76 < byte <= 255
   else if (76 < byteLength && byteLength <= 255) {
-    return "4c" + toLEPadByte(byteLength) + cropTwo(hex);
+    return "4c" + toLEPadByte(byteLength) + hex;
   }
 
   // 256 < byte <= 520
   else if (256 < byteLength && byteLength <= 520) {
-    return "4d" + toLEPadByte(byteLength) + cropTwo(hex);
+    return "4d" + toLEPadByte(byteLength) + hex;
   }
 
   // 520 < byte
