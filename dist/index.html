@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Script Wiz &#10024;</title>
-    <script type="text/javascript" src="scriptWizLib.umd.js"></script>
+    <script type="text/javascript" src="scriptWiz.umd.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XH7VQK0DKJ"></script>
     <script>
@@ -127,7 +127,7 @@
 
       const testVm = { network: "LIQUID", ver: "00" };
 
-      const scriptWiz = new scriptWizLib.ScriptWiz(testVm);
+      const sw = new scriptWiz.ScriptWiz(testVm);
 
       let stackDataList = { main: [], alt: [] };
       let outputs = [];
@@ -146,7 +146,7 @@
         line2Dom.innerHTML = lines.join("");
 
         // timer = setTimeout(function () {
-        scriptWiz.clearStackDataList();
+        sw.clearStackDataList();
         stackDataList = { main: [], alt: [] };
         outputs = [];
 
@@ -161,8 +161,28 @@
             if (inputText === "") {
               output = "<br/>";
             } else {
-              scriptWiz.parseInput(inputText);
-              stackDataList = scriptWiz.stackDataList;
+              if (inputText.startsWith("<") && inputText.endsWith(">")) {
+                const inputTextValue = inputText.substring(1, inputText.length - 1);
+                if (inputTextValue.startsWith("0x")) {
+                  sw.parseHex(inputTextValue.substring(2));
+                } else if (inputTextValue.startsWith("0b")) {
+                  sw.parseBin(inputTextValue.substring(2));
+                } else if ((inputTextValue.startsWith('"') && inputTextValue.endsWith('"')) || (inputTextValue.startsWith("'") && inputTextValue.endsWith("'"))) {
+                  const inputTextValueString = inputTextValue.substring(1, inputTextValue.length - 1);
+                  sw.parseText(inputTextValueString);
+                } else if (!isNaN(inputTextValue)) {
+                  sw.parseNumber(Number(inputTextValue));
+                } else if (inputTextValue.startsWith("OP_")) {
+                  const opwordToOphex = sw.opCodes.wordHex(inputTextValue);
+                  sw.parseHex(opwordToOphex.substring(2));
+                } else {
+                  console.error("UI: Invalid input value!!!");
+                }
+              } else {
+                sw.parseOpcode(inputText);
+              }
+
+              stackDataList = sw.stackDataList;
               console.log(stackDataList);
               stackData = stackDataList.main[stackDataList.main.length - 1];
               if (stackDataList.errorMessage) outputs.push(`<span id="display3">${stackDataList.errorMessage}</span><br/>`);
@@ -174,7 +194,8 @@
               if (stackData) {
                 output = "";
                 for (let j = 0; j < stackDataList.main.length; j++) {
-                  output += '<span id="display1">' + stackDataList.main[j].output + '</span><span id="display2">(' + "0x" + stackDataList.main[j].hex + ")</span>&nbsp;&nbsp;";
+                  output +=
+                    '<span id="display1">' + outputRender(stackDataList.main[j]) + '</span><span id="display2">(' + "0x" + stackDataList.main[j].hex + ")</span>&nbsp;&nbsp;";
                 }
                 output += "<br/>";
               }
@@ -186,6 +207,12 @@
 
         outputDom.innerHTML = outputs.join("");
         // }, 1000);
+      }
+
+      function outputRender(wd) {
+        if (wd.text) return wd.text;
+        if (wd.number) return wd.number;
+        return wd.hex;
       }
     </script>
   </body>
