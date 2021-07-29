@@ -1,13 +1,13 @@
-import { MAX_INTEGER } from "../const";
-import { binToBytes } from "../bin";
-import { bytesToBin, bytesToHex, bytesToNumber } from "../bytes";
-import { hexToBytes } from "../hex";
-import { numberToBytes } from "../number";
-import { stringToBytes } from "../string";
+import { MAX_INTEGER } from "./const";
+import { binToBytes } from "./bin";
+import { bytesToBin, bytesToHex, bytesToNumber } from "./bytes";
+import { hexToBytes } from "./hex";
+import { numberToBytes } from "./number";
+import { stringToBytes } from "./string";
 
 export class WizData {
   input: string | number;
-  output: string | number;
+  // output: string | number;
 
   bytes: Uint8Array;
   bin: string;
@@ -27,7 +27,7 @@ export class WizData {
     let numberVal: number | undefined = undefined;
     let textVal: string | undefined = undefined;
 
-    const emptyBytePrefix: string = "0x";
+    // const emptyBytePrefix: string = "0x";
 
     // fromHex
     if (hex !== undefined) {
@@ -77,10 +77,10 @@ export class WizData {
     if (numberVal !== undefined && -MAX_INTEGER <= numberVal && numberVal <= MAX_INTEGER) this.number = numberVal;
     this.text = textVal;
 
-    if (this.text !== undefined) outputVal = this.text;
+    /* if (this.text !== undefined) outputVal = this.text;
     else if (this.number !== undefined) outputVal = this.number;
     else outputVal = emptyBytePrefix + this.hex;
-    this.output = outputVal;
+    this.output = outputVal; */
   }
 
   public static fromHex(hex: string): WizData {

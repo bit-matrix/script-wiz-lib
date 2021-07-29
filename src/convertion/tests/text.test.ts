@@ -1,5 +1,5 @@
 import { textTestData } from "./data/text";
-import { WizData } from "../model/WizData";
+import { WizData } from "../WizData";
 
 test("WizData class: hex to wizData object test", () => {
   textTestData.forEach((d) => {
@@ -16,8 +16,8 @@ test("WizData class: hex to wizData object test", () => {
     expect(wizData.number).toBe(d.numberValue);
     // expect(data.text).toBe(d.inputText); // TODO get from stack cache
 
-    if (d.numberValue !== undefined) expect(wizData.output).toBe(d.numberValue);
-    else expect(wizData.output).toBe(d.hexValue.substring(2));
+    // if (d.numberValue !== undefined) expect(wizData.output).toBe(d.numberValue);
+    // else expect(wizData.output).toBe(d.hexValue.substring(2));
   });
 });
 
@@ -36,6 +36,6 @@ test("WizData class: text to wizData object test", () => {
     expect(wizData.number).toBe(d.numberValue);
     expect(wizData.text).toBe(d.inputText);
 
-    expect(wizData.output).toBe(d.inputText);
+    // expect(wizData.output).toBe(d.inputText);
   });
 });

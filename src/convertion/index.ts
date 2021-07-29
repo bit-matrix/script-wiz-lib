@@ -1,5 +1,5 @@
 import { MAX_INTEGER } from "./const";
-import { WizData } from "./model/WizData";
+import { WizData } from "./WizData";
 
 export default WizData;
 export { MAX_INTEGER };
