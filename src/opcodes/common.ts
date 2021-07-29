@@ -104,20 +104,12 @@ export const commonOpcodes: Opcode[] = [
    * Splice
    * 126 - 130
    */
-  // { word: "OP_CAT", opcode: 126, hex: "0x7e", description: "Concatenates two strings." }, //	x1 x2	out	Concatenates two strings. disabled.
-  // { word: "OP_SUBSTR", opcode: 127, hex: "0x7f", description: "Returns a section of a string." }, //	in begin size	out	Returns a section of a string. disabled.
-  // { word: "OP_LEFT", opcode: 128, hex: "0x80", description: "Keeps only characters left of the specified point in a string." }, //	in size	out	Keeps only characters left of the specified point in a string. disabled.
-  // { word: "OP_RIGHT", opcode: 129, hex: "0x81", description: "Keeps only characters right of the specified point in a string" }, //	in size	out	Keeps only characters right of the specified point in a string. disabled.
   { word: "OP_SIZE", opcode: 130, hex: "0x82", description: "Pushes the string length of the top element of the stack (without popping it)." }, //	in	in size	Pushes the string length of the top element of the stack (without popping it).
 
   /*
    * Bitwise logic
    * 131 - 136
    */
-  // { word: "OP_INVERT", opcode: 131, hex: "0x83", description: "Flips all of the bits in the input." }, //	in	out	Flips all of the bits in the input. disabled.
-  // { word: "OP_AND", opcode: 132, hex: "0x84", description: "Boolean and between each bit in the inputs." }, //	x1 x2	out	Boolean and between each bit in the inputs. disabled.
-  // { word: "OP_OR", opcode: 133, hex: "0x85", description: "Boolean or between each bit in the inputs." }, //	x1 x2	out	Boolean or between each bit in the inputs. disabled.
-  // { word: "OP_XOR", opcode: 134, hex: "0x86", description: "Boolean exclusive or between each bit in the inputs." }, //	x1 x2	out	Boolean exclusive or between each bit in the inputs. disabled.
   // { word: "OP_EQUAL", opcode: 135, hex: "0x87", description: "Returns 1 if the inputs are exactly equal, 0 otherwise." }, //	x1 x2	True / false	Returns 1 if the inputs are exactly equal, 0 otherwise.
   { word: "OP_EQUALVERIFY", opcode: 136, hex: "0x88", description: "Same as OP_EQUAL, but runs OP_VERIFY afterward." }, //	x1 x2	Nothing / fail	Same as OP_EQUAL, but runs OP_VERIFY afterward.
 
@@ -138,8 +130,6 @@ export const commonOpcodes: Opcode[] = [
   // { word: "OP_MUL", opcode: 149, hex: "0x95" }, //	a b	out	a is multiplied by b. disabled.
   // { word: "OP_DIV", opcode: 150, hex: "0x96" }, //	a b	out	a is divided by b. disabled.
   // { word: "OP_MOD", opcode: 151, hex: "0x97" }, //	a b	out	Returns the remainder after dividing a by b. disabled.
-  // { word: "OP_LSHIFT", opcode: 152, hex: "0x98", description: "Shifts a left b bits, preserving sign." }, //	a b	out	Shifts a left b bits, preserving sign. disabled.
-  // { word: "OP_RSHIFT", opcode: 153, hex: "0x99", description: "Shifts a right b bits, preserving sign." }, //	a b	out	Shifts a right b bits, preserving sign. disabled.
   { word: "OP_BOOLAND", opcode: 154, hex: "0x9a", description: "	If both a and b are not 0, the output is 1. Otherwise 0." }, //	a b	out	If both a and b are not 0, the output is 1. Otherwise 0.
   { word: "OP_BOOLOR", opcode: 155, hex: "0x9b", description: "If a or b is not 0, the output is 1. Otherwise 0." }, //	a b	out	If a or b is not 0, the output is 1. Otherwise 0.
   { word: "OP_NUMEQUAL", opcode: 156, hex: "0x9c", description: "Returns 1 if the numbers are equal, 0 otherwise." }, //	a b	out	Returns 1 if the numbers are equal, 0 otherwise.
