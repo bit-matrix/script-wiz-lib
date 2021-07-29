@@ -1,5 +1,6 @@
 import WizData from "../convertion";
 import * as arithmetics from "../core/arithmetics";
+import * as bitwise from "../core/bitwise";
 import * as crypto from "../core/crypto";
 import * as splices from "../core/splices";
 import { ParseResultData, WizDataList } from "../model";
@@ -389,66 +390,71 @@ export const opFuncs = (word: string, stackDataList: WizDataList, opCodes: Opcod
    * 131 - 136
    */
 
-  // if (word === "OP_INVERT") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_INVERT Error: stack data array must include min 1 data!";
+  if (word === "OP_INVERT") {
+    if (mainStackDataArrayLength < 1) throw "OP_INVERT Error: stack data array must include min 1 data!";
 
-  //   const addDataArray: StackData[] = OP_INVERT(mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = [bitwise.invert(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_AND") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_AND Error: stack data array must include min 2 data!";
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const addDataArray: StackData[] = OP_AND(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_AND") {
+    if (mainStackDataArrayLength < 2) throw "OP_AND Error: stack data array must include min 2 data!";
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_OR") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_OR Error: stack data array must include min 2 data!";
+    const addDataArray: WizData[] = [bitwise.and(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   const addDataArray: StackData[] = OP_OR(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_XOR") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_XOR Error: stack data array must include min 2 data!";
+  if (word === "OP_OR") {
+    if (mainStackDataArrayLength < 2) throw "OP_OR Error: stack data array must include min 2 data!";
 
-  //   const addDataArray: StackData[] = OP_XOR(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = [bitwise.or(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_EQUAL") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_EQUAL Error: stack data array must include min 2 data!";
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const addDataArray: StackData[] = OP_EQUAL(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_XOR") {
+    if (mainStackDataArrayLength < 2) throw "OP_XOR Error: stack data array must include min 2 data!";
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_EQUALVERIFY") {
-  //   if (mainStackDataArray.length < 2) throw "OP_EQUALVERIFY Error:  stack data array must include min 2 data!!";
+    const addDataArray: WizData[] = [bitwise.xor(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   const isVerify = OP_EQUALVERIFY(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   if (isVerify) {
-  //     const addDataArray: StackData[] = [];
-  //     const removeLastSize: number = 2;
-  //     const alt = { removeLastStackData: false };
+  if (word === "OP_EQUAL") {
+    if (mainStackDataArrayLength < 2) throw "OP_EQUAL Error: stack data array must include min 2 data!";
 
-  //     return { main: { addDataArray, removeLastSize }, alt };
-  //   } else {
-  //     return { main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false }, isStackFailed: true };
-  //   }
-  // }
+    const addDataArray: WizData[] = [bitwise.equal(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_EQUALVERIFY") {
+    if (mainStackDataArray.length < 2) throw "OP_EQUALVERIFY Error:  stack data array must include min 2 data!!";
+
+    const isVerify = bitwise.equal(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]).number === 1;
+
+    if (isVerify) {
+      const addDataArray: WizData[] = [];
+      const removeLastSize: number = 2;
+      const alt = { removeLastStackData: false };
+
+      return { main: { addDataArray, removeLastSize }, alt };
+    } else {
+      return { main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false }, isStackFailed: true };
+    }
+  }
 
   /*
    * Arithmetic
