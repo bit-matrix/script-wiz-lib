@@ -1,6 +1,7 @@
 import WizData from "../convertion";
 import * as arithmetics from "../core/arithmetics";
 import * as crypto from "../core/crypto";
+import * as splices from "../core/splices";
 import { ParseResultData, WizDataList } from "../model";
 import { Opcode } from "../opcodes/model/Opcode";
 
@@ -320,67 +321,68 @@ export const opFuncs = (word: string, stackDataList: WizDataList, opCodes: Opcod
    * Splice
    * 126 - 130
    */
-  // if (word === "OP_CAT") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_CAT Error: stack data array must include min 2 data!";
+  if (word === "OP_CAT") {
+    if (mainStackDataArrayLength < 2) throw "OP_CAT Error: stack data array must include min 2 data!";
 
-  //   const addDataArray: StackData[] = splices.OP_CAT(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = [splices.concatenate(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_SUBSTR") {
-  //   if (mainStackDataArrayLength < 3) throw "OP_SUBSTR Error: stack data array must include min 3 data!";
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const addDataArray: StackData[] = splices.OP_SUBSTR(
-  //     mainStackDataArray[mainStackDataArrayLength - 3],
-  //     mainStackDataArray[mainStackDataArrayLength - 2],
-  //     mainStackDataArray[mainStackDataArrayLength - 1]
-  //   );
-  //   const removeLastSize: number = 3;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_SUBSTR") {
+    if (mainStackDataArrayLength < 3) throw "OP_SUBSTR Error: stack data array must include min 3 data!";
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_RIGHT") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_RIGHT Error: stack data array must include min 2 data!";
+    const addDataArray: WizData[] = [
+      splices.substr(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]),
+    ];
+    const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
 
-  //   const addDataArray: StackData[] = splices.OP_RIGHT(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_LEFT") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_LEFT Error: stack data array must include min 2 data!";
+  if (word === "OP_RIGHT") {
+    if (mainStackDataArrayLength < 2) throw "OP_RIGHT Error: stack data array must include min 2 data!";
 
-  //   const addDataArray: StackData[] = splices.OP_LEFT(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = [splices.right(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_SIZE") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_SIZE Error: stack data array must include min 1 data!";
-  //   const addDataArray: StackData[] = splices.OP_SIZE(mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_SUBSTR_LAZY") {
-  //   if (mainStackDataArrayLength < 3) throw "OP_SUBSTR_LAZY Error: stack data array must include min 3 data!";
+  if (word === "OP_LEFT") {
+    if (mainStackDataArrayLength < 2) throw "OP_LEFT Error: stack data array must include min 2 data!";
 
-  //   const addDataArray: StackData[] = splices.OP_SUBSTR_LAZY(
-  //     mainStackDataArray[mainStackDataArrayLength - 3],
-  //     mainStackDataArray[mainStackDataArrayLength - 2],
-  //     mainStackDataArray[mainStackDataArrayLength - 1]
-  //   );
-  //   const removeLastSize: number = 3;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = [splices.left(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_SIZE") {
+    if (mainStackDataArrayLength < 1) throw "OP_SIZE Error: stack data array must include min 1 data!";
+    const addDataArray: WizData[] = [splices.size(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_SUBSTR_LAZY") {
+    if (mainStackDataArrayLength < 3) throw "OP_SUBSTR_LAZY Error: stack data array must include min 3 data!";
+
+    const addDataArray: WizData[] = [
+      splices.substrLazy(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]),
+    ];
+    const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
   /*
    * Bitwise logic
