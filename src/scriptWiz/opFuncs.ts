@@ -3,6 +3,7 @@ import * as arithmetics from "../core/arithmetics";
 import * as bitwise from "../core/bitwise";
 import * as crypto from "../core/crypto";
 import * as flow from "../core/flow";
+import * as locktime from "../core/locktime";
 import * as splices from "../core/splices";
 import * as stacks from "../core/stacks";
 import { ParseResultData, WizDataList } from "../model";
@@ -63,6 +64,7 @@ export const opFuncs = (
 
     return { main: { addDataArray: [], removeLastSize }, alt };
   }
+
   if (word === "OP_IF") {
     if (mainStackDataArrayLength < 1)
       throw "OP_IF Error: stack data array must include min 1 data!";
@@ -78,6 +80,7 @@ export const opFuncs = (
       altFlow: flows.altFlow,
     };
   }
+
   if (word === "OP_NOTIF") {
     if (mainStackDataArrayLength < 1)
       throw "OP_NOTIF Error: stack data array must include min 1 data!";
@@ -93,6 +96,7 @@ export const opFuncs = (
       altFlow: flows.altFlow,
     };
   }
+
   if (word === "OP_ELSE") {
     if (stackDataList.flow.length === 1)
       throw "OP_ELSE Error: Encountered an OP_ELSE outside of an OP_IF ... OP_ENDIF block.!";
@@ -108,6 +112,7 @@ export const opFuncs = (
       altFlow: flows.altFlow,
     };
   }
+
   if (word === "OP_ENDIF") {
     if (stackDataList.flow.length === 1)
       throw "OP_ENDIF Error: Encountered an OP_ENDIF which is not following a matching OP_IF.!";
@@ -123,6 +128,7 @@ export const opFuncs = (
       altFlow: flows.altFlow,
     };
   }
+
   if (word === "OP_VERIFY") {
     if (mainStackDataArray.length < 1)
       throw "OP_VERIFY Error:  stack data array must include min 1 data!!";
@@ -145,6 +151,7 @@ export const opFuncs = (
       };
     }
   }
+
   if (word === "OP_RETURN") {
     throw "Program called on OP_RETURN operation";
   }
@@ -1187,29 +1194,39 @@ export const opFuncs = (
    * Locktime
    * 177 - 178
    */
-  // if (word === "OP_CHECKLOCKTIMEVERIFY") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_CHECKLOCKTIMEVERIFY Error: stack data array must include min 1 data!";
-  //   let isStackFailed: boolean = false;
+  if (word === "OP_CHECKLOCKTIMEVERIFY") {
+    if (mainStackDataArrayLength < 1)
+      throw "OP_CHECKLOCKTIMEVERIFY Error: stack data array must include min 1 data!";
+    let isStackFailed: boolean = false;
 
-  //   const addDataArray: StackData[] = locktime.OP_CHECKLOCKTIMEVERIFY(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const addDataArray: WizData[] = [
+      locktime.checkLockTimeVerify(
+        mainStackDataArray[mainStackDataArrayLength - 1]
+      ),
+    ];
 
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
-  // }
+    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+  }
 
-  // if (word === "OP_CHECKSEQUENCEVERIFY") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_CHECKSEQUENCEVERIFY Error: stack data array must include min 1 data!";
-  //   let isStackFailed: boolean = false;
+  if (word === "OP_CHECKSEQUENCEVERIFY") {
+    if (mainStackDataArrayLength < 1)
+      throw "OP_CHECKSEQUENCEVERIFY Error: stack data array must include min 1 data!";
+    let isStackFailed: boolean = false;
 
-  //   const addDataArray: StackData[] = locktime.OP_CHECKSEQUENCEVERIFY(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const addDataArray: WizData[] = [
+      locktime.checkSequenceVerify(
+        mainStackDataArray[mainStackDataArrayLength - 1]
+      ),
+    ];
 
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
-  // }
+    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+  }
 
   /*
    * Not implemented yet
