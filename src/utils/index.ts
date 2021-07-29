@@ -3,26 +3,6 @@ import { Opcodes } from "../opcodes";
 import { Opcode } from "../opcodes/model/Opcode";
 import { VM } from "../opcodes/model/VM";
 
-export const hexLittleEndian = (hex: string): string => {
-  if (hex.length % 2 === 0) {
-    let str = "0x";
-    let j = 0;
-
-    if (hex.startsWith("0x")) {
-      j = 2;
-    }
-
-    for (let i = hex.length; i > j; i -= 2) {
-      str += hex.substring(i - 2, i);
-    }
-
-    return str;
-  } else {
-    console.warn("its odd");
-    return "something went wrong";
-  }
-};
-
 export const flipbits = (str: string): string => {
   return str
     .split("")
@@ -30,19 +10,10 @@ export const flipbits = (str: string): string => {
     .join("");
 };
 
-export const cropTwo = (hex: string): string => hex.substring(2);
-
-export const opWordToHex = (word: string, opWordCodes: Opcode[]): string => {
-  const hex = opWordCodes.find((owc) => owc.word === word)?.hex;
-  return hex || "";
+export const opHexToWord = (hex: string, opWordCodes: Opcode[]): string => {
+  const word = opWordCodes.find((owc) => owc.hex === hex)?.word;
+  return word || "";
 };
-
-// export const opWordToCode = (word: string, vm: VM): number => {
-//   const opCodes = new Opcodes(vm);
-
-//   const opcode = opCodes.data.find((owc) => owc.word === word)?.opcode;
-//   return opcode === undefined ? -1 : opcode;
-// };
 
 export const opcodeToWord = (opcode: number, opWordCodes: Opcode[]): string => {
   return opWordCodes.find((owc) => owc.opcode === opcode)?.word || "";
