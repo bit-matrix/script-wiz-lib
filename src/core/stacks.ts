@@ -1,10 +1,6 @@
 import WizData from "../convertion";
 
-export const toAltStack = () => {};
-
 export const fromAltStack = (wizData: WizData): WizData => wizData;
-
-export const twoDrop = () => {};
 
 export const twoDup = (wizData: WizData, wizData2: WizData): WizData[] => [wizData, wizData2];
 
@@ -26,8 +22,6 @@ export const twoRot = (wizData: WizData, wizData2: WizData, wizData3: WizData, w
 export const twoSwap = (wizData: WizData, wizData2: WizData, wizData3: WizData, wizData4: WizData): WizData[] => [wizData2, wizData, wizData4, wizData3];
 
 export const depth = (length: number): WizData => WizData.fromNumber(length);
-
-export const drop = () => [];
 
 export const dup = (wizData: WizData): WizData => wizData;
 

@@ -3,6 +3,7 @@ import * as arithmetics from "../core/arithmetics";
 import * as bitwise from "../core/bitwise";
 import * as crypto from "../core/crypto";
 import * as splices from "../core/splices";
+import * as stacks from "../core/stacks";
 import { ParseResultData, WizDataList } from "../model";
 import { Opcode } from "../opcodes/model/Opcode";
 
@@ -113,210 +114,239 @@ export const opFuncs = (word: string, stackDataList: WizDataList, opCodes: Opcod
    * Stack
    * * 107 - 125
    */
-  // if (word === "OP_TOALTSTACK") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_TOALTSTACK Error: stack data array must include min 1 data!";
-  //   const addDataArray: StackData[] = stacks.OP_TOALTSTACK();
-  //   const removeLastSize: number = 1;
-  //   const alt = { addData: mainStackDataArray[mainStackDataArrayLength - 1], removeLastStackData: false };
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_FROMALTSTACK") {
-  //   const altStackDataArrayLength = stackDataList.alt.length;
-  //   if (altStackDataArrayLength < 1) throw "OP_FROMALTSTACK Error: tried to read from an empty alternate stack.";
-  //   const addDataArray: StackData[] = stacks.OP_FROMALTSTACK(stackDataList.alt[stackDataList.alt.length - 1]);
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: true };
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_2DROP") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_2DROP Error: stack data array must include min 2 data!";
-  //   const addDataArray: StackData[] = stacks.OP_2DROP();
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_2DUP") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_2DUP Error: stack data array must include min 2 data!";
+  if (word === "OP_TOALTSTACK") {
+    if (mainStackDataArrayLength < 1) throw "OP_TOALTSTACK Error: stack data array must include min 1 data!";
 
-  //   const addDataArray: StackData[] = stacks.OP_2DUP(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_3DUP") {
-  //   if (mainStackDataArrayLength < 3) throw "OP_3DUP Error: stack data array must include min 3 data!";
+    const addDataArray: WizData[] = [];
 
-  //   const addDataArray: StackData[] = stacks.OP_3DUP(
-  //     mainStackDataArray[mainStackDataArrayLength - 3],
-  //     mainStackDataArray[mainStackDataArrayLength - 2],
-  //     mainStackDataArray[mainStackDataArrayLength - 1]
-  //   );
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_2OVER") {
-  //   if (mainStackDataArrayLength < 4) throw "OP_2OVER Error: stack data array must include min 4 data!";
-  //   const addDataArray: StackData[] = stacks.OP_2OVER(mainStackDataArray[mainStackDataArrayLength - 4], mainStackDataArray[mainStackDataArrayLength - 3]);
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
+    const removeLastSize: number = 1;
+    const alt = { addData: mainStackDataArray[mainStackDataArrayLength - 1], removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_2SWAP") {
-  //   if (mainStackDataArrayLength < 4) throw "OP_2SWAP Error: stack data array must include min 4 data!";
-  //   const addDataArray: StackData[] = stacks.OP_2SWAP(
-  //     mainStackDataArray[mainStackDataArrayLength - 1],
-  //     mainStackDataArray[mainStackDataArrayLength - 2],
-  //     mainStackDataArray[mainStackDataArrayLength - 3],
-  //     mainStackDataArray[mainStackDataArrayLength - 4]
-  //   );
-  //   const removeLastSize: number = 4;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_FROMALTSTACK") {
+    const altStackDataArrayLength = stackDataList.alt.length;
+    if (altStackDataArrayLength < 1) throw "OP_FROMALTSTACK Error: tried to read from an empty alternate stack.";
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_IFDUP") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_IFDUP Error: stack data array must include min 1 data!";
+    const addDataArray: WizData[] = [stacks.fromAltStack(stackDataList.alt[stackDataList.alt.length - 1])];
 
-  //   const addDataArray: StackData[] = stacks.OP_IFDUP(mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: true };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_DEPTH") {
-  //   const addDataArray: StackData[] = stacks.OP_DEPTH(mainStackDataArrayLength);
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_2DROP") {
+    if (mainStackDataArrayLength < 2) throw "OP_2DROP Error: stack data array must include min 2 data!";
+    const addDataArray: WizData[] = [];
+    const removeLastSize: number = 2;
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
+    const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  // if (word === "OP_DROP") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_DROP Error: stack data array must include min 1 data!";
+  if (word === "OP_2DUP") {
+    if (mainStackDataArrayLength < 2) throw "OP_2DUP Error: stack data array must include min 2 data!";
 
-  //   const addDataArray: StackData[] = stacks.OP_DROP();
-  //   const removeLastSize: number = 1;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = stacks.twoDup(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_DUP") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_DUP Error: stack data array must include min 1 data!";
-  //   const addDataArray: StackData[] = stacks.OP_DUP(mainStackDataArray[mainStackDataArrayLength - 1]);
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_3DUP") {
+    if (mainStackDataArrayLength < 3) throw "OP_3DUP Error: stack data array must include min 3 data!";
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_NIP") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_NIP Error: stack data array must include min 2 data!";
+    const addDataArray: WizData[] = stacks.threeDup(
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 1]
+    );
 
-  //   const addDataArray: StackData[] = stacks.OP_NIP(mainStackDataArray[mainStackDataArrayLength - 1], mainStackDataArray[mainStackDataArrayLength - 2]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_OVER") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_OVER Error: stack data array must include min 2 data!";
-  //   const addDataArray: StackData[] = stacks.OP_OVER(mainStackDataArray[mainStackDataArrayLength - 2]);
-  //   const removeLastSize: number = 0;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_2OVER") {
+    if (mainStackDataArrayLength < 4) throw "OP_2OVER Error: stack data array must include min 4 data!";
+    const addDataArray: WizData[] = stacks.twoOver(mainStackDataArray[mainStackDataArrayLength - 4], mainStackDataArray[mainStackDataArrayLength - 3]);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_SWAP") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_SWAP Error: stack data array must include min 2 data!";
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const addDataArray: StackData[] = stacks.OP_SWAP(mainStackDataArray[mainStackDataArrayLength - 1], mainStackDataArray[mainStackDataArrayLength - 2]);
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_2SWAP") {
+    if (mainStackDataArrayLength < 4) throw "OP_2SWAP Error: stack data array must include min 4 data!";
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_2ROT") {
-  //   if (mainStackDataArrayLength < 6) throw "OP_2ROT Error: stack data array must include min 6 data!";
+    const addDataArray: WizData[] = stacks.twoSwap(
+      mainStackDataArray[mainStackDataArrayLength - 1],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 4]
+    );
+    const removeLastSize: number = 4;
+    const alt = { removeLastStackData: false };
 
-  //   const addDataArray: StackData[] = stacks.OP_2ROT(
-  //     mainStackDataArray[mainStackDataArrayLength - 6],
-  //     mainStackDataArray[mainStackDataArrayLength - 5],
-  //     mainStackDataArray[mainStackDataArrayLength - 4],
-  //     mainStackDataArray[mainStackDataArrayLength - 3],
-  //     mainStackDataArray[mainStackDataArrayLength - 2],
-  //     mainStackDataArray[mainStackDataArrayLength - 1]
-  //   );
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const removeLastSize: number = 6;
-  //   const alt = { removeLastStackData: false };
+  if (word === "OP_IFDUP") {
+    if (mainStackDataArrayLength < 1) throw "OP_IFDUP Error: stack data array must include min 1 data!";
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_ROT") {
-  //   if (mainStackDataArrayLength < 3) throw "OP_ROT Error: stack data array must include min 3 data!";
+    let addDataArray: WizData[] = [];
+    const currentData = stacks.ifDup(mainStackDataArray[mainStackDataArrayLength - 1]);
 
-  //   const addDataArray: StackData[] = stacks.OP_ROT(
-  //     mainStackDataArray[mainStackDataArrayLength - 3],
-  //     mainStackDataArray[mainStackDataArrayLength - 2],
-  //     mainStackDataArray[mainStackDataArrayLength - 1]
-  //   );
+    if (currentData !== {}) addDataArray = [stacks.ifDup(mainStackDataArray[mainStackDataArrayLength - 1]) as WizData];
 
-  //   const removeLastSize: number = 3;
-  //   const alt = { removeLastStackData: false };
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_PICK") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_PICK Error: stack data array must include min 2 data!";
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   let stackIndex: number | undefined = mainStackDataArray[mainStackDataArrayLength - 1].numberValue;
-  //   let willChangedStackDataArray: StackData[] = [...mainStackDataArray];
-  //   willChangedStackDataArray.pop();
+  if (word === "OP_DEPTH") {
+    const addDataArray: WizData[] = [stacks.depth(mainStackDataArrayLength)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
 
-  //   if (stackIndex !== undefined) {
-  //     if (stackIndex >= willChangedStackDataArray.length) throw "OP_PICK Error: stack index cant be equal and greater than stack array length";
-  //   } else {
-  //     throw "OP_PICK Error: stack index must be a number";
-  //   }
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const addDataArray: StackData[] = stacks.OP_PICK(willChangedStackDataArray, stackIndex);
+  if (word === "OP_DROP") {
+    if (mainStackDataArrayLength < 1) throw "OP_DROP Error: stack data array must include min 1 data!";
 
-  //   const removeLastSize: number = mainStackDataArray.length;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = [];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_ROLL") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_ROLL Error: stack data array must include min 2 data!";
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   let stackIndex: number | undefined = mainStackDataArray[mainStackDataArrayLength - 1].numberValue;
-  //   let willChangedStackDataArray: StackData[] = [...mainStackDataArray];
-  //   willChangedStackDataArray.pop();
+  if (word === "OP_DUP") {
+    if (mainStackDataArrayLength < 1) throw "OP_DUP Error: stack data array must include min 1 data!";
+    const addDataArray: WizData[] = [stacks.dup(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
 
-  //   if (stackIndex !== undefined) {
-  //     if (stackIndex >= willChangedStackDataArray.length) throw "OP_ROLL Error: stack index cant be equal and greater than stack array length";
-  //   } else {
-  //     throw "OP_ROLL Error: stack index must be a number";
-  //   }
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const addDataArray: StackData[] = stacks.OP_ROLL(willChangedStackDataArray, stackIndex);
+  if (word === "OP_NIP") {
+    if (mainStackDataArrayLength < 2) throw "OP_NIP Error: stack data array must include min 2 data!";
 
-  //   const removeLastSize: number = mainStackDataArray.length;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray: WizData[] = [stacks.nip(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
-  // if (word === "OP_TUCK") {
-  //   if (mainStackDataArrayLength < 2) throw "OP_TUCK Error: stack data array must include min 2 data!";
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   const addDataArray: StackData[] = stacks.OP_TUCK(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+  if (word === "OP_OVER") {
+    if (mainStackDataArrayLength < 2) throw "OP_OVER Error: stack data array must include min 2 data!";
+    const addDataArray: WizData[] = [stacks.over(mainStackDataArray[mainStackDataArrayLength - 2])];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
 
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
+  if (word === "OP_SWAP") {
+    if (mainStackDataArrayLength < 2) throw "OP_SWAP Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = stacks.swap(mainStackDataArray[mainStackDataArrayLength - 1], mainStackDataArray[mainStackDataArrayLength - 2]);
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_2ROT") {
+    if (mainStackDataArrayLength < 6) throw "OP_2ROT Error: stack data array must include min 6 data!";
+
+    const addDataArray: WizData[] = stacks.twoRot(
+      mainStackDataArray[mainStackDataArrayLength - 6],
+      mainStackDataArray[mainStackDataArrayLength - 5],
+      mainStackDataArray[mainStackDataArrayLength - 4],
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 1]
+    );
+
+    const removeLastSize: number = 6;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_ROT") {
+    if (mainStackDataArrayLength < 3) throw "OP_ROT Error: stack data array must include min 3 data!";
+
+    const addDataArray: WizData[] = stacks.rot(
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 1]
+    );
+
+    const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_PICK") {
+    if (mainStackDataArrayLength < 2) throw "OP_PICK Error: stack data array must include min 2 data!";
+
+    let stackIndex: number | undefined = mainStackDataArray[mainStackDataArrayLength - 1].number;
+
+    let willChangedStackDataArray: WizData[] = [...mainStackDataArray];
+    willChangedStackDataArray.pop();
+
+    if (stackIndex !== undefined) {
+      if (stackIndex >= willChangedStackDataArray.length) throw "OP_PICK Error: stack index cant be equal and greater than stack array length";
+    } else {
+      throw "OP_PICK Error: stack index must be a number";
+    }
+
+    const addDataArray: WizData[] = stacks.pick(willChangedStackDataArray, stackIndex);
+
+    const removeLastSize: number = mainStackDataArray.length;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_ROLL") {
+    if (mainStackDataArrayLength < 2) throw "OP_ROLL Error: stack data array must include min 2 data!";
+
+    let stackIndex: number | undefined = mainStackDataArray[mainStackDataArrayLength - 1].number;
+    let willChangedStackDataArray: WizData[] = [...mainStackDataArray];
+    willChangedStackDataArray.pop();
+
+    if (stackIndex !== undefined) {
+      if (stackIndex >= willChangedStackDataArray.length) throw "OP_ROLL Error: stack index cant be equal and greater than stack array length";
+    } else {
+      throw "OP_ROLL Error: stack index must be a number";
+    }
+
+    const addDataArray: WizData[] = stacks.roll(willChangedStackDataArray, stackIndex);
+
+    const removeLastSize: number = mainStackDataArray.length;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_TUCK") {
+    if (mainStackDataArrayLength < 2) throw "OP_TUCK Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = stacks.tuck(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
   /*
    * Splice
