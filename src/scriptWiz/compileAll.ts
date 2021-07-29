@@ -1,9 +1,9 @@
-import { cropTwo, hexLittleEndian } from "../utils";
+import { hexLE } from "../convertion/hex";
 
 const toLEPadByte = (number: number) => {
   const hex = number.toString(16);
   const padHex = hex.length % 2 === 0 ? hex : "0" + hex;
-  return cropTwo(hexLittleEndian(padHex));
+  return hexLE(padHex.substring(2));
 };
 
 export const compileData = (hex: string): string => {
