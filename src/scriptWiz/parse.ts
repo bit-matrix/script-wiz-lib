@@ -1,12 +1,21 @@
 import WizData from "../convertion";
 import { ParseResult, ParseResultData, WizDataList } from "../model";
 import { Opcode } from "../opcodes/model/Opcode";
-import { cropTwo, opcodeToWord, opWordToHex } from "../utils";
+import { opcodeToWord, opHexToWord } from "../utils";
 import { compileData } from "./compileAll";
-import { opFuncs } from "./opFuncs";
-import { parseFinalInput } from "./parseFinalInput";
+import { opFunctions } from "./opFunctions";
 
-export const parse = (input: string, opWordCodes: Opcode[], stackDataList: WizDataList, currentScopeParse: boolean, currentScopeParseException: boolean): ParseResult => {
+export const parse = (
+  opWordCodes: Opcode[],
+  stackDataList: WizDataList,
+  currentScopeParse: boolean,
+  currentScopeParseException: boolean,
+  inputHexParam?: string,
+  inputNumberParam?: number,
+  inputTextParam?: string,
+  inputBinParam?: string,
+  inputOpCodeParam?: string
+): ParseResult => {
   let emptyParseResultData: ParseResultData = {
     main: { addDataArray: [], removeLastSize: 0 },
     alt: { removeLastStackData: false },
@@ -15,41 +24,52 @@ export const parse = (input: string, opWordCodes: Opcode[], stackDataList: WizDa
   let inputHex: string = "";
 
   try {
-    // Data
-    if (input.startsWith("<") && input.endsWith(">")) {
-      const finalInput = input.substr(1, input.length - 2);
-      const addStackData: WizData = parseFinalInput(finalInput);
-      inputHex = compileData(addStackData.hex);
+    // Values
+    if (inputOpCodeParam === undefined) {
+      const wizData: WizData = parseValueInputs(inputHexParam, inputNumberParam, inputTextParam, inputBinParam);
+      inputHex = compileData(wizData.hex);
 
-      if (currentScopeParse)
-        return {
-          inputHex,
-          main: { addDataArray: [addStackData], removeLastSize: 0 },
-          alt: { removeLastStackData: false },
-        };
+      if (currentScopeParse) return { inputHex, main: { addDataArray: [wizData], removeLastSize: 0 }, alt: { removeLastStackData: false } };
       else return { ...emptyParseResultData, inputHex };
     }
 
-    // OP Word or OP Code
-    if (input.startsWith("OP_") || !isNaN(input as any)) {
-      // OP Word
-      let word = input;
-      // Op Code
-      if (!isNaN(input as any)) {
-        word = opcodeToWord(Number(input), opWordCodes);
-        if (word === "") throw "Unknown OP code number";
-      }
-
-      inputHex = cropTwo(opWordToHex(word, opWordCodes));
-
-      if (inputHex === "") throw "Unknown OP code";
-
-      if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFuncs(word, stackDataList, opWordCodes);
-      return { ...emptyParseResultData, inputHex };
+    // OP Functions
+    let opWord = "";
+    if (inputOpCodeParam.startsWith("OP_")) opWord = inputOpCodeParam;
+    else if (inputOpCodeParam.startsWith("0x")) {
+      opWord = opHexToWord(inputOpCodeParam, opWordCodes);
+    } else if (isNaN(inputOpCodeParam as any)) {
+      return { inputHex, errorMessage: "Invalid OP code, OP word or OP hex", main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
+    } else {
+      opWord = opcodeToWord(Number(inputOpCodeParam), opWordCodes);
     }
+
+    if (opWord === undefined || opWord === "") throw "Unknown OP code";
+
+    if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFunctions(opWord, stackDataList, opWordCodes);
+    return { ...emptyParseResultData, inputHex };
   } catch (ex) {
     return { inputHex, errorMessage: ex, main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
   }
+};
 
-  return { inputHex, errorMessage: "it is not a valid input script", main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
+export const parseValueInputs = (inputHexParam?: string, inputNumberParam?: number, inputTextParam?: string, inputBinParam?: string): WizData => {
+  // a9f4 (0xa9f4)
+  // 8283284 (8283284)
+  // "hello" ("hello")
+  // 011101 (0b011101)
+
+  // Hex
+  if (inputHexParam !== undefined) return WizData.fromHex(inputHexParam);
+
+  // Number
+  if (inputNumberParam !== undefined) return WizData.fromNumber(inputNumberParam);
+
+  // Text
+  if (inputTextParam !== undefined) return WizData.fromText(inputTextParam);
+
+  // Bin
+  if (inputBinParam !== undefined) return WizData.fromBin(inputBinParam);
+
+  throw "parseValueInputs Error: it is not a valid input value!";
 };
