@@ -1,6 +1,6 @@
 {
-  "name": "script-wiz-lib",
-  "version": "1.0.0",
+  "name": "@script-wiz/lib",
+  "version": "0.0.13",
   "description": "",
   "scripts": {
     "wp-umd": "npx webpack --mode production --config webpack.config.umd.js",
