@@ -27,6 +27,8 @@ export class WizData {
     let numberVal: number | undefined = undefined;
     let textVal: string | undefined = undefined;
 
+    const emptyBytePrefix: string = "0x";
+
     // fromHex
     if (hex !== undefined) {
       inputVal = hex;
@@ -77,7 +79,7 @@ export class WizData {
 
     if (this.text !== undefined) outputVal = this.text;
     else if (this.number !== undefined) outputVal = this.number;
-    else outputVal = this.hex;
+    else outputVal = emptyBytePrefix + this.hex;
     this.output = outputVal;
   }
 
