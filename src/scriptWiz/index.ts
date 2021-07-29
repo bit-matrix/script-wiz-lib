@@ -23,14 +23,33 @@ export class ScriptWiz {
     this.stackDataList = initialStackDataList;
   };
 
+  parseHex = (input: string): void => this.parseInput(input);
+
+  parseNumber = (input: number): void => this.parseInput(undefined, input);
+
+  parseText = (input: string): void => this.parseInput(undefined, undefined, input);
+
+  parseBin = (input: string): void => this.parseInput(undefined, undefined, undefined, input);
+
+  parseOpcode = (input: string): void => this.parseInput(undefined, undefined, undefined, undefined, input);
+
+  //
+
   compile = () => compileJoin(this.stackDataList.inputHexes);
 
-  parseInput = (input: string): void => {
+  private parseInput = (inputHex?: string, inputNumber?: number, inputText?: string, inputBin?: string, inputOpCode?: string): void => {
     const currentScopeParse: boolean = currentScope(this.stackDataList);
-    const currentScopeParseException: boolean = input === "OP_IF" || input === "OP_NOTIF" || input === "OP_ELSE" || input === "OP_ENDIF";
+    let currentScopeParseException: boolean = false;
+    if (inputOpCode !== undefined) currentScopeParseException = inputOpCode === "OP_IF" || inputOpCode === "OP_NOTIF" || inputOpCode === "OP_ELSE" || inputOpCode === "OP_ENDIF";
 
-    const parseResult: ParseResult = parse(input, this.opCodes.data, this.stackDataList, currentScopeParse, currentScopeParseException);
+    let parseResult: ParseResult;
 
+    parseResult = parse(this.opCodes.data, this.stackDataList, currentScopeParse, currentScopeParseException, inputHex, inputNumber, inputText, inputBin, inputOpCode);
+
+    this.parseResultCommit(parseResult);
+  };
+
+  private parseResultCommit = (parseResult: ParseResult) => {
     // add input hexes
     this.stackDataList = { ...this.stackDataList, inputHexes: [...this.stackDataList.inputHexes, parseResult.inputHex], errorMessage: parseResult.errorMessage };
 
