@@ -1,4 +1,6 @@
 import WizData from "./convertion";
 import { WizDataList } from "./model";
+import { VM, VM_NETWORK, VM_NETWORK_VERSION } from "./opcodes/model/VM";
 import { ScriptWiz } from "./scriptWiz";
-export { ScriptWiz, WizData, WizDataList };
+import { compileFinalInput } from "./scriptWiz/compileFinalInput";
+export { compileFinalInput, ScriptWiz, WizData, WizDataList, VM, VM_NETWORK, VM_NETWORK_VERSION };
