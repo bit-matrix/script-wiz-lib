@@ -8,7 +8,7 @@ export enum VM_NETWORK_VERSION {
   TAPSCRIPT = "01",
 }
 
-export interface VM {
+export type VM = {
   network: VM_NETWORK;
   ver: VM_NETWORK_VERSION;
-}
+};
