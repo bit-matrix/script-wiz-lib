@@ -28,40 +28,35 @@ export const hash256 = (wizData: WizData): CryptoJS.lib.WordArray => {
   return secondSHAHash;
 };
 
-export const ecdsaVerify = (signature: WizData, message: WizData, publicKey: WizData): WizData => {
+export const ecdsaVerify = (sig: WizData, msg: WizData, pubkey: WizData): WizData => {
   const secp256k1 = new elliptic.ec("secp256k1");
+  const hashedMessage = sha256(msg).toString();
+  const publicKey = "0x" + pubkey.hex;
+  const signature = "0x" + sig.hex;
 
-  const hashedMessage = sha256(message);
+  if (publicKey.length !== 68) throw "ECDSA Verify error : invalid public key length";
 
-  const publicKeyHex = publicKey.hex;
-  const signatrueHex = signature.hex;
+  if (!signature.startsWith("0x30")) throw "ECDSA Verify error : signature must start with 0x30";
 
-  if (publicKeyHex.length !== 66) throw "ECDSA Verify error : invalid public key length";
+  const rAndSDataSize = Number("0x" + signature.substr(4, 2));
 
-  if (!signatrueHex.startsWith("30")) throw "ECDSA Verify error : signature must start with 0x30";
+  const signatureStringLength = rAndSDataSize * 2 + 6;
 
-  const rAndSDataSize = Number("0x" + signatrueHex.substr(2, 2));
+  if (signature.length !== signatureStringLength) throw "ECDSA Verify error : signature length invalid";
 
-  const signatureStringLength = rAndSDataSize * 2 + 4;
+  const rDataSize = Number("0x" + signature.substr(8, 2));
 
-  if (signatrueHex.length !== signatureStringLength) throw "ECDSA Verify error : signature length invalid";
+  const rValue = signature.substr(10, rDataSize * 2);
 
-  const rDataSize = Number("0x" + signatrueHex.substr(6, 2));
+  const sDataSize = Number("0x" + signature.substr(12 + rDataSize * 2, 2));
 
-  const rValue = signatrueHex.substr(10, rDataSize * 2);
-
-  const sDataSize = Number("0x" + signatrueHex.substr(10 + rDataSize * 2, 2));
-
-  const sValue = signatrueHex.substr(12 + rDataSize * 2 + 2, sDataSize * 2);
-
-  console.log(rValue);
-  console.log(sValue);
+  const sValue = signature.substr(12 + rDataSize * 2 + 2, sDataSize * 2);
 
   const rBn = new BN(rValue, "hex");
   const sBn = new BN(sValue, "hex");
 
   try {
-    return WizData.fromNumber(secp256k1.verify(hashedMessage.toString(), { r: rBn, s: sBn }, secp256k1.keyFromPublic(publicKey.hex, "hex")) ? 1 : 0);
+    return WizData.fromNumber(secp256k1.verify(hashedMessage, { r: rBn, s: sBn }, secp256k1.keyFromPublic(publicKey.slice(2), "hex")) ? 1 : 0);
   } catch {
     throw "ECDSA Verify error : something went wrong";
   }
