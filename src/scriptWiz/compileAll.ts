@@ -3,7 +3,7 @@ import { hexLE } from "../convertion/hex";
 const toLEPadByte = (number: number) => {
   const hex = number.toString(16);
   const padHex = hex.length % 2 === 0 ? hex : "0" + hex;
-  return hexLE(padHex.substring(2));
+  return hexLE(padHex);
 };
 
 export const compileData = (hex: string): string => {
