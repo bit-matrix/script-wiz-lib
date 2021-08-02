@@ -1,7 +1,7 @@
 import WizData from "../convertion";
 import { ParseResult, ParseResultData, WizDataList } from "../model";
 import { Opcode } from "../opcodes/model/Opcode";
-import { opcodeToWord, opHexToWord } from "../utils";
+import { opcodeToWord, opHexToWord, opWordToHex } from "../utils";
 import { compileData } from "./compileAll";
 import { opFunctions } from "./opFunctions";
 
@@ -35,8 +35,10 @@ export const parse = (
 
     // OP Functions
     let opWord = "";
-    if (inputOpCodeParam.startsWith("OP_")) opWord = inputOpCodeParam;
-    else if (inputOpCodeParam.startsWith("0x")) {
+    if (inputOpCodeParam.startsWith("OP_")) {
+      opWord = inputOpCodeParam;
+      inputHex = opWordToHex(opWord, opWordCodes);
+    } else if (inputOpCodeParam.startsWith("0x")) {
       opWord = opHexToWord(inputOpCodeParam, opWordCodes);
     } else if (isNaN(inputOpCodeParam as any)) {
       return { inputHex, errorMessage: "Invalid OP code, OP word or OP hex", main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };

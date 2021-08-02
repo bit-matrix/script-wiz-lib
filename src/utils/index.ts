@@ -1,7 +1,5 @@
 import { WizDataList } from "../model";
-import { Opcodes } from "../opcodes";
 import { Opcode } from "../opcodes/model/Opcode";
-import { VM } from "../opcodes/model/VM";
 
 export const flipbits = (str: string): string => {
   return str
@@ -17,6 +15,11 @@ export const opHexToWord = (hex: string, opWordCodes: Opcode[]): string => {
 
 export const opcodeToWord = (opcode: number, opWordCodes: Opcode[]): string => {
   return opWordCodes.find((owc) => owc.opcode === opcode)?.word || "";
+};
+
+export const opWordToHex = (word: string, opWordCodes: Opcode[]): string => {
+  const hex = opWordCodes.find((owc) => owc.word === word)?.hex.substr(2);
+  return hex || "";
 };
 
 // supports all opcodes
