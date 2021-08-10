@@ -7,15 +7,14 @@ export const tagHash = (tag: string, data: Uint8Array) => {
 
   hashedTag = hashedTag.concat(hashedTag);
 
-  // let versionData = WizData.fromHex("c0").hex;
-
-  // hashedTag = hashedTag.concat(versionData);
-
-  // let scriptLength = WizData.fromNumber(data.length).hex;
-
-  // hashedTag = hashedTag.concat(scriptLength);
-
   hashedTag = hashedTag.concat(toHexString(data));
 
   return sha256(WizData.fromHex(hashedTag)).toString();
+};
+
+export const treeHelper = (script: string): string => {
+  const versionData = "c0";
+  const scriptLength = WizData.fromNumber(script.length / 2).hex;
+
+  return versionData + scriptLength + script;
 };
