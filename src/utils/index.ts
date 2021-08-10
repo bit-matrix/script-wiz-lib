@@ -22,6 +22,12 @@ export const opWordToHex = (word: string, opWordCodes: Opcode[]): string => {
   return hex || "";
 };
 
+export const toHexString = (byteArray: Uint8Array) => {
+  return Array.from(byteArray, function (byte) {
+    return ("0" + (byte & 0xff).toString(16)).slice(-2);
+  }).join("");
+};
+
 // supports all opcodes
 export const currentScope = (wizDataList: WizDataList): boolean => wizDataList.flow[wizDataList.flow.length - 1];
 export const EMOJI_REGEX = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g;
