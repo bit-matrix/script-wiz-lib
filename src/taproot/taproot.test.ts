@@ -1,4 +1,4 @@
-import { tagHash, treeHelper, tweakAdd } from ".";
+import { tagHash, tapRoot, treeHelper, tweakAdd } from ".";
 import WizData from "../convertion";
 
 test("taghash test", () => {
@@ -17,7 +17,7 @@ test("taghash test", () => {
 
 test("tree helper test", () => {
   const data = "55935787";
-  const result = treeHelper(data);
+  const result = treeHelper(data, "c0");
 
   expect(result.data).toBe("c00455935787");
   expect(result.h).toBe("0f20d41260bd81c46f4ee8a388b0f139d107f707e38fb2525f191b83a49c5013");
@@ -33,4 +33,13 @@ test("tweakAdd test", () => {
   const result = tweakAdd(pubkey, tweak);
 
   expect(result).toBe("0326fef75b96729c1753eeac93309ae90c8a06192ea5b1b13175e239743ec11c4a");
+});
+
+test("taproot test", () => {
+  const pubkey = "02d6562a988d87a30747a6cc3183749039f2739f7e31ce8913136c7ebd3c9fde1b";
+  const script = "55935787";
+
+  const result = tapRoot(pubkey, script);
+
+  expect(result).toBe("512100004a0437d79dd25e14f52b8c479d9ea2d235108ce904d14b79dd9fbf377cd954");
 });
