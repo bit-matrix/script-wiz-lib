@@ -12,9 +12,13 @@ export const tagHash = (tag: string, data: Uint8Array) => {
   return sha256(WizData.fromHex(hashedTag)).toString();
 };
 
-export const treeHelper = (script: string): string => {
+export const treeHelper = (script: string) => {
   const versionData = "c0";
   const scriptLength = WizData.fromNumber(script.length / 2).hex;
 
-  return versionData + scriptLength + script;
+  const scriptData = versionData + scriptLength + script;
+
+  const h = tagHash("TapLeaf", WizData.fromHex(scriptData).bytes);
+
+  return { data: versionData + scriptLength + script, h };
 };

@@ -15,5 +15,6 @@ test("tree helper test", () => {
   const data = "55935787";
   const result = treeHelper(data);
 
-  expect(result).toBe("c00455935787");
+  expect(result.data).toBe("c00455935787");
+  expect(result.h).toBe("0f20d41260bd81c46f4ee8a388b0f139d107f707e38fb2525f191b83a49c5013");
 });
