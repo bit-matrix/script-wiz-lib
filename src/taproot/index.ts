@@ -3,46 +3,54 @@ import { sha256 } from "../core/crypto";
 import { toHexString } from "../utils";
 import * as secp256k1 from "secp256k1";
 import { commonOpcodes } from "../opcodes/common";
+import { Taproot } from "./model";
 
-export const tagHash = (tag: string, data: Uint8Array) => {
+export const tweakAdd = (pubkey: Uint8Array, tweak: Uint8Array): WizData => {
+  const tweaked = secp256k1.publicKeyTweakAdd(pubkey, tweak);
+  return WizData.fromHex(toHexString(tweaked));
+};
+
+export const tagHash = (tag: string, data: WizData) => {
   let hashedTag = sha256(WizData.fromText(tag)).toString();
 
   hashedTag = hashedTag.concat(hashedTag);
 
-  hashedTag = hashedTag.concat(toHexString(data));
+  hashedTag = hashedTag.concat(toHexString(data.bytes));
 
   return sha256(WizData.fromHex(hashedTag)).toString();
 };
 
-export const treeHelper = (script: string, version: string) => {
-  const versionData = version;
-  const scriptLength = WizData.fromNumber(script.length / 2).hex;
+export const treeHelper = (script: WizData, version: string) => {
+  const scriptLength = WizData.fromNumber(script.hex.length / 2).hex;
 
-  const scriptData = versionData + scriptLength + script;
+  const scriptData = version + scriptLength + script.hex;
 
-  const h = tagHash("TapLeaf", WizData.fromHex(scriptData).bytes);
+  const h = tagHash("TapLeaf", WizData.fromHex(scriptData));
 
-  return { data: versionData + scriptLength + script, h };
+  return { data: version + scriptLength + script.hex, h };
 };
 
-export const tweakAdd = (pubkey: Uint8Array, tweak: Uint8Array): string => {
-  const tweaked = secp256k1.publicKeyTweakAdd(pubkey, tweak);
-  return toHexString(tweaked);
-};
+// export const getVersionTaggedPubKey = (pubkey: WizData): WizData => {
+//   const logic = pubkey.bytes[0] & 1;
 
-export const tapRoot = (pubKey: string, script: string, version: string = "c0") => {
-  const pubkeyData = WizData.fromHex(pubKey);
+//   console.log("logic", logic);
+//   if (logic === 1) {
+//     return WizData.fromHex("00");
+//   }
 
+//   return WizData.fromNumber(1);
+// };
+
+export const tapRoot = (pubKey: WizData, script: WizData, version: string = "c0"): Taproot => {
   const { h } = treeHelper(script, version);
 
-  const tweak = tagHash("TapTweak", WizData.fromHex(pubKey + h).bytes);
+  const tweak = tagHash("TapTweak", WizData.fromHex(pubKey.hex + h));
 
-  const tweaked = tweakAdd(pubkeyData.bytes, WizData.fromHex(tweak).bytes);
+  const tweaked = tweakAdd(pubKey.bytes, WizData.fromHex(tweak).bytes);
 
-  // @TODO 00 OR 01
-  const finalTweaked = "00" + tweaked.substr(2);
+  const finalTweaked = tweaked.hex.substr(2);
 
   const op1Hex = commonOpcodes.find((co) => co.word === "OP_1")?.hex.substr(2);
 
-  return op1Hex + WizData.fromNumber(finalTweaked.length / 2).hex + finalTweaked;
+  return { scriptPubKey: WizData.fromHex(op1Hex + WizData.fromNumber(finalTweaked.length / 2).hex + finalTweaked), tweak: tweaked };
 };
