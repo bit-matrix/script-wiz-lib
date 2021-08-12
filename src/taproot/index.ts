@@ -4,6 +4,7 @@ import { toHexString } from "../utils";
 import * as secp256k1 from "secp256k1";
 import { commonOpcodes } from "../opcodes/common";
 import { Taproot } from "./model";
+import * as segwit_addr from "../bech32/segwit_addr";
 
 export const tweakAdd = (pubkey: Uint8Array, tweak: Uint8Array): WizData => {
   const tweaked = secp256k1.publicKeyTweakAdd(pubkey, tweak);
@@ -52,5 +53,7 @@ export const tapRoot = (pubKey: WizData, script: WizData, version: string = "c0"
 
   const op1Hex = commonOpcodes.find((co) => co.word === "OP_1")?.hex.substr(2);
 
-  return { scriptPubKey: WizData.fromHex(op1Hex + WizData.fromNumber(finalTweaked.length / 2).hex + finalTweaked), tweak: tweaked };
+  const bech32 = segwit_addr.encode("bc", 1, WizData.fromHex(finalTweaked).bytes);
+
+  return { scriptPubKey: WizData.fromHex(op1Hex + WizData.fromNumber(finalTweaked.length / 2).hex + finalTweaked), tweak: tweaked, bech32: WizData.fromHex(bech32 || "") };
 };
