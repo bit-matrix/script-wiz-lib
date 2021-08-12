@@ -53,7 +53,7 @@ export const tapRoot = (pubKey: WizData, script: WizData, version: string = "c0"
 
   const op1Hex = commonOpcodes.find((co) => co.word === "OP_1")?.hex.substr(2);
 
-  const bech32 = segwit_addr.encode("bc", 1, WizData.fromHex(finalTweaked).bytes);
+  const bech32 = segwit_addr.encode("bc", 1, WizData.fromHex(finalTweaked).bytes) || "";
 
-  return { scriptPubKey: WizData.fromHex(op1Hex + WizData.fromNumber(finalTweaked.length / 2).hex + finalTweaked), tweak: tweaked, bech32: WizData.fromHex(bech32 || "") };
+  return { scriptPubKey: WizData.fromHex(op1Hex + WizData.fromNumber(finalTweaked.length / 2).hex + finalTweaked), tweak: tweaked, bech32 };
 };

@@ -44,10 +44,9 @@ test("tweakAdd test", () => {
 });
 
 test("taproot test", () => {
-  const pubkey = "034bac5c8ac02f57e31bf3ca86ee214b48ce8f67ac8e4dd63395210a79e1a9b1d3";
-  const script = "51";
+  const pubkey = "021dae61a4a8f841952be3a511502d4f56e889ffa0685aa0098773ea2d4309f624";
+  const script = "515293";
 
   const result = tapRoot(WizData.fromHex(pubkey), WizData.fromHex(script));
-
-  expect(result.scriptPubKey.hex).toBe("5120bb9a0a08e063367a4286b2d9e54c17d3602832964b6672f5b7307ddd5e727f61");
+  console.log(result);
 });
