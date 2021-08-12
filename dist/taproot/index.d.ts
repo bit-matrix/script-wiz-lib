@@ -1,7 +1,9 @@
-export declare const tagHash: (tag: string, data: Uint8Array) => string;
-export declare const treeHelper: (script: string, version: string) => {
+import WizData from "../convertion";
+import { Taproot } from "./model";
+export declare const tweakAdd: (pubkey: Uint8Array, tweak: Uint8Array) => WizData;
+export declare const tagHash: (tag: string, data: WizData) => string;
+export declare const treeHelper: (script: WizData, version: string) => {
     data: string;
     h: string;
 };
-export declare const tweakAdd: (pubkey: Uint8Array, tweak: Uint8Array) => string;
-export declare const tapRoot: (pubKey: string, script: string, version?: string) => string;
+export declare const tapRoot: (pubKey: WizData, script: WizData, version?: string) => Taproot;
