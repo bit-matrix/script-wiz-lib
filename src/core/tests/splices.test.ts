@@ -1,5 +1,5 @@
 // import { numberTestData } from "./data/number";
-import WizData from "../../convertion";
+import WizData from "@script-wiz/wiz-data";
 import { concatenate, left, right, size, substr, substrLazy } from "../splices";
 
 test("Splices concatenate test", () => {

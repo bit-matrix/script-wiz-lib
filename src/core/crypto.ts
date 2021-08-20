@@ -1,7 +1,7 @@
 import CryptoJS from "crypto-js";
 import elliptic from "elliptic";
 import BN from "bn.js";
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 
 export const ripemd160 = (wizData: WizData): CryptoJS.lib.WordArray => {
   return CryptoJS.RIPEMD160(CryptoJS.enc.Hex.parse(wizData.hex));

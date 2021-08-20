@@ -1,5 +1,5 @@
 // import { numberTestData } from "./data/number";
-import WizData from "../../convertion";
+import WizData from "@script-wiz/wiz-data";
 import { and, equal, invert, or, xor } from "../bitwise";
 
 test("bitwise invert test", () => {

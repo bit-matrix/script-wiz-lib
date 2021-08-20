@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 import { ParseResult, ParseResultData, WizDataList } from "../model";
 import { Opcode } from "../opcodes/model/Opcode";
 import { opcodeToWord, opHexToWord, opWordToHex } from "../utils";

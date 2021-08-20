@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 import { sha256 } from "../core/crypto";
 import { toHexString } from "../utils";
 import * as secp256k1 from "secp256k1";

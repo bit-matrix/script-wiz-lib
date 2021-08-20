@@ -1,4 +1,4 @@
-import { hexLE } from "../convertion/hex";
+import { hexLE } from "@script-wiz/wiz-data";
 
 const toLEPadByte = (number: number) => {
   const hex = number.toString(16);
