@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 export declare const fromAltStack: (wizData: WizData) => WizData;
 export declare const twoDup: (wizData: WizData, wizData2: WizData) => WizData[];
 export declare const threeDup: (wizData: WizData, wizData2: WizData, wizData3: WizData) => WizData[];

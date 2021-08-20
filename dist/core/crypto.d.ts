@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 export declare const ripemd160: (wizData: WizData) => CryptoJS.lib.WordArray;
 export declare const sha1: (wizData: WizData) => CryptoJS.lib.WordArray;
 export declare const sha256: (wizData: WizData) => CryptoJS.lib.WordArray;

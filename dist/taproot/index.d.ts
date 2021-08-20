@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 import { Taproot } from "./model";
 export declare const tweakAdd: (pubkey: Uint8Array, tweak: Uint8Array) => WizData;
 export declare const tagHash: (tag: string, data: WizData) => string;
