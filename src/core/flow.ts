@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 import { WizDataList } from "../model";
 import { currentScope } from "../utils";
 

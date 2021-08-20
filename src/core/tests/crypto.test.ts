@@ -1,5 +1,5 @@
 // import { numberTestData } from "./data/number";
-import WizData from "../../convertion";
+import WizData from "@script-wiz/wiz-data";
 import { ecdsaVerify, hash160, hash256, ripemd160, sha1, sha256 } from "../crypto";
 
 // test("Crypto ripemd160 test", () => {

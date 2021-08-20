@@ -1,5 +1,5 @@
 import { tagHash, tapRoot, treeHelper, tweakAdd } from ".";
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 
 test("xxx", () => {
   const x = "038a759932b19c2bf441e4e37a0243f03364df38cec1c658743dffa56c334dfb2d";

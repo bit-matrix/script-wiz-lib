@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 export declare const add1: (wizData: WizData) => WizData;
 export declare const sub1: (wizData: WizData) => WizData;
 export declare const negate: (wizData: WizData) => WizData;

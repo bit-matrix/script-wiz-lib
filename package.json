@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/swap-cash/script-wiz-lib#readme",
   "dependencies": {
+    "@script-wiz/wiz-data": "^0.1.0",
     "bn.js": "^5.2.0",
     "crypto-js": "^4.0.0",
     "elliptic": "^6.5.4",

@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 
 export const add1 = (wizData: WizData): WizData => {
   if (wizData.number !== undefined) {
@@ -116,8 +116,7 @@ export const rshift = (wizData: WizData, wizData2: WizData): WizData => {
 
 export const boolAnd = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.number !== undefined && wizData2.number !== undefined) {
-    if (wizData.number === 0 || wizData2.number === 0)
-      return WizData.fromNumber(0);
+    if (wizData.number === 0 || wizData2.number === 0) return WizData.fromNumber(0);
     return WizData.fromNumber(1);
   }
 
@@ -126,8 +125,7 @@ export const boolAnd = (wizData: WizData, wizData2: WizData): WizData => {
 
 export const boolOr = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.number !== undefined && wizData2.number !== undefined) {
-    if (wizData.number === 0 && wizData2.number === 0)
-      return WizData.fromNumber(0);
+    if (wizData.number === 0 && wizData2.number === 0) return WizData.fromNumber(0);
     return WizData.fromNumber(1);
   }
 
@@ -142,10 +140,7 @@ export const numEqual = (wizData: WizData, wizData2: WizData): WizData => {
   throw "Error: this operation requires 2 valid number wizData";
 };
 
-export const numEqualVerify = (
-  wizData: WizData,
-  wizData2: WizData
-): WizData => {
+export const numEqualVerify = (wizData: WizData, wizData2: WizData): WizData => {
   return numEqual(wizData, wizData2);
 };
 
@@ -170,10 +165,7 @@ export const graterThan = (wizData: WizData, wizData2: WizData): WizData => {
   throw "Error: this operation requires 2 valid number wizData";
 };
 
-export const lessThanOrEqual = (
-  wizData: WizData,
-  wizData2: WizData
-): WizData => {
+export const lessThanOrEqual = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.number !== undefined && wizData2.number !== undefined) {
     return WizData.fromNumber(wizData.number <= wizData2.number ? 1 : 0);
   }
@@ -181,10 +173,7 @@ export const lessThanOrEqual = (
   throw "Error: this operation requires 2 valid number wizData";
 };
 
-export const graterThanOrEqual = (
-  wizData: WizData,
-  wizData2: WizData
-): WizData => {
+export const graterThanOrEqual = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.number !== undefined && wizData2.number !== undefined) {
     return WizData.fromNumber(wizData.number >= wizData2.number ? 1 : 0);
   }
@@ -212,22 +201,13 @@ export const max = (wizData: WizData, wizData2: WizData): WizData => {
   throw "Error: this operation requires 2 valid number wizData";
 };
 
-export const withIn = (
-  wizData: WizData,
-  wizData2: WizData,
-  wizData3: WizData
-): WizData => {
+export const withIn = (wizData: WizData, wizData2: WizData, wizData3: WizData): WizData => {
   const currentNumber = wizData.number;
   const minValue = wizData2.number;
   const maxValue = wizData3.number;
 
-  if (
-    currentNumber !== undefined &&
-    minValue !== undefined &&
-    maxValue !== undefined
-  ) {
-    if (currentNumber >= minValue && currentNumber <= maxValue)
-      return WizData.fromNumber(1);
+  if (currentNumber !== undefined && minValue !== undefined && maxValue !== undefined) {
+    if (currentNumber >= minValue && currentNumber <= maxValue) return WizData.fromNumber(1);
 
     return WizData.fromNumber(0);
   }

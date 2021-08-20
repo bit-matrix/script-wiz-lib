@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 
 export const concatenate = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.hex === "" && wizData2.hex === "") return WizData.fromNumber(0);

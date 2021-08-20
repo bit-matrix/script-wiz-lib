@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 import { flipbits } from "../utils";
 
 export const invert = (wizData: WizData): WizData => {

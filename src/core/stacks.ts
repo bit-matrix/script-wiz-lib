@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 
 export const fromAltStack = (wizData: WizData): WizData => wizData;
 

@@ -1,4 +1,4 @@
-import WizData from "../convertion";
+import WizData from "@script-wiz/wiz-data";
 import * as arithmetics from "../core/arithmetics";
 import * as bitwise from "../core/bitwise";
 import * as crypto from "../core/crypto";
