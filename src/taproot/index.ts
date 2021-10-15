@@ -6,6 +6,11 @@ import { commonOpcodes } from "../opcodes/common";
 import { Taproot } from "./model";
 import * as segwit_addr from "../bech32/segwit_addr";
 
+// type TreeHelper = {
+//   data: string;
+//   h: string;
+// };
+
 export const tweakAdd = (pubkey: Uint8Array, tweak: Uint8Array): WizData => {
   const tweaked = secp256k1.publicKeyTweakAdd(pubkey, tweak);
   return WizData.fromHex(toHexString(tweaked));
@@ -21,14 +26,22 @@ export const tagHash = (tag: string, data: WizData) => {
   return sha256(WizData.fromHex(hashedTag)).toString();
 };
 
-export const treeHelper = (script: WizData, version: string) => {
-  const scriptLength = WizData.fromNumber(script.hex.length / 2).hex;
+export const treeHelper = (scripts: WizData[], version: string): string => {
+  let treeHelperResultHex = "";
 
-  const scriptData = version + scriptLength + script.hex;
+  scripts.forEach((script) => {
+    const scriptLength = WizData.fromNumber(script.hex.length / 2).hex;
 
-  const h = tagHash("TapLeaf", WizData.fromHex(scriptData));
+    const scriptData = version + scriptLength + script.hex;
 
-  return { data: version + scriptLength + script.hex, h };
+    const h = tagHash("TapLeaf", WizData.fromHex(scriptData));
+
+    treeHelperResultHex += h;
+  });
+
+  const tapBranchResult: string = tagHash("TapBranch", WizData.fromHex(treeHelperResultHex));
+
+  return tapBranchResult;
 };
 
 // export const getVersionTaggedPubKey = (pubkey: WizData): WizData => {
@@ -42,10 +55,10 @@ export const treeHelper = (script: WizData, version: string) => {
 //   return WizData.fromNumber(1);
 // };
 
-export const tapRoot = (pubKey: WizData, script: WizData, version: string = "c0"): Taproot => {
-  const { h } = treeHelper(script, version);
+export const tapRoot = (pubKey: WizData, scripts: WizData[], version: string = "c0"): Taproot => {
+  const h: string = treeHelper(scripts, version);
 
-  const tweak = tagHash("TapTweak", WizData.fromHex(pubKey.hex + h));
+  const tweak = tagHash("TapTweak", WizData.fromHex(pubKey.hex.substr(2) + h));
 
   const tweaked = tweakAdd(pubKey.bytes, WizData.fromHex(tweak).bytes);
 
