@@ -51,7 +51,7 @@ export const parse = (
     if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFunctions(opWord, stackDataList, opWordCodes);
     return { ...emptyParseResultData, inputHex };
   } catch (ex) {
-    return { inputHex, errorMessage: ex, main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
+    return { inputHex, errorMessage: ex as string, main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
   }
 };
 
