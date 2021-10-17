@@ -39,9 +39,9 @@ export const treeHelper = (scripts: WizData[], version: string): string => {
     treeHelperResultHex += h;
   });
 
-  const tapBranchResult: string = tagHash("TapBranch", WizData.fromHex(treeHelperResultHex));
+  // const tapBranchResult: string = tagHash("TapBranch", WizData.fromHex(treeHelperResultHex));
 
-  return tapBranchResult;
+  return treeHelperResultHex;
 };
 
 // export const getVersionTaggedPubKey = (pubkey: WizData): WizData => {
@@ -57,12 +57,19 @@ export const treeHelper = (scripts: WizData[], version: string): string => {
 
 export const tapRoot = (pubKey: WizData, scripts: WizData[], version: string = "c0"): Taproot => {
   const h: string = treeHelper(scripts, version);
+  console.log("tap leaf result", h);
 
   const tweak = tagHash("TapTweak", WizData.fromHex(pubKey.hex.substr(2) + h));
 
+  console.log("tap tweak result", tweak);
+
   const tweaked = tweakAdd(pubKey.bytes, WizData.fromHex(tweak).bytes);
 
+  console.log("tap tweaked result:", tweaked.hex);
+
   const finalTweaked = tweaked.hex.substr(2);
+
+  console.log("final tweaked", finalTweaked);
 
   const op1Hex = commonOpcodes.find((co) => co.word === "OP_1")?.hex.substr(2);
 

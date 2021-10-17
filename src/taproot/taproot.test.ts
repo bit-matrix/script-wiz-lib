@@ -58,10 +58,11 @@ import WizData from "@script-wiz/wiz-data";
 // });
 
 test("taproot test", () => {
-  const pubkey = "02f30544d6009c8d8d94f5d030b2e844b1a3ca036255161c479db1cca5b374dd1c";
-  const script1 = WizData.fromHex("029000b275209997a497d964fc1a62885b05a51166a65a90df00492c8d7cf61d6accf54803beac");
-  const script2 = WizData.fromHex("a8206c60f404f8167a38fc70eaf8aa17ac351023bef86bcb9d1086a19afe95bd533388204edfcf9dfe6c0b5c83d1ab3f78d1b39a46ebac6798e08e19761f5ed89ec83c10ac");
+  const pubkey = "021dae61a4a8f841952be3a511502d4f56e889ffa0685aa0098773ea2d4309f624";
+  const script1 = WizData.fromHex("52935387");
+  // const script2 = WizData.fromHex("a8206c60f404f8167a38fc70eaf8aa17ac351023bef86bcb9d1086a19afe95bd533388204edfcf9dfe6c0b5c83d1ab3f78d1b39a46ebac6798e08e19761f5ed89ec83c10ac");
 
-  const result = tapRoot(WizData.fromHex(pubkey), [script2, script1]);
+  const result = tapRoot(WizData.fromHex(pubkey), [script1]);
+
   // console.log(result.tweak.hex);
 });
