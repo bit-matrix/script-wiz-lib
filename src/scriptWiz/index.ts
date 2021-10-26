@@ -83,7 +83,7 @@ export class ScriptWiz {
 
     // stack failed
     if (parseResult.isStackFailed) {
-      this.stackDataList = { ...this.stackDataList, isStackFailed: parseResult.isStackFailed, errorMessage: "Stack failed an OP_VERIFY operation." };
+      this.stackDataList = { ...this.stackDataList, isStackFailed: true, errorMessage: "Stack failed an OP_VERIFY operation." };
     }
   };
 }
