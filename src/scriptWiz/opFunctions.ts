@@ -60,50 +60,62 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   }
 
   if (word === "OP_IF") {
-    if (mainStackDataArrayLength < 1) throw "OP_IF Error: stack data array must include min 1 data!";
+    const scope = currentScope(stackDataList);
 
-    const flows = flow.flowIf(stackDataList);
-    const removeLastSize: number = currentScope(stackDataList) ? 1 : 0;
-    const alt = { removeLastStackData: false };
+    let flows = { flow: stackDataList.flow, altFlow: stackDataList.altFlow };
+    if (scope === false) {
+      flows.altFlow.push(false);
+    } else {
+      if (mainStackDataArrayLength < 1) throw "OP_IF Error: stack data array must include min 1 data!";
+      flows = flow.flowIf(stackDataList);
+    }
 
     return {
-      main: { addDataArray: [], removeLastSize },
-      alt,
+      main: { addDataArray: [], removeLastSize: scope ? 1 : 0 },
+      alt: { removeLastStackData: false },
       flow: flows.flow,
       altFlow: flows.altFlow,
     };
   }
 
   if (word === "OP_NOTIF") {
-    if (mainStackDataArrayLength < 1) throw "OP_NOTIF Error: stack data array must include min 1 data!";
+    const scope = currentScope(stackDataList);
 
-    const flows = flow.flowNotIf(stackDataList);
-    const removeLastSize: number = currentScope(stackDataList) ? 1 : 0;
-    const alt = { removeLastStackData: false };
+    let flows = { flow: stackDataList.flow, altFlow: stackDataList.altFlow };
+    if (scope === false) {
+      flows.altFlow.push(false);
+    } else {
+      if (mainStackDataArrayLength < 1) throw "OP_NOTIF Error: stack data array must include min 1 data!";
+      flows = flow.flowNotIf(stackDataList);
+    }
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: flows.flow, altFlow: flows.altFlow };
+    return {
+      main: { addDataArray: [], removeLastSize: scope ? 1 : 0 },
+      alt: { removeLastStackData: false },
+      flow: flows.flow,
+      altFlow: flows.altFlow,
+    };
   }
 
   if (word === "OP_ELSE") {
     if (stackDataList.flow.length === 1) throw "OP_ELSE Error: Encountered an OP_ELSE outside of an OP_IF ... OP_ENDIF block.!";
-
     const flows = flow.flowElse(stackDataList);
-    const removeLastSize: number = 0;
-    const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray: [], removeLastSize }, alt, flow: flows.flow, altFlow: flows.altFlow };
+    return {
+      main: { addDataArray: [], removeLastSize: 0 },
+      alt: { removeLastStackData: false },
+      flow: flows.flow,
+      altFlow: flows.altFlow,
+    };
   }
 
   if (word === "OP_ENDIF") {
     if (stackDataList.flow.length === 1) throw "OP_ENDIF Error: Encountered an OP_ENDIF which is not following a matching OP_IF.!";
-
     const flows = flow.flowEndIf(stackDataList);
-    const removeLastSize: number = 0;
-    const alt = { removeLastStackData: false };
 
     return {
-      main: { addDataArray: [], removeLastSize },
-      alt,
+      main: { addDataArray: [], removeLastSize: 0 },
+      alt: { removeLastStackData: false },
       flow: flows.flow,
       altFlow: flows.altFlow,
     };
