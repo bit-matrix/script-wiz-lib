@@ -2,60 +2,41 @@ import WizData from "@script-wiz/wiz-data";
 import { WizDataList } from "../model";
 import { currentScope } from "../utils";
 
+export const flowVerify = (wizData: WizData): boolean => wizData.hex !== "" && wizData.hex !== "00";
+
 export const flowIf = (wizDataList: WizDataList): { flow: boolean[]; altFlow: boolean[] } => {
   const lastStackData = wizDataList.main[wizDataList.main.length - 1];
+  const newExpression: boolean = flowVerify(lastStackData);
+  const newFlow = [...wizDataList.flow, newExpression];
 
-  const newExpression: boolean = lastStackData.hex === "0x" ? false : !!Number(lastStackData.hex);
-
-  const scope = currentScope(wizDataList);
-  const newFlow = scope ? [...wizDataList.flow, newExpression] : wizDataList.flow;
-  const newAltFlow = scope ? wizDataList.altFlow : [...wizDataList.altFlow, true];
-
-  return { flow: newFlow, altFlow: newAltFlow };
+  return { flow: newFlow, altFlow: [] };
 };
 
 export const flowNotIf = (wizDataList: WizDataList): { flow: boolean[]; altFlow: boolean[] } => {
   const lastStackData = wizDataList.main[wizDataList.main.length - 1];
-  const newExpression: boolean = lastStackData.hex === "0x" ? true : !Number(lastStackData.hex);
+  const newExpression: boolean = !flowVerify(lastStackData);
+  const newFlow = [...wizDataList.flow, newExpression];
 
-  const scope = currentScope(wizDataList);
-  const newFlow = scope ? [...wizDataList.flow, newExpression] : wizDataList.flow;
-  const newAltFlow = scope ? wizDataList.altFlow : [...wizDataList.altFlow, true];
-
-  return { flow: newFlow, altFlow: newAltFlow };
+  return { flow: newFlow, altFlow: [] };
 };
 
 export const flowElse = (wizDataList: WizDataList): { flow: boolean[]; altFlow: boolean[] } => {
-  const emptyAltFlow = wizDataList.altFlow.length === 0;
-
-  if (emptyAltFlow) {
+  if (wizDataList.altFlow.length === 0) {
     let newFlow = [...wizDataList.flow];
     newFlow.pop();
     newFlow = [...newFlow, !currentScope(wizDataList)];
-
-    return { flow: newFlow, altFlow: wizDataList.altFlow };
-  } else {
-    const newAltFlow = [...wizDataList.altFlow];
-    const reversedAltExpression = false; // !stackDataList.altFlow[stackDataList.altFlow.length - 1];
-    newAltFlow.pop();
-    newAltFlow.push(reversedAltExpression);
-
-    return { flow: wizDataList.flow, altFlow: newAltFlow };
+    return { flow: newFlow, altFlow: [] };
   }
+
+  return { flow: wizDataList.flow, altFlow: wizDataList.altFlow };
 };
 
 export const flowEndIf = (wizDataList: WizDataList): { flow: boolean[]; altFlow: boolean[] } => {
-  const emptyAltFlow = wizDataList.altFlow.length === 0;
-  const newFlow = [...wizDataList.flow];
-  const newAltFlow = [...wizDataList.altFlow];
-
-  if (emptyAltFlow) {
-    return { flow: newFlow.splice(0, newFlow.length - 1), altFlow: newAltFlow };
-  } else {
-    return { flow: newFlow, altFlow: newAltFlow.splice(0, newAltFlow.length - 1) };
+  if (wizDataList.altFlow.length === 0) {
+    const newFlow = [...wizDataList.flow];
+    return { flow: newFlow.splice(0, newFlow.length - 1), altFlow: [] };
   }
-};
 
-export const flowVerify = (wizData: WizData): boolean => {
-  return wizData.hex === "0x" ? false : !!Number(wizData.hex);
+  const newAltFlow = [...wizDataList.altFlow];
+  return { flow: wizDataList.flow, altFlow: newAltFlow.splice(0, newAltFlow.length - 1) };
 };
