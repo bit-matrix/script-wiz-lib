@@ -9,3 +9,4 @@ export declare const hash160v2: (wizData: WizData) => string;
 export declare const hash256: (wizData: WizData) => CryptoJS.lib.WordArray;
 export declare const ecdsaVerify: (sig: WizData, msg: WizData, pubkey: WizData) => WizData;
 export declare const checkSig: (wizData: WizData, wizData2: WizData) => WizData;
+export declare const tweakVerify: (wizData: WizData, wizData2: WizData, wizData3: WizData) => WizData;
