@@ -2,6 +2,7 @@ import CryptoJS from "crypto-js";
 import elliptic from "elliptic";
 import BN from "bn.js";
 import WizData from "@script-wiz/wiz-data";
+import * as tapRoot from "../taproot";
 
 // TO DO @afarukcali review
 
@@ -91,6 +92,23 @@ export const checkSig = (wizData: WizData, wizData2: WizData): WizData => {
   if (signature.length !== signatureStringLength) return WizData.fromNumber(0);
 
   return WizData.fromNumber(1);
+};
+
+// taproot feature
+export const tweakVerify = (wizData: WizData, wizData2: WizData, wizData3: WizData): WizData => {
+  const internalKey = wizData.bytes;
+  const vchTweak = wizData2.bytes;
+  const vchTweakedKey = wizData3.hex;
+
+  const tweakedKey: WizData = tapRoot.tweakAdd(internalKey, vchTweak);
+
+  console.log("tweakedkey", tweakedKey);
+
+  console.log("bool", tweakedKey.hex === vchTweakedKey);
+
+  if (tweakedKey.hex === vchTweakedKey) return WizData.fromNumber(1);
+
+  return WizData.fromNumber(0);
 };
 
 // const ECDSA = (messageHash: string, publicKey: string): string => {
