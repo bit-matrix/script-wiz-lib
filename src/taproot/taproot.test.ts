@@ -57,12 +57,21 @@ import WizData from "@script-wiz/wiz-data";
 //   expect(result.hex).toBe("0326fef75b96729c1753eeac93309ae90c8a06192ea5b1b13175e239743ec11c4a");
 // });
 
-test("taproot test", () => {
-  const pubkey = "021dae61a4a8f841952be3a511502d4f56e889ffa0685aa0098773ea2d4309f624";
-  const script1 = WizData.fromHex("52935387");
-  // const script2 = WizData.fromHex("a8206c60f404f8167a38fc70eaf8aa17ac351023bef86bcb9d1086a19afe95bd533388204edfcf9dfe6c0b5c83d1ab3f78d1b39a46ebac6798e08e19761f5ed89ec83c10ac");
+// test("taproot test", () => {
+//   const pubkey = "021dae61a4a8f841952be3a511502d4f56e889ffa0685aa0098773ea2d4309f624";
+//   const script1 = WizData.fromHex("52935387");
+//   // const script2 = WizData.fromHex("a8206c60f404f8167a38fc70eaf8aa17ac351023bef86bcb9d1086a19afe95bd533388204edfcf9dfe6c0b5c83d1ab3f78d1b39a46ebac6798e08e19761f5ed89ec83c10ac");
 
-  const result = tapRoot(WizData.fromHex(pubkey), [script1]);
+//   const result = tapRoot(WizData.fromHex(pubkey), [script1]);
 
-  // console.log(result.tweak.hex);
+//   // console.log(result.tweak.hex);
+// });
+
+test("demo", () => {
+  const vchInternalKey = "021dae61a4a8f841952be3a511502d4f56e889ffa0685aa0098773ea2d4309f624";
+  const vchTweak = "8488961ce04b9d47b4a4c312f61fb696bf9692f93effef613a47633eacdee1a7";
+
+  const result = tweakAdd(WizData.fromHex(vchInternalKey).bytes, WizData.fromHex(vchTweak).bytes);
+
+  console.log(result.hex);
 });
