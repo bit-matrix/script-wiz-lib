@@ -102,10 +102,6 @@ export const tweakVerify = (wizData: WizData, wizData2: WizData, wizData3: WizDa
 
   const tweakedKey: WizData = tapRoot.tweakAdd(internalKey, vchTweak);
 
-  console.log("tweakedkey", tweakedKey);
-
-  console.log("bool", tweakedKey.hex === vchTweakedKey);
-
   if (tweakedKey.hex === vchTweakedKey) return WizData.fromNumber(1);
 
   return WizData.fromNumber(0);
