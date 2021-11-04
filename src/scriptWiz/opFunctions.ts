@@ -883,6 +883,25 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
   }
 
+  // TAPROOT FEATURE
+  if (word === "OP_TWEAKVERIFY") {
+    if (mainStackDataArrayLength < 3) throw "OP_TWEAKVERIFY Error: stack data array must include min 3 data!";
+    let isStackFailed: boolean = false;
+
+    const verifyResult: WizData = crypto.tweakVerify(
+      mainStackDataArray[mainStackDataArrayLength - 3],
+      mainStackDataArray[mainStackDataArrayLength - 2],
+      mainStackDataArray[mainStackDataArrayLength - 1]
+    );
+
+    if (verifyResult.number === 0) isStackFailed = true;
+
+    const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
+  }
+
   /*
    * Locktime
    * 177 - 178
