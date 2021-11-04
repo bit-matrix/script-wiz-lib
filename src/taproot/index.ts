@@ -1,6 +1,6 @@
 import WizData from "@script-wiz/wiz-data";
 import { sha256 } from "../core/crypto";
-import { toHexString } from "../utils";
+import { formattedPubkey, toHexString } from "../utils";
 import * as secp256k1 from "secp256k1";
 import { commonOpcodes } from "../opcodes/common";
 import { Taproot } from "./model";
@@ -59,11 +59,13 @@ export const tapRoot = (pubKey: WizData, scripts: WizData[], version: string = "
   const h: string = treeHelper(scripts, version);
   console.log("tap leaf result", h);
 
-  const tweak = tagHash("TapTweak", WizData.fromHex(pubKey.hex.substr(2) + h));
+  const tweak = tagHash("TapTweak", WizData.fromHex(pubKey.hex + h));
 
   console.log("tap tweak result", tweak);
 
-  const tweaked = tweakAdd(pubKey.bytes, WizData.fromHex(tweak).bytes);
+  const pubkeyWithPrefix: WizData = formattedPubkey(pubKey.hex);
+
+  const tweaked = tweakAdd(pubkeyWithPrefix.bytes, WizData.fromHex(tweak).bytes);
 
   console.log("tap tweaked result:", tweaked.hex);
 
