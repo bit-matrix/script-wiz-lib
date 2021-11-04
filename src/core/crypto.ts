@@ -3,6 +3,7 @@ import elliptic from "elliptic";
 import BN from "bn.js";
 import WizData from "@script-wiz/wiz-data";
 import * as tapRoot from "../taproot";
+import { formattedPubkey } from "../utils";
 
 // TO DO @afarukcali review
 
@@ -96,11 +97,13 @@ export const checkSig = (wizData: WizData, wizData2: WizData): WizData => {
 
 // taproot feature
 export const tweakVerify = (wizData: WizData, wizData2: WizData, wizData3: WizData): WizData => {
-  const internalKey = wizData.bytes;
+  const internalKey = wizData.hex;
   const vchTweak = wizData2.bytes;
   const vchTweakedKey = wizData3.hex;
 
-  const tweakedKey: WizData = tapRoot.tweakAdd(internalKey, vchTweak);
+  const formattedInternalKey: WizData = formattedPubkey(internalKey);
+
+  const tweakedKey: WizData = tapRoot.tweakAdd(formattedInternalKey.bytes, vchTweak);
 
   if (tweakedKey.hex === vchTweakedKey) return WizData.fromNumber(1);
 
