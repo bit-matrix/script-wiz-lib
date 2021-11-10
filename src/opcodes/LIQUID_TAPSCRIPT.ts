@@ -21,6 +21,13 @@ export const opcodesLiquidTapscript: Opcode[] = [
     hex: "0xe1",
     description: "pop the stack as a 8 byte signed LE. Convert to CScriptNum and push it, abort on fail.",
   }, //	liquid network feature.
+  {
+    word: "OP_LE32TOLE64",
+    opcode: 226,
+    hex: "0xe2",
+    description:
+      "pop the stack as a 4 byte unsigned LE. Push the corresponding 8 byte signed LE number. Cannot fail, useful for operating of version, locktime, sequence, number of inputs, number of outputs, weight etc.",
+  }, //	liquid network feature.
 
   /*
    * Crypto
