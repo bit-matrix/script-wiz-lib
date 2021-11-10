@@ -46,6 +46,12 @@ export const LE64ToNum = (wizData: WizData): WizData => {
   return WizData.fromHex(resultHex);
 };
 
+export const LE32toLE64 = (wizData: WizData): WizData => {
+  if (wizData.bytes.length !== 4) throw "Input byte length must be equal 4 byte";
+
+  return numToLE64(wizData);
+};
+
 // LE64TONum alternative
 // export const LE64ToNum = (wizData: WizData): WizData => {
 //   const inputBytes = wizData.bytes;
