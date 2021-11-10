@@ -5,6 +5,23 @@ import { opcodesLiquidSegwit } from "./LIQUID_SEGWIT";
 export const opcodesLiquidTapscript: Opcode[] = [
   ...opcodesBitcoinTapscript,
   ...opcodesLiquidSegwit,
+
+  /*
+   * Conversion
+   */
+  {
+    word: "OP_SCRIPTNUMTOLE64",
+    opcode: 224,
+    hex: "0xe0",
+    description: " pop the stack as minimal CSciptNum, push 8 byte signed LE corresponding to that number.",
+  }, //	liquid network feature.
+  {
+    word: "OP_LE64TOSCRIPTNUM",
+    opcode: 225,
+    hex: "0xe1",
+    description: "pop the stack as a 8 byte signed LE. Convert to CScriptNum and push it, abort on fail.",
+  }, //	liquid network feature.
+
   /*
    * Crypto
    */

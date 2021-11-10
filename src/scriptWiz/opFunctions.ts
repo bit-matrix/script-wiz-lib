@@ -1,6 +1,7 @@
 import WizData from "@script-wiz/wiz-data";
 import * as arithmetics from "../core/arithmetics";
 import * as bitwise from "../core/bitwise";
+import * as conversion from "../core/conversion";
 import * as crypto from "../core/crypto";
 import * as flow from "../core/flow";
 import * as locktime from "../core/locktime";
@@ -928,6 +929,31 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+  }
+
+  /*
+   * Conversion
+   * 224 - 227
+   */
+
+  if (word === "OP_SCRIPTNUMTOLE64") {
+    if (mainStackDataArrayLength < 1) throw "OP_SCRIPTNUMTOLE64 Error: stack data array must include min 1 data!";
+
+    const addDataArray: WizData[] = [conversion.numToLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_LE64TOSCRIPTNUM") {
+    if (mainStackDataArrayLength < 1) throw "OP_LE64TOSCRIPTNUM Error: stack data array must include min 1 data!";
+
+    const addDataArray: WizData[] = [conversion.LE64ToNum(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
   }
 
   /*
