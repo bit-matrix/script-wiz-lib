@@ -8,14 +8,18 @@ export const numToLE64 = (wizData: WizData): WizData => {
   if (inputByteLength < 8) {
     const emptyByte = 8 - inputByteLength;
     let i = 0;
-    let additionalByte = "";
+    let emptyBytes = [];
 
     while (i < emptyByte) {
-      additionalByte += "00";
+      emptyBytes.push(0);
       i++;
     }
 
-    return WizData.fromHex(wizData.hex + additionalByte);
+    let mergedArray = new Uint8Array(inputByteLength + emptyBytes.length);
+    mergedArray.set(wizData.bytes);
+    mergedArray.set(emptyBytes, inputByteLength);
+
+    return WizData.fromBytes(mergedArray);
   }
 
   return wizData;
