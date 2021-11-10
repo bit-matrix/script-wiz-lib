@@ -25,23 +25,47 @@ export const numToLE64 = (wizData: WizData): WizData => {
   return wizData;
 };
 
-export const LE64ToNum = (wizData: WizData): WizData => {
-  const inputBytes = wizData.bytes;
+// LE64TONum alternative
+// export const LE64ToNum = (wizData: WizData): WizData => {
+//   const inputBytes = wizData.bytes;
 
-  if (inputBytes.length !== 8) throw "Input byte length must be equal 8 byte";
+//   if (inputBytes.length !== 8) throw "Input byte length must be equal 8 byte";
 
-  let resultHex = wizData.hex;
+//   let resultHex = wizData.hex;
 
-  let i = 7;
+//   let i = 7;
 
-  while (i >= 0) {
-    if (inputBytes[i] > 0) {
-      break;
-    }
+//   while (i >= 0) {
+//     if (inputBytes[i] > 0) {
+//       break;
+//     }
 
-    resultHex = resultHex.slice(0, -2);
-    i--;
-  }
+//     resultHex = resultHex.slice(0, -2);
+//     i--;
+//   }
 
-  return WizData.fromHex(resultHex);
-};
+//   return WizData.fromHex(resultHex);
+// };
+
+// export const LE64ToNum = (wizData: WizData): WizData => {
+//   const inputBytes = wizData.bytes;
+
+//   if (inputBytes.length !== 8) throw "Input byte length must be equal 8 byte";
+
+//   let result = Array.from(inputBytes);
+
+//   let i = 7;
+
+//   while (i >= 0) {
+//     if (inputBytes[i] > 0) {
+//       break;
+//     }
+
+//     result = result.slice(0, -1);
+//     i--;
+//   }
+
+//   const finalResult = new Uint8Array(result);
+
+//   return WizData.fromBytes(finalResult);
+// };
