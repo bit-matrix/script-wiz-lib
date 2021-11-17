@@ -933,8 +933,19 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
   /*
    * Conversion
-   * 224 - 227
+   * 215 - 227
    */
+
+  if (word === "OP_ADD64") {
+    if (mainStackDataArrayLength < 1) throw "OP_ADD64 Error: stack data array must include min 2 data!";
+
+    const addDataArray = [conversion.add64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+    console.log("addDataArray", addDataArray);
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
   if (word === "OP_SCRIPTNUMTOLE64") {
     if (mainStackDataArrayLength < 1) throw "OP_SCRIPTNUMTOLE64 Error: stack data array must include min 1 data!";
