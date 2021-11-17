@@ -1,8 +1,4 @@
 import WizData from "@script-wiz/wiz-data";
-import BN from "bn.js";
-
-const MAX_INTEGER = new BN("7fffffffffffffff", "hex");
-const MIN_INTEGER = new BN("8000000000000000", "hex");
 
 export const numToLE64 = (wizData: WizData): WizData => {
   const inputByteLength = wizData.bytes.length;
@@ -54,48 +50,6 @@ export const LE32toLE64 = (wizData: WizData): WizData => {
   if (wizData.bytes.length !== 4) throw "Input byte length must be equal 4 byte";
 
   return numToLE64(wizData);
-};
-
-export const add64 = (wizData: WizData, wizData2: WizData): WizData => {
-  if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
-
-  const a = numToLE64(wizData);
-  const b = numToLE64(wizData2);
-
-  const bigA = new BN(a.hex, "hex");
-  const bigB = new BN(b.hex, "hex");
-
-  if ((bigA.gt(new BN(0)) && bigB.gt(MAX_INTEGER.sub(bigA))) || (bigA.lt(new BN(0)) && bigB.lt(MIN_INTEGER.sub(bigA)))) {
-    throw "Input values must be greater than min integer and less than max integer";
-  } else {
-    const addedValue = bigA.add(bigB);
-
-    if (MAX_INTEGER.cmp(addedValue) === -1) {
-      throw "Result value must be less than max integer";
-    }
-    return WizData.fromHex(addedValue.toString("hex"));
-  }
-};
-
-export const sub64 = (wizData: WizData, wizData2: WizData): WizData => {
-  if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
-
-  const a = numToLE64(wizData);
-  const b = numToLE64(wizData2);
-
-  const bigA = new BN(a.hex, "hex");
-  const bigB = new BN(b.hex, "hex");
-
-  if ((bigB.gt(new BN(0)) && bigA.lt(MIN_INTEGER.add(bigB))) || (bigB.lt(new BN(0)) && bigA.gt(MAX_INTEGER.add(bigB)))) {
-    throw "Input values must be greater than min integer and less than max integer";
-  } else {
-    const subValue = bigA.sub(bigB);
-
-    if (MAX_INTEGER.cmp(subValue) === -1) {
-      throw "Result value must be less than max integer";
-    }
-    return WizData.fromHex(subValue.toString("hex"));
-  }
 };
 
 // LE64TONum alternative
