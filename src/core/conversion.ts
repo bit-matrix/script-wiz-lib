@@ -1,4 +1,7 @@
 import WizData from "@script-wiz/wiz-data";
+import BN from "bn.js";
+
+const MAX_INTEGER = new BN("7fffffffffffffff", "hex");
 
 export const numToLE64 = (wizData: WizData): WizData => {
   const inputByteLength = wizData.bytes.length;
@@ -50,6 +53,23 @@ export const LE32toLE64 = (wizData: WizData): WizData => {
   if (wizData.bytes.length !== 4) throw "Input byte length must be equal 4 byte";
 
   return numToLE64(wizData);
+};
+
+export const add64 = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
+
+  const a = numToLE64(wizData);
+  const b = numToLE64(wizData2);
+
+  const bigA = new BN(a.hex, "hex");
+  const bigB = new BN(b.hex, "hex");
+
+  const addedValue = bigA.add(bigB);
+
+  if (MAX_INTEGER.cmp(addedValue) === -1) {
+    throw "Result value must be less than max integer";
+  }
+  return WizData.fromHex(addedValue.toString("hex"));
 };
 
 // LE64TONum alternative
