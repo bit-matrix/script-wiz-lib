@@ -1,19 +1,19 @@
 import WizData from "@script-wiz/wiz-data";
 import { sha256 } from "../core/crypto";
-import { formattedPubkey, toHexString } from "../utils";
-import * as secp256k1 from "secp256k1";
+import { toHexString } from "../utils";
 import { commonOpcodes } from "../opcodes/common";
 import { Taproot } from "./model";
 import * as segwit_addr from "../bech32/segwit_addr";
+import bcrypto from "bcrypto";
 
 // type TreeHelper = {
 //   data: string;
 //   h: string;
 // };
 
-export const tweakAdd = (pubkey: Uint8Array, tweak: Uint8Array): WizData => {
-  const tweaked = secp256k1.publicKeyTweakAdd(pubkey, tweak);
-  return WizData.fromHex(toHexString(tweaked));
+export const tweakAdd = (pubkey: WizData, tweak: WizData): WizData => {
+  const tweaked = bcrypto.schnorr.publicKeyTweakAdd(Buffer.from(pubkey.hex, "hex"), Buffer.from(tweak.hex, "hex"));
+  return WizData.fromHex(tweaked.toString("hex"));
 };
 
 export const tagHash = (tag: string, data: WizData) => {
@@ -63,13 +63,11 @@ export const tapRoot = (pubKey: WizData, scripts: WizData[], version: string = "
 
   console.log("tap tweak result", tweak);
 
-  const pubkeyWithPrefix: WizData = formattedPubkey(pubKey.hex);
-
-  const tweaked = tweakAdd(pubkeyWithPrefix.bytes, WizData.fromHex(tweak).bytes);
+  const tweaked = tweakAdd(pubKey, WizData.fromHex(tweak));
 
   console.log("tap tweaked result:", tweaked.hex);
 
-  const finalTweaked = tweaked.hex.substr(2);
+  const finalTweaked = tweaked.hex;
 
   console.log("final tweaked", finalTweaked);
 
