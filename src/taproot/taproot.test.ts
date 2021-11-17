@@ -71,7 +71,7 @@ test("demo", () => {
   const vchInternalKey = "1dae61a4a8f841952be3a511502d4f56e889ffa0685aa0098773ea2d4309f624";
   const vchTweak = "8488961ce04b9d47b4a4c312f61fb696bf9692f93effef613a47633eacdee1a7";
 
-  const result = tweakAdd(WizData.fromHex(vchInternalKey).bytes, WizData.fromHex(vchTweak).bytes);
+  const result = tweakAdd(WizData.fromHex(vchInternalKey), WizData.fromHex(vchTweak));
 
   console.log(result.hex);
 });
