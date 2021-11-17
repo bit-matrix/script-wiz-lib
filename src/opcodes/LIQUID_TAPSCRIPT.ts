@@ -10,6 +10,13 @@ export const opcodesLiquidTapscript: Opcode[] = [
    * Conversion
    */
   {
+    word: "OP_ADD64",
+    opcode: 215,
+    hex: "0xd7",
+    description:
+      " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a + b onto the stack. Push 1 CScriptNum if there is no overflow. Overflow behavior defined above.",
+  }, //	liquid network feature.
+  {
     word: "OP_SCRIPTNUMTOLE64",
     opcode: 224,
     hex: "0xe0",
