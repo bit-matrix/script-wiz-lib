@@ -72,6 +72,23 @@ export const add64 = (wizData: WizData, wizData2: WizData): WizData => {
   return WizData.fromHex(addedValue.toString("hex"));
 };
 
+export const sub64 = (wizData: WizData, wizData2: WizData): WizData => {
+  if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
+
+  const a = numToLE64(wizData);
+  const b = numToLE64(wizData2);
+
+  const bigA = new BN(a.hex, "hex");
+  const bigB = new BN(b.hex, "hex");
+
+  const subValue = bigA.sub(bigB);
+
+  if (MAX_INTEGER.cmp(subValue) === -1) {
+    throw "Result value must be less than max integer";
+  }
+  return WizData.fromHex(subValue.toString("hex"));
+};
+
 // LE64TONum alternative
 // export const LE64ToNum = (wizData: WizData): WizData => {
 //   const inputBytes = wizData.bytes;
