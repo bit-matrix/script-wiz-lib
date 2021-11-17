@@ -942,7 +942,16 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     const addDataArray = [conversion.add64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
-    console.log("addDataArray", addDataArray);
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_SUB64") {
+    if (mainStackDataArrayLength < 1) throw "OP_SUB64 Error: stack data array must include min 2 data!";
+
+    const addDataArray = [conversion.sub64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
