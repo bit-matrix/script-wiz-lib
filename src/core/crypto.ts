@@ -97,17 +97,15 @@ export const checkSig = (wizData: WizData, wizData2: WizData): WizData => {
 
 // taproot feature
 export const tweakVerify = (wizData: WizData, wizData2: WizData, wizData3: WizData): WizData => {
-  const internalKey = wizData.hex;
-  const vchTweak = wizData2.bytes;
+  const internalKey = wizData;
+  const vchTweak = wizData2;
   const vchTweakedKey = wizData3;
 
-  const formattedInternalKey: WizData = formattedPubkey(internalKey);
-
-  if (vchTweak.length != 32) throw "Tweak key length must be eqaul 32 byte";
+  if (vchTweak.bytes.length != 32) throw "Tweak key length must be eqaul 32 byte";
 
   if (vchTweakedKey.bytes[0] !== 2 && vchTweakedKey.bytes[0] !== 3) throw "Tweaked key must start with 0x02 or 0x03";
 
-  const tweakedKey: WizData = tapRoot.tweakAdd(formattedInternalKey.bytes, vchTweak);
+  const tweakedKey: WizData = tapRoot.tweakAdd(internalKey, vchTweak);
 
   if (tweakedKey.hex === vchTweakedKey.hex) return WizData.fromNumber(1);
 
