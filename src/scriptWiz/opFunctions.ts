@@ -957,15 +957,35 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
 
-  // if (word === "OP_MUL64") {
-  //   if (mainStackDataArrayLength < 1) throw "OP_MUL64 Error: stack data array must include min 2 data!";
+  if (word === "OP_MUL64") {
+    if (mainStackDataArrayLength < 1) throw "OP_MUL64 Error: stack data array must include min 2 data!";
 
-  //   const addDataArray = [arithmetics64.mul64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
-  //   const removeLastSize: number = 2;
-  //   const alt = { removeLastStackData: false };
+    const addDataArray = [arithmetics64.mul64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
 
-  //   return { main: { addDataArray, removeLastSize }, alt };
-  // }
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_DIV64") {
+    if (mainStackDataArrayLength < 2) throw "OP_DIV64 Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = [arithmetics64.div64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_NEG64") {
+    if (mainStackDataArrayLength < 1) throw "OP_NEG64 Error: stack data array must include min 1 data!";
+
+    const addDataArray: WizData[] = [arithmetics64.neg64(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
   if (word === "OP_LESSTHAN64") {
     if (mainStackDataArrayLength < 2) throw "OP_LESSTHAN Error: stack data array must include min 2 data!";

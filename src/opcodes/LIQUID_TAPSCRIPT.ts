@@ -23,13 +23,27 @@ export const opcodesLiquidTapscript: Opcode[] = [
     description:
       " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a - b onto the stack. Push 1 CScriptNum if there is no overflow. Overflow behavior defined above.",
   }, //	liquid network feature.
-  // {
-  //   word: "OP_MUL64",
-  //   opcode: 217,
-  //   hex: "0xd9",
-  //   description:
-  //     " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a*b onto the stack. Push 1 CScriptNum if there is no overflow. Overflow behavior defined above.",
-  // }, //	liquid network feature.
+  {
+    word: "OP_MUL64",
+    opcode: 217,
+    hex: "0xd9",
+    description:
+      " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a*b onto the stack. Push 1 CScriptNum if there is no overflow. Overflow behavior defined above.",
+  }, //	liquid network feature.
+  {
+    word: "OP_DIV64",
+    opcode: 218,
+    hex: "0xda",
+    description:
+      " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). First push remainder a%b(must be non-negative and less than |b|) onto the stack followed by quotient(a//b) onto the stack. If b==0 or a = -2<sup>63</sup> && b = -1, treat as overflow as defined above. Push 1 CScriptNum if there is no overflow.",
+  }, //	liquid network feature.
+  {
+    word: "OP_NEG64",
+    opcode: 219,
+    hex: "0xdb",
+    description:
+      " pop the first number(8 byte LE) as a and pushes -a on the stack top. If the number is -2<sup>63</sup>(int64_min) treat as overflow, otherwise push CScriptNum 1 to indicate no overflow.",
+  }, //	liquid network feature.
   {
     word: "OP_LESSTHAN64",
     opcode: 220,
