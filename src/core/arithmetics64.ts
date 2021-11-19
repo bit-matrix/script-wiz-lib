@@ -1,16 +1,11 @@
 import WizData from "@script-wiz/wiz-data";
 import BN from "bn.js";
-import { numToLE64 } from "./conversion";
+import { convert64, numToLE64 } from "./conversion";
 
 const MAX_INTEGER = new BN("7fffffffffffffff", "hex");
 const MIN_INTEGER = new BN("8000000000000000", "hex");
 const BN_ZERO = new BN(0);
 const NEGATIVE_1 = new BN(-1);
-
-const convert64 = (value: BN): WizData => {
-  const byteArray = new Uint8Array(value.toArray("le", 8));
-  return WizData.fromBytes(byteArray);
-};
 
 export const add64 = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
