@@ -14,25 +14,24 @@ export const add64 = (wizData: WizData, wizData2: WizData): WizData[] => {
   const b = new BN(wizData2.bin, 2);
 
   if ((a.gt(BN_ZERO) && b.gt(MAX_INTEGER.sub(a))) || (a.lt(BN_ZERO) && b.lt(MIN_INTEGER.sub(a)))) {
-    return [wizData, wizData2, WizData.fromNumber(0)];
+    return [WizData.fromNumber(0)];
   } else {
     const addedValue = a.add(b);
     return [convert64(addedValue), WizData.fromNumber(1)];
   }
 };
 
-export const sub64 = (wizData: WizData, wizData2: WizData): WizData => {
-  if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
+export const sub64 = (wizData: WizData, wizData2: WizData): WizData[] => {
+  if (wizData.bytes.length != 8 || wizData2.bytes.length != 8) throw "Input bytes length must be equal 8 byte";
 
   const a = new BN(wizData.bin, 2);
   const b = new BN(wizData2.bin, 2);
 
   if ((b.gt(BN_ZERO) && a.lt(MIN_INTEGER.add(b))) || (b.lt(BN_ZERO) && a.gt(MAX_INTEGER.add(b)))) {
-    // return WizData.fromNumber(0) false
-    throw "Result values must be greater than min integer and less than max integer";
+    return [WizData.fromNumber(0)];
   } else {
     const subValue = a.sub(b);
-    return convert64(subValue);
+    return [convert64(subValue), WizData.fromNumber(1)];
   }
 };
 
