@@ -78,18 +78,18 @@ export const div64 = (wizData: WizData, wizData2: WizData): WizData[] => {
   return [convert64(r), convert64(q), WizData.fromNumber(1)];
 };
 
-export const neg64 = (wizData: WizData): WizData => {
+export const neg64 = (wizData: WizData): WizData[] => {
   if (wizData.bytes.length != 8) throw "Input bytes length must be equal 8 byte";
 
   const data = new BN(wizData.bin, 2);
 
-  if (data.eq(MIN_INTEGER)) throw "Input value must be not equal min integer.";
+  if (data.eq(MIN_INTEGER)) return [WizData.fromNumber(0)];
 
   const negateValue = data.neg();
 
   const newNegateValue = new BN(new BN(negateValue).toString("hex"));
 
-  return convert64(new BN(newNegateValue));
+  return [convert64(new BN(newNegateValue)), WizData.fromNumber(1)];
 };
 
 export const lessThan64 = (wizData: WizData, wizData2: WizData): WizData => {
