@@ -35,7 +35,7 @@ export const sub64 = (wizData: WizData, wizData2: WizData): WizData[] => {
   }
 };
 
-export const mul64 = (wizData: WizData, wizData2: WizData): WizData => {
+export const mul64 = (wizData: WizData, wizData2: WizData): WizData[] => {
   if (wizData.bytes.length !== 8 || wizData2.bytes.length !== 8) throw "Input bytes length must be equal 8 byte";
 
   const a = new BN(wizData.bin, 2);
@@ -47,35 +47,35 @@ export const mul64 = (wizData: WizData, wizData2: WizData): WizData => {
     (a.lt(BN_ZERO) && b.gt(BN_ZERO) && a.lt(MIN_INTEGER.div(b))) ||
     (a.lt(BN_ZERO) && b.lt(BN_ZERO) && b.lt(MAX_INTEGER.div(a)))
   ) {
-    throw "Result value must be greater than min integer and less than max integer";
+    return [WizData.fromNumber(0)];
   } else {
     const mulValue = a.mul(b);
-    return convert64(mulValue);
+    return [convert64(mulValue), WizData.fromNumber(1)];
   }
 };
 
-export const div64 = (wizData: WizData, wizData2: WizData): WizData => {
-  if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
+export const div64 = (wizData: WizData, wizData2: WizData): WizData[] => {
+  if (wizData.bytes.length != 8 || wizData2.bytes.length != 8) throw "Input bytes length must be equal 8 byte";
 
   const a = new BN(wizData.bin, 2);
   const b = new BN(wizData2.bin, 2);
 
   if (b.eq(BN_ZERO) || (b.eq(NEGATIVE_1) && a.eq(MIN_INTEGER))) {
-    throw "Result value must be greater than min integer and less than max integer";
+    return [WizData.fromNumber(0)];
   }
+
   let r = a.mod(b);
   let q = a.div(b);
+
   if (r.lt(BN_ZERO) && b.gt(BN_ZERO)) {
     r = r.add(b);
     q = q.sub(new BN(1));
-    return convert64(q);
   } else if (r.lt(BN_ZERO) && b.lt(BN_ZERO)) {
     r = r.sub(b);
     q = q.add(new BN(1));
-    return convert64(q);
-  } else {
-    return convert64(q);
   }
+
+  return [convert64(r), convert64(q), WizData.fromNumber(1)];
 };
 
 export const neg64 = (wizData: WizData): WizData => {

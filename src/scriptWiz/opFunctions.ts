@@ -970,8 +970,8 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_DIV64") {
     if (mainStackDataArrayLength < 2) throw "OP_DIV64 Error: stack data array must include min 2 data!";
 
-    const addDataArray: WizData[] = [arithmetics64.div64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
-    const removeLastSize: number = 2;
+    const addDataArray = arithmetics64.div64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = addDataArray.length === 1 ? 0 : 2;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
