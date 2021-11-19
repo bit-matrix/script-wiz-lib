@@ -7,118 +7,99 @@ const MIN_INTEGER = new BN("8000000000000000", "hex");
 const BN_ZERO = new BN(0);
 const NEGATIVE_1 = new BN(-1);
 
+const convert64 = (value: BN): WizData => {
+  const byteArray = new Uint8Array(value.toArray("le", 8));
+  return WizData.fromBytes(byteArray);
+};
+
 export const add64 = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
 
-  const a = numToLE64(wizData);
-  const b = numToLE64(wizData2);
+  const a = new BN(wizData.bin, 2);
+  const b = new BN(wizData2.bin, 2);
 
-  const bigA = new BN(a.hex, "hex");
-  const bigB = new BN(b.hex, "hex");
-
-  if ((bigA.gt(BN_ZERO) && bigB.gt(MAX_INTEGER.sub(bigA))) || (bigA.lt(BN_ZERO) && bigB.lt(MIN_INTEGER.sub(bigA)))) {
+  if ((a.gt(BN_ZERO) && b.gt(MAX_INTEGER.sub(a))) || (a.lt(BN_ZERO) && b.lt(MIN_INTEGER.sub(a)))) {
     // return WizData.fromNumber(0) false
     throw "Result value must be greater than min integer and less than max integer";
   } else {
-    const addedValue = bigA.add(bigB);
-    return WizData.fromHex(addedValue.toString("hex"));
+    const addedValue = a.add(b);
+    return convert64(addedValue);
   }
 };
 
 export const sub64 = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
 
-  const a = numToLE64(wizData);
-  const b = numToLE64(wizData2);
+  const a = new BN(wizData.bin, 2);
+  const b = new BN(wizData2.bin, 2);
 
-  const bigA = new BN(a.hex, "hex");
-  const bigB = new BN(b.hex, "hex");
-
-  if ((bigB.gt(BN_ZERO) && bigA.lt(MIN_INTEGER.add(bigB))) || (bigB.lt(BN_ZERO) && bigA.gt(MAX_INTEGER.add(bigB)))) {
+  if ((b.gt(BN_ZERO) && a.lt(MIN_INTEGER.add(b))) || (b.lt(BN_ZERO) && a.gt(MAX_INTEGER.add(b)))) {
     // return WizData.fromNumber(0) false
     throw "Result values must be greater than min integer and less than max integer";
   } else {
-    const subValue = bigA.sub(bigB);
-    return WizData.fromHex(subValue.toString("hex"));
+    const subValue = a.sub(b);
+    return convert64(subValue);
   }
 };
 
 export const mul64 = (wizData: WizData, wizData2: WizData): WizData => {
-  if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
+  if (wizData.bytes.length !== 8 || wizData2.bytes.length !== 8) throw "Input bytes length must be equal 8 byte";
 
-  const a = numToLE64(wizData);
-  const b = numToLE64(wizData2);
-  console.log("a", a.hex);
-  console.log("b", b.hex);
-  const bigA = new BN(a.hex, "hex");
-  const bigB = new BN(b.hex, "hex");
-  console.log("xxx", new BN("0002", "hex").toString("hex"));
-
-  console.log("bigA", bigA.toString("hex"));
-  console.log("bigB", bigB.toString("hex"));
-  console.log("mulValue", bigA.mul(bigB).toString("hex"));
+  const a = new BN(wizData.bin, 2);
+  const b = new BN(wizData2.bin, 2);
 
   if (
-    (bigA.gt(BN_ZERO) && bigB.gt(BN_ZERO) && bigA.gt(MAX_INTEGER.div(bigB))) ||
-    (bigA.gt(BN_ZERO) && bigB.lt(BN_ZERO) && bigB.lt(MIN_INTEGER.div(bigA))) ||
-    (bigA.lt(BN_ZERO) && bigB.gt(BN_ZERO) && bigA.lt(MIN_INTEGER.div(bigB))) ||
-    (bigA.lt(BN_ZERO) && bigB.lt(BN_ZERO) && bigB.lt(MAX_INTEGER.div(bigA)))
+    (a.gt(BN_ZERO) && b.gt(BN_ZERO) && a.gt(MAX_INTEGER.div(b))) ||
+    (a.gt(BN_ZERO) && b.lt(BN_ZERO) && b.lt(MIN_INTEGER.div(a))) ||
+    (a.lt(BN_ZERO) && b.gt(BN_ZERO) && a.lt(MIN_INTEGER.div(b))) ||
+    (a.lt(BN_ZERO) && b.lt(BN_ZERO) && b.lt(MAX_INTEGER.div(a)))
   ) {
     throw "Result value must be greater than min integer and less than max integer";
   } else {
-    const mulValue = bigA.mul(bigB);
-    console.log("mulValue", mulValue.fromTwos(64));
-    const a = WizData.fromHex(mulValue.toString("hex"));
-    return numToLE64(a);
+    const mulValue = a.mul(b);
+    return convert64(mulValue);
   }
 };
 
 export const div64 = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
 
-  const a = numToLE64(wizData);
-  const b = numToLE64(wizData2);
+  const a = new BN(wizData.bin, 2);
+  const b = new BN(wizData2.bin, 2);
 
-  const bigA = new BN(a.hex, "hex");
-  const bigB = new BN(b.hex, "hex");
-
-  if (bigB.eq(BN_ZERO) || (bigB.eq(NEGATIVE_1) && bigA.eq(MIN_INTEGER))) {
+  if (b.eq(BN_ZERO) || (b.eq(NEGATIVE_1) && a.eq(MIN_INTEGER))) {
     throw "Result value must be greater than min integer and less than max integer";
   }
-  let r = bigA.mod(bigB);
-  let q = bigA.div(bigB);
-  if (r.lt(BN_ZERO) && bigB.gt(BN_ZERO)) {
-    r = bigB.add(r);
+  let r = a.mod(b);
+  let q = a.div(b);
+  if (r.lt(BN_ZERO) && b.gt(BN_ZERO)) {
+    r = r.add(b);
     q = q.sub(new BN(1));
-    return WizData.fromHex(q.toString("hex"));
-  } else {
-    r = r.sub(bigB);
+    return convert64(q);
+  } else if (r.lt(BN_ZERO) && b.lt(BN_ZERO)) {
+    r = r.sub(b);
     q = q.add(new BN(1));
-    // const bigR = numToLE64(r);
-    // const bigQ = numToLE64(q);
-    return WizData.fromHex(q.toString("hex"));
+    return convert64(q);
+  } else {
+    return convert64(q);
   }
 };
 
 export const neg64 = (wizData: WizData): WizData => {
   if (wizData.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
 
-  const a = numToLE64(wizData);
-  const bigA = new BN(a.hex, "hex");
+  const a = new BN(wizData.bin, 2);
 
-  if (bigA.eq(MIN_INTEGER)) throw "Input value must be not equal min integer.";
-  console.log("bigA", bigA.toString("hex"));
+  if (a.eq(MIN_INTEGER)) throw "Input value must be not equal min integer.";
+  console.log("bigA", a.toString("hex"));
 
-  const negative1_64 = numToLE64(WizData.fromNumber(-1));
-  console.log("negative1_64", negative1_64);
-
-  const negateValue = bigA.mul(new BN(negative1_64.hex, "hex"));
+  const negateValue = a.mul(NEGATIVE_1);
 
   console.log("negateValue", negateValue.toString());
 
   console.log("MAX_INTEGER", MAX_INTEGER.toString("hex"));
 
-  return WizData.fromHex(negateValue.toString("hex"));
+  return convert64(negateValue);
 };
 
 export const lessThan64 = (wizData: WizData, wizData2: WizData): WizData => {
