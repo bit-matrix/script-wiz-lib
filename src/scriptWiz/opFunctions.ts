@@ -960,8 +960,8 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_MUL64") {
     if (mainStackDataArrayLength < 1) throw "OP_MUL64 Error: stack data array must include min 2 data!";
 
-    const addDataArray = [arithmetics64.mul64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
-    const removeLastSize: number = 2;
+    const addDataArray = arithmetics64.mul64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = addDataArray.length === 1 ? 0 : addDataArray.length;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
