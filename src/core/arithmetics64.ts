@@ -7,18 +7,17 @@ const MIN_INTEGER = new BN("8000000000000000", "hex");
 const BN_ZERO = new BN(0);
 const NEGATIVE_1 = new BN(-1);
 
-export const add64 = (wizData: WizData, wizData2: WizData): WizData => {
-  if (wizData.bytes.length > 8 || wizData2.bytes.length > 8) throw "Input bytes length must be equal 8 byte";
+export const add64 = (wizData: WizData, wizData2: WizData): WizData[] => {
+  if (wizData.bytes.length != 8 || wizData2.bytes.length != 8) throw "Input bytes length must be equal 8 byte";
 
   const a = new BN(wizData.bin, 2);
   const b = new BN(wizData2.bin, 2);
 
   if ((a.gt(BN_ZERO) && b.gt(MAX_INTEGER.sub(a))) || (a.lt(BN_ZERO) && b.lt(MIN_INTEGER.sub(a)))) {
-    // return WizData.fromNumber(0) false
-    throw "Result value must be greater than min integer and less than max integer";
+    return [wizData, wizData2, WizData.fromNumber(0)];
   } else {
     const addedValue = a.add(b);
-    return convert64(addedValue);
+    return [convert64(addedValue), WizData.fromNumber(1)];
   }
 };
 
