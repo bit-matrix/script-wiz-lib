@@ -2,6 +2,7 @@ import WizData from "@script-wiz/wiz-data";
 import * as arithmetics from "../core/arithmetics";
 import * as bitwise from "../core/bitwise";
 import * as conversion from "../core/conversion";
+import * as arithmetics64 from "../core/arithmetics64";
 import * as crypto from "../core/crypto";
 import * as flow from "../core/flow";
 import * as locktime from "../core/locktime";
@@ -933,8 +934,98 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
   /*
    * Conversion
-   * 224 - 227
+   * 215 - 227
    */
+
+  if (word === "OP_ADD64") {
+    if (mainStackDataArrayLength < 1) throw "OP_ADD64 Error: stack data array must include min 2 data!";
+
+    const addDataArray = arithmetics64.add64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = addDataArray.length === 1 ? 0 : addDataArray.length;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_SUB64") {
+    if (mainStackDataArrayLength < 1) throw "OP_SUB64 Error: stack data array must include min 2 data!";
+
+    const addDataArray = arithmetics64.sub64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = addDataArray.length === 1 ? 0 : 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_MUL64") {
+    if (mainStackDataArrayLength < 1) throw "OP_MUL64 Error: stack data array must include min 2 data!";
+
+    const addDataArray = arithmetics64.mul64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = addDataArray.length === 1 ? 0 : 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_DIV64") {
+    if (mainStackDataArrayLength < 2) throw "OP_DIV64 Error: stack data array must include min 2 data!";
+
+    const addDataArray = arithmetics64.div64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = addDataArray.length === 1 ? 0 : 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_NEG64") {
+    if (mainStackDataArrayLength < 1) throw "OP_NEG64 Error: stack data array must include min 1 data!";
+
+    const addDataArray: WizData[] = arithmetics64.neg64(mainStackDataArray[mainStackDataArrayLength - 1]);
+    const removeLastSize: number = addDataArray.length === 1 ? 0 : 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_LESSTHAN64") {
+    if (mainStackDataArrayLength < 2) throw "OP_LESSTHAN Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = [arithmetics64.lessThan64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_LESSTHANOREQUAL64") {
+    if (mainStackDataArrayLength < 2) throw "OP_LESSTHANOREQUAL64 Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = [arithmetics64.lessThanOrEqual64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_GREATERTHAN64") {
+    if (mainStackDataArrayLength < 2) throw "OP_GREATERTHAN64 Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = [arithmetics64.greaterThan64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_GREATERTHANOREQUAL64") {
+    if (mainStackDataArrayLength < 2) throw "OP_GREATERTHANOREQUAL64 Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = [arithmetics64.greaterThanOrEqual64(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
   if (word === "OP_SCRIPTNUMTOLE64") {
     if (mainStackDataArrayLength < 1) throw "OP_SCRIPTNUMTOLE64 Error: stack data array must include min 1 data!";

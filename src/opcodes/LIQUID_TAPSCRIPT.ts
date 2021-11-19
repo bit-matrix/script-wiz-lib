@@ -10,6 +10,65 @@ export const opcodesLiquidTapscript: Opcode[] = [
    * Conversion
    */
   {
+    word: "OP_ADD64",
+    opcode: 215,
+    hex: "0xd7",
+    description:
+      " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a + b onto the stack. Push 1 CScriptNum if there is no overflow. Overflow behavior defined above.",
+  }, //	liquid network feature.
+  {
+    word: "OP_SUB64",
+    opcode: 216,
+    hex: "0xd8",
+    description:
+      " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a - b onto the stack. Push 1 CScriptNum if there is no overflow. Overflow behavior defined above.",
+  }, //	liquid network feature.
+  {
+    word: "OP_MUL64",
+    opcode: 217,
+    hex: "0xd9",
+    description:
+      " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a*b onto the stack. Push 1 CScriptNum if there is no overflow. Overflow behavior defined above.",
+  }, //	liquid network feature.
+  {
+    word: "OP_DIV64",
+    opcode: 218,
+    hex: "0xda",
+    description:
+      " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). First push remainder a%b(must be non-negative and less than |b|) onto the stack followed by quotient(a//b) onto the stack. If b==0 or a = -2<sup>63</sup> && b = -1, treat as overflow as defined above. Push 1 CScriptNum if there is no overflow.",
+  }, //	liquid network feature.
+  {
+    word: "OP_NEG64",
+    opcode: 219,
+    hex: "0xdb",
+    description:
+      " pop the first number(8 byte LE) as a and pushes -a on the stack top. If the number is -2<sup>63</sup>(int64_min) treat as overflow, otherwise push CScriptNum 1 to indicate no overflow.",
+  }, //	liquid network feature.
+  {
+    word: "OP_LESSTHAN64",
+    opcode: 220,
+    hex: "0xdc",
+    description: " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a < b.",
+  }, //	liquid network feature.
+  {
+    word: "OP_LESSTHANOREQUAL64",
+    opcode: 221,
+    hex: "0xdd",
+    description: " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a <= b.",
+  }, //	liquid network feature.
+  {
+    word: "OP_GREATERTHAN64",
+    opcode: 222,
+    hex: "0xde",
+    description: " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a > b.",
+  }, //	liquid network feature.
+  {
+    word: "OP_GREATERTHANOREQUAL64",
+    opcode: 223,
+    hex: "0xdf",
+    description: " pop the first number(8 byte LE) as b followed another pop for a(8 byte LE). Push a >= b.",
+  }, //	liquid network feature.
+  {
     word: "OP_SCRIPTNUMTOLE64",
     opcode: 224,
     hex: "0xe0",
