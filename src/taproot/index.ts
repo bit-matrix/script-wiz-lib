@@ -12,6 +12,10 @@ import bcrypto from "bcrypto";
 // };
 
 export const tweakAdd = (pubkey: WizData, tweak: WizData): WizData => {
+  if (pubkey.bytes.length !== 32) {
+    throw "Pubkey length must be equal 32 byte";
+  }
+
   const tweaked = bcrypto.schnorr.publicKeyTweakAdd(Buffer.from(pubkey.hex, "hex"), Buffer.from(tweak.hex, "hex"));
   return WizData.fromHex(tweaked.toString("hex"));
 };
