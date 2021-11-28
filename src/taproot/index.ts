@@ -16,16 +16,39 @@ export const tweakAdd = (pubkey: WizData, tweak: WizData): WizData => {
     throw "Pubkey length must be equal 32 byte";
   }
 
-  const tweaked = bcrypto.schnorr.publicKeyTweakAdd(Buffer.from(pubkey.hex, "hex"), Buffer.from(tweak.hex, "hex"));
-  return WizData.fromHex(tweaked.toString("hex"));
+  const tweaked = WizData.fromHex(bcrypto.schnorr.publicKeyTweakAdd(Buffer.from(pubkey.hex, "hex"), Buffer.from(tweak.hex, "hex")).toString("hex"));
+
+  return publicKeyTweakCheck(pubkey, tweak, tweaked);
 };
 
-export const publicKeyTweakCheck = (pubkey: WizData, tweak: WizData, expect: WizData, negate: boolean): boolean => {
+export const publicKeyTweakCheck = (pubkey: WizData, tweak: WizData, expect: WizData): WizData => {
   if (pubkey.bytes.length !== 32) {
     throw "Pubkey length must be equal 32 byte";
   }
 
-  return bcrypto.schnorr.publicKeyTweakCheck(Buffer.from(pubkey.hex, "hex"), Buffer.from(tweak.hex, "hex"), Buffer.from(expect.hex, "hex"), negate);
+  const isNegate = bcrypto.schnorr.publicKeyTweakCheck(Buffer.from(pubkey.hex, "hex"), Buffer.from(tweak.hex, "hex"), Buffer.from(expect.hex, "hex"), true);
+
+  if (isNegate) {
+    return WizData.fromHex("03" + expect.hex);
+  }
+
+  return WizData.fromHex("02" + expect.hex);
+};
+
+export const publicKeyTweakCheckWithPrefix = (pubkey: WizData, tweak: WizData, expect: WizData): boolean => {
+  if (pubkey.bytes.length !== 32) {
+    throw "Pubkey length must be equal 32 byte";
+  }
+
+  const expectKeyWithoutPrefix = expect.bytes.slice(1, expect.bytes.length);
+  const expectKeyWithoutPrefixData = WizData.fromBytes(expectKeyWithoutPrefix);
+
+  return bcrypto.schnorr.publicKeyTweakCheck(
+    Buffer.from(pubkey.hex, "hex"),
+    Buffer.from(tweak.hex, "hex"),
+    Buffer.from(expectKeyWithoutPrefixData.hex, "hex"),
+    expect.bytes[0] === 3
+  );
 };
 
 export const tagHash = (tag: string, data: WizData) => {

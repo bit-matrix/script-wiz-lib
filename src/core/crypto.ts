@@ -107,10 +107,7 @@ export const tweakVerify = (wizData: WizData, wizData2: WizData, wizData3: WizDa
 
   if (vchTweakedKey.bytes[0] !== 2 && vchTweakedKey.bytes[0] !== 3) throw "Tweaked key must start with 0x02 or 0x03";
 
-  const vchTweakedKeyWithoutPrefix = vchTweakedKey.bytes.slice(1, vchTweakedKey.bytes.length);
-  const vchTweakedKeyWithoutPrefixData = WizData.fromBytes(vchTweakedKeyWithoutPrefix);
-
-  const isChecked: boolean = tapRoot.publicKeyTweakCheck(internalKey, vchTweak, vchTweakedKeyWithoutPrefixData, vchTweakedKey.bytes[0] === 3);
+  const isChecked: boolean = tapRoot.publicKeyTweakCheckWithPrefix(internalKey, vchTweak, vchTweakedKey);
 
   return WizData.fromNumber(isChecked ? 1 : 0);
 };
