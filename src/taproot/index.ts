@@ -20,6 +20,14 @@ export const tweakAdd = (pubkey: WizData, tweak: WizData): WizData => {
   return WizData.fromHex(tweaked.toString("hex"));
 };
 
+export const publicKeyTweakCheck = (pubkey: WizData, tweak: WizData, expect: WizData, negate: boolean): boolean => {
+  if (pubkey.bytes.length !== 32) {
+    throw "Pubkey length must be equal 32 byte";
+  }
+
+  return bcrypto.schnorr.publicKeyTweakCheck(Buffer.from(pubkey.hex, "hex"), Buffer.from(tweak.hex, "hex"), Buffer.from(expect.hex, "hex"), negate);
+};
+
 export const tagHash = (tag: string, data: WizData) => {
   let hashedTag = sha256(WizData.fromText(tag)).toString();
 
