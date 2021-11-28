@@ -97,19 +97,22 @@ export const checkSig = (wizData: WizData, wizData2: WizData): WizData => {
 
 // taproot feature
 export const tweakVerify = (wizData: WizData, wizData2: WizData, wizData3: WizData): WizData => {
-  const internalKey = wizData;
+  const internalKey = wizData3;
   const vchTweak = wizData2;
-  const vchTweakedKey = wizData3;
+  const vchTweakedKey = wizData;
 
   if (vchTweak.bytes.length != 32) throw "Tweak key length must be eqaul 32 byte";
 
+  if (internalKey.bytes.length != 32) throw "Internal key length must be eqaul 32 byte";
+
   if (vchTweakedKey.bytes[0] !== 2 && vchTweakedKey.bytes[0] !== 3) throw "Tweaked key must start with 0x02 or 0x03";
 
-  const tweakedKey: WizData = tapRoot.tweakAdd(internalKey, vchTweak);
+  const vchTweakedKeyWithoutPrefix = vchTweakedKey.bytes.slice(1, vchTweakedKey.bytes.length);
+  const vchTweakedKeyWithoutPrefixData = WizData.fromBytes(vchTweakedKeyWithoutPrefix);
 
-  if (tweakedKey.hex === vchTweakedKey.hex) return WizData.fromNumber(1);
+  const isChecked: boolean = tapRoot.publicKeyTweakCheck(internalKey, vchTweak, vchTweakedKeyWithoutPrefixData, vchTweakedKey.bytes[0] === 3);
 
-  return WizData.fromNumber(0);
+  return WizData.fromNumber(isChecked ? 1 : 0);
 };
 
 // const ECDSA = (messageHash: string, publicKey: string): string => {
