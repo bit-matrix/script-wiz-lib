@@ -102,7 +102,7 @@ export const tapRoot = (pubKey: WizData, scripts: WizData[], version: string = "
 
   console.log("tap tweaked result:", tweaked.hex);
 
-  const finalTweaked = tweaked.hex;
+  const finalTweaked = tweaked.hex.substr(2);
 
   console.log("final tweaked", finalTweaked);
 
