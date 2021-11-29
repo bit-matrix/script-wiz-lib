@@ -90,7 +90,7 @@ export const treeHelper = (scripts: WizData[], version: string): string => {
 //   return WizData.fromNumber(1);
 // };
 
-export const tapRoot = (pubKey: WizData, scripts: WizData[], version: string = "c0"): Taproot => {
+export const tapRoot = (pubKey: WizData, scripts: WizData[], version: string): Taproot => {
   const h: string = treeHelper(scripts, version);
   console.log("tap leaf result", h);
 
