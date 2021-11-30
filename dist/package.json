@@ -3,7 +3,7 @@
   "version": "0.1.23",
   "description": "",
   "scripts": {
-    "npm-pubish": "npm publish --access public"
+    "npm-pubish": "npm version patch && npm publish --access public"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.7",
