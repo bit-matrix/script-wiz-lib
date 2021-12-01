@@ -5,4 +5,4 @@ export declare const publicKeyTweakCheck: (pubkey: WizData, tweak: WizData, expe
 export declare const publicKeyTweakCheckWithPrefix: (pubkey: WizData, tweak: WizData, expect: WizData) => boolean;
 export declare const tagHash: (tag: string, data: WizData) => string;
 export declare const treeHelper: (scripts: WizData[], version: string) => string;
-export declare const tapRoot: (pubKey: WizData, scripts: WizData[], version?: string) => Taproot;
+export declare const tapRoot: (pubKey: WizData, scripts: WizData[], version: string) => Taproot;
