@@ -1,5 +1,6 @@
 import { tagHash, tapRoot, treeHelper, tweakAdd } from ".";
 import WizData from "@script-wiz/wiz-data";
+import { VM_NETWORK, VM_NETWORK_VERSION } from "../opcodes/model/VM";
 
 // test("xxx", () => {
 //   const x = "038a759932b19c2bf441e4e37a0243f03364df38cec1c658743dffa56c334dfb2d";
@@ -68,10 +69,16 @@ import WizData from "@script-wiz/wiz-data";
 // });
 
 test("demo", () => {
-  const vchInternalKey = "1dae61a4a8f841952be3a511502d4f56e889ffa0685aa0098773ea2d4309f624";
-  const vchTweak = "8488961ce04b9d47b4a4c312f61fb696bf9692f93effef613a47633eacdee1a7";
+  // const tag = "TapLeaf";
+  // const input = "029000b275209997a497d964fc1a62885b05a51166a65a90df00492c8d7cf61d6accf54803beac";
 
-  const result = tweakAdd(WizData.fromHex(vchInternalKey), WizData.fromHex(vchTweak));
+  // const result = treeHelper([WizData.fromHex(input)], "c0");
 
-  console.log(result.hex);
+  const pubkey = WizData.fromHex("5bf08d58a430f8c222bffaf9127249c5cdff70a2d68b2b45637eb662b6b88eb5");
+  const scripts = [
+    WizData.fromHex("a8206c60f404f8167a38fc70eaf8aa17ac351023bef86bcb9d1086a19afe95bd533388204edfcf9dfe6c0b5c83d1ab3f78d1b39a46ebac6798e08e19761f5ed89ec83c10ac"),
+    WizData.fromHex("029000b275209997a497d964fc1a62885b05a51166a65a90df00492c8d7cf61d6accf54803beac"),
+  ];
+
+  console.log(tapRoot(pubkey, scripts, { network: VM_NETWORK.BTC, ver: VM_NETWORK_VERSION.TAPSCRIPT }));
 });
