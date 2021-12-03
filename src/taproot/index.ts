@@ -77,9 +77,10 @@ export const treeHelper = (scripts: WizData[], version: string): string => {
     treeHelperResultHex += h;
   });
 
-  const tapBranchResult: string = tagHash(tapBranchtag, WizData.fromHex(treeHelperResultHex));
+  // multi leaf
+  // const tapBranchResult: string = tagHash(tapBranchtag, WizData.fromHex(treeHelperResultHex));
 
-  return tapBranchResult;
+  return treeHelperResultHex;
 };
 
 // export const getVersionTaggedPubKey = (pubkey: WizData): WizData => {
