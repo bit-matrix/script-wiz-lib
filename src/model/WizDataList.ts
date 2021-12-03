@@ -1,4 +1,5 @@
 import WizData from "@script-wiz/wiz-data";
+import { TxData } from "./TxData";
 
 export type WizDataList = {
   inputHexes: string[];
@@ -8,4 +9,5 @@ export type WizDataList = {
   altFlow: boolean[];
   isStackFailed: boolean;
   errorMessage?: string;
+  txData?: TxData;
 };

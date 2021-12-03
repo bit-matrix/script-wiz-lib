@@ -1,3 +1,4 @@
+import { TxData } from "..";
 import { ParseResult, WizDataList } from "../model";
 import { Opcodes } from "../opcodes";
 import { VM } from "../opcodes/model/VM";
@@ -5,22 +6,29 @@ import { currentScope } from "../utils";
 import { compileJoin } from "./compileAll";
 import { parse } from "./parse";
 
-const initialStackDataList: WizDataList = { inputHexes: [], main: [], alt: [], flow: [true], altFlow: [], isStackFailed: false };
+const initialStackDataList: WizDataList = {
+  inputHexes: [],
+  main: [],
+  alt: [],
+  flow: [true],
+  altFlow: [],
+  isStackFailed: false,
+  txData: { inputs: [], outputs: [], version: "", timelock: "", currentInputIndex: 0 },
+};
 
 export class ScriptWiz {
   vm: VM;
   opCodes: Opcodes;
-
   stackDataList: WizDataList;
 
   constructor(vm: VM) {
     this.vm = vm;
     this.opCodes = new Opcodes(vm);
-    this.stackDataList = initialStackDataList;
+    this.stackDataList = { ...initialStackDataList };
   }
 
   clearStackDataList = () => {
-    this.stackDataList = initialStackDataList;
+    this.stackDataList = { ...initialStackDataList };
   };
 
   parseHex = (input: string): void => this.parseInput(input);
@@ -33,8 +41,11 @@ export class ScriptWiz {
 
   parseOpcode = (input: string): void => this.parseInput(undefined, undefined, undefined, undefined, input);
 
-  //
+  parseTxData = (input: TxData): void => {
+    this.stackDataList = { ...this.stackDataList, txData: input };
+  };
 
+  //
   compile = () => compileJoin(this.stackDataList.inputHexes);
 
   private parseInput = (inputHex?: string, inputNumber?: number, inputText?: string, inputBin?: string, inputOpCode?: string): void => {
