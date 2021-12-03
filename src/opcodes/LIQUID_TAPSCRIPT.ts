@@ -5,6 +5,116 @@ export const opcodesLiquidTapscript: Opcode[] = [
   ...opcodesLiquidSegwit,
 
   /*
+   * Introspection Opcodes
+   */
+  // inputs
+  {
+    word: "OP_INSPECTINPUTOUTPOINT",
+    opcode: 199,
+    hex: "0xc7",
+    description:
+      " Pop a CScriptNum input index idx and push the outpoint as a tuple. First push the txid(32) of the prev_out, followed by a 4 byte push of vout followed by a push for the outpoint_flag(1) as defined in Modified BIP-341 SigMsg for Elements.",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTINPUTASSET",
+    opcode: 200,
+    hex: "0xc8",
+    description: "  Pop a CScriptNum input index idx and push the nAsset onto the stack as two elements. The first push the assetID(32), followed by the prefix(1).",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTINPUTVALUE",
+    opcode: 201,
+    hex: "0xc9",
+    description: " Pop a CScriptNum input index idx and push the nValue as a tuple, value(8 byte LE, 32) followed by prefix(1).",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTINPUTSCRIPTPUBKEY",
+    opcode: 202,
+    hex: "0xca",
+    description:
+      " Pop a CScriptNum input index idx and push the following depending the type of scriptPubkey: If the scriptPubKey is not a native segwit program, push a single sha256 hash of the scriptPubKey on stack top. Next, push a CScriptNum(-1) to indicate a non-native segwit scriptPubKey.If the scriptPubKey is a native segwit program, push the witness program(2-40) followed by a push for segwit version(0-1).",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTINPUTSEQUENCE",
+    opcode: 203,
+    hex: "0xcb",
+    description: " Pop a CScriptNum input index idx and push the nSequence(4) as little-endian number.",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTINPUTISSUANCE",
+    opcode: 204,
+    hex: "0xcc",
+    description:
+      " Pop a CScriptNum input index idx and push the assetIssuance information if the asset has issuance, otherwise push an empty vector. Asset Issuance information is pushed as follows: Push nInflationKeys as tuple, value(8 byte LE, 32) followed by push for prefix(1). In case nInflationKeys is null, push a 8 byte LE 0 followed by a push for explicit prefix(1).Push nAmount as a tuple, value(8 byte LE, 32) followed by a push for prefix(1). In case nAmount is null, push a 8 byte LE 0 followed by a push for explicit prefix(1).Push 32 byte assetEntropy.Push 32 byte assetBlindingNonce.",
+  }, //	liquid network feature.
+
+  // current index
+  {
+    word: "OP_PUSHCURRENTINPUTINDEX",
+    opcode: 205,
+    hex: "0xcd",
+    description: " that pushes the current input index as CScriptNum. This can be used in conjunction with input introspection opcodes for inspecting current input.",
+  }, //	liquid network feature.
+
+  // outputs
+  {
+    word: "OP_INSPECTOUTPUTASSET",
+    opcode: 206,
+    hex: "0xce",
+    description: "  Pop a CScriptNum input index idx and push the nAsset as a tuple, first push the assetID(32), followed by the prefix(1).",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTOUTPUTVALUE",
+    opcode: 207,
+    hex: "0xcf",
+    description: " Pop a CScriptNum input index idx and push the nValue as a tuple, value(8 byte LE, 32) followed by prefix.",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTOUTPUTNONCE",
+    opcode: 208,
+    hex: "0xd0",
+    description: " Pop a CScriptNum input index idx and push the nNonce(33) onto the stack. If the nonce is null, push an empty vector onto the stack.",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTOUTPUTSCRIPTPUBKEY",
+    opcode: 209,
+    hex: "0xd1",
+    description:
+      " Pop a CScriptNum input index idx and push the scriptPubkey onto the stack.If the scriptPubKey is not a native segwit program, push a single sha256 hash of the scriptPubKey on stack top. Next, push a CScriptNum(-1) to indicate a non-native segwit scriptPubKey.If the scriptPubKey is a native segwit program, push the witness program(2-40) followed by a push for segwit version(0-1).",
+  }, //	liquid network feature.
+
+  // transaction
+  {
+    word: "OP_INSPECTVERSION",
+    opcode: 210,
+    hex: "0xd2",
+    description: " Push the nVersion(4) as little-endian.",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTLOCKTIME",
+    opcode: 211,
+    hex: "0xd3",
+    description: " Push the nLockTime(4) as little-endian.",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTNUMINPUTS",
+    opcode: 212,
+    hex: "0xd4",
+    description: " Push the number of inputs as CScriptNum.",
+  }, //	liquid network feature.
+  {
+    word: "OP_INSPECTNUMOUTPUTS",
+    opcode: 213,
+    hex: "0xd5",
+    description: " Push the number of outputs as CScriptNum.",
+  }, //	liquid network feature.
+  {
+    word: "OP_TXWEIGHT",
+    opcode: 214,
+    hex: "0xd6",
+    description: " Push the transaction weight (8) as little-endian.",
+  }, //	liquid network feature.
+  /*
    * Conversion
    */
   {
