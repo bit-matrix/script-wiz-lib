@@ -9,6 +9,7 @@ import * as locktime from "../core/locktime";
 import * as splices from "../core/splices";
 import * as stacks from "../core/stacks";
 import { ParseResultData, WizDataList } from "../model";
+import * as introspection from "../core/introspection";
 import { Opcode } from "../opcodes/model/Opcode";
 import { currentScope } from "../utils";
 
@@ -932,6 +933,93 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
   }
 
+  /*
+   * Introspection
+   * 199 - 214
+   */
+
+  if (word === "OP_INSPECTINPUTOUTPOINT") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTOUTPOINT Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTINPUTOUTPOINT Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = introspection.inspectInputOutPoint(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTINPUTASSET") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTASSET Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTINPUTASSET Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = introspection.inspectInputAsset(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTINPUTVALUE") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTVALUE Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTINPUTVALUE Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = introspection.inspectInputValue(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTINPUTSEQUENCE") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTSEQUENCE Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTINPUTSEQUENCE Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = [introspection.inspectInputSequence(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_PUSHCURRENTINPUTINDEX") {
+    if (!stackDataList.txData) throw "OP_PUSHCURRENTINPUTINDEX Error: Script Error introspect context unavailable!";
+
+    const currentInputIndex = WizData.fromNumber(stackDataList.txData.currentInputIndex);
+    const addDataArray: WizData[] = [currentInputIndex];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTOUTPUTASSET") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTOUTPUTASSET Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTOUTPUTASSET Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = introspection.inspectOutputAsset(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.outputs);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTOUTPUTVALUE") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTOUTPUTVALUE Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTOUTPUTVALUE Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = introspection.inspectOutputValue(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.outputs);
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   /*
    * Conversion
    * 215 - 227
