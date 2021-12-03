@@ -64,8 +64,8 @@ export const tagHash = (tag: string, data: WizData) => {
 
 export const treeHelper = (scripts: WizData[], version: string): string => {
   let treeHelperResultHex = "";
-  const leaftag = version === "c4" ? "TapLeaf/Elements" : "TapLeaf";
-  const tapBranchtag = version === "c4" ? "TapBranch/Elements" : "TapBranch";
+  const leaftag = version === "c4" ? "TapLeaf/elements" : "TapLeaf";
+  const tapBranchtag = version === "c4" ? "TapBranch/elements" : "TapBranch";
 
   scripts.forEach((script) => {
     const scriptLength = WizData.fromNumber(script.hex.length / 2).hex;
@@ -77,9 +77,10 @@ export const treeHelper = (scripts: WizData[], version: string): string => {
     treeHelperResultHex += h;
   });
 
-  const tapBranchResult: string = tagHash(tapBranchtag, WizData.fromHex(treeHelperResultHex));
+  // multi leaf
+  // const tapBranchResult: string = tagHash(tapBranchtag, WizData.fromHex(treeHelperResultHex));
 
-  return tapBranchResult;
+  return treeHelperResultHex;
 };
 
 // export const getVersionTaggedPubKey = (pubkey: WizData): WizData => {
@@ -95,7 +96,7 @@ export const treeHelper = (scripts: WizData[], version: string): string => {
 
 export const tapRoot = (pubKey: WizData, scripts: WizData[], vm: VM): Taproot => {
   const version = vm.network === VM_NETWORK.LIQUID ? "c4" : "c0";
-  const tag = vm.network === VM_NETWORK.LIQUID ? "TapTweak/Elements" : "TapTweak";
+  const tag = vm.network === VM_NETWORK.LIQUID ? "TapTweak/elements" : "TapTweak";
 
   const h: string = treeHelper(scripts, version);
 
@@ -115,7 +116,7 @@ export const tapRoot = (pubKey: WizData, scripts: WizData[], vm: VM): Taproot =>
 
   const op1Hex = commonOpcodes.find((co) => co.word === "OP_1")?.hex.substr(2);
 
-  const bech32 = segwit_addr.encode("bech32m", 1, WizData.fromHex(finalTweaked).bytes) || "";
+  const bech32 = segwit_addr.encode("bc", 1, WizData.fromHex(finalTweaked).bytes) || "";
 
   return { scriptPubKey: WizData.fromHex(op1Hex + WizData.fromNumber(finalTweaked.length / 2).hex + finalTweaked), tweak: tweaked, bech32 };
 };
