@@ -74,11 +74,15 @@ test("demo", () => {
 
   // const result = treeHelper([WizData.fromHex(input)], "c0");
 
-  const pubkey = WizData.fromHex("5bf08d58a430f8c222bffaf9127249c5cdff70a2d68b2b45637eb662b6b88eb5");
+  const pubkey = WizData.fromHex("6166ee79b12e83a65a111da53b25f8bc038069db704396ec5dc8d09d1afb5520");
   const scripts = [
-    WizData.fromHex("a8206c60f404f8167a38fc70eaf8aa17ac351023bef86bcb9d1086a19afe95bd533388204edfcf9dfe6c0b5c83d1ab3f78d1b39a46ebac6798e08e19761f5ed89ec83c10ac"),
-    WizData.fromHex("029000b275209997a497d964fc1a62885b05a51166a65a90df00492c8d7cf61d6accf54803beac"),
+    WizData.fromHex(
+      "630401000000b200c86920807d0fbcae7c4b20518d4d85664f6820aafdf936104122c5073e7744c46c4b87876700c86920807d0fbcae7c4b20518d4d85664f6820aafdf936104122c5073e7744c46c4b87879169043c000000b221026166ee79b12e83a65a111da53b25f8bc038069db704396ec5dc8d09d1afb5520ac68"
+    ),
   ];
+  const version = "c4";
 
-  console.log(tapRoot(pubkey, scripts, { network: VM_NETWORK.BTC, ver: VM_NETWORK_VERSION.TAPSCRIPT }));
+  // const treeHelperResult = treeHelper(scripts, version);
+
+  console.log(tapRoot(pubkey, scripts, { ver: VM_NETWORK_VERSION.TAPSCRIPT, network: VM_NETWORK.BTC }));
 });
