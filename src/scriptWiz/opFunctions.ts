@@ -998,6 +998,18 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
 
+  if (word === "OP_INSPECTINPUTISSUANCE") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTISSUANCE Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTINPUTISSUANCE Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = [introspection.inspectInputIssuance(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs)];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
   if (word === "OP_PUSHCURRENTINPUTINDEX") {
     if (!stackDataList.txData) throw "OP_PUSHCURRENTINPUTINDEX Error: Script Error introspect context unavailable!";
 
@@ -1039,6 +1051,18 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (!stackDataList.txData) throw "OP_INSPECTOUTPUTNONCE Error: transaction template must include data.";
 
     const addDataArray: WizData[] = [introspection.inspectOutputNonce(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.outputs)];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTOUTPUTSCRIPTPUBKEY") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTOUTPUTSCRIPTPUBKEY Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTOUTPUTSCRIPTPUBKEY Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = introspection.inspectOutputScriptPubKey(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.outputs);
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
