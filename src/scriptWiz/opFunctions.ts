@@ -974,6 +974,18 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
 
+  if (word === "OP_INSPECTINPUTSCRIPTPUBKEY") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTSCRIPTPUBKEY Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTINPUTSCRIPTPUBKEY Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = introspection.inspectInputScriptPubKey(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
   if (word === "OP_INSPECTINPUTSEQUENCE") {
     if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTSEQUENCE Error: stack data array must include min 1 data!";
 
