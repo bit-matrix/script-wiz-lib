@@ -1135,6 +1135,16 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
 
+  if (word === "OP_LE32TOLE64") {
+    if (mainStackDataArrayLength < 1) throw "LE32toLE64 Error: stack data array must include min 1 data!";
+
+    const addDataArray: WizData[] = [conversion.LE32toLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
   /*
    * Not implemented yet
    */
