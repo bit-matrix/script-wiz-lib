@@ -44,7 +44,9 @@ export const inspectInputValue = (wizData: WizData, txInputs: TxInput[]): WizDat
 
   if (!currentInputAmount) throw "Amount not found! Check your transaction template.";
 
-  return [WizData.fromHex(currentInputAmount), WizData.fromNumber(1)];
+  const inputAmountLE = Buffer.from(currentInputAmount, "hex").reverse().toString("hex");
+
+  return [WizData.fromHex(inputAmountLE), WizData.fromNumber(1)];
 };
 
 export const inspectInputOutPoint = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
@@ -91,7 +93,9 @@ export const inspectInputSequence = (wizData: WizData, txInputs: TxInput[]): Wiz
 
   if (!currentInputSequence) throw "Sequence not found! Check your transaction template.";
 
-  return WizData.fromHex(currentInputSequence);
+  const inputSequenceLE = Buffer.from(currentInputSequence, "hex").reverse().toString("hex");
+
+  return WizData.fromHex(inputSequenceLE);
 };
 
 export const inspectOutputAsset = (wizData: WizData, txOutputs: TxOutput[]): WizData[] => {
@@ -135,5 +139,25 @@ export const inspectOutputValue = (wizData: WizData, txOutputs: TxOutput[]): Wiz
 
   if (!currentOutputAmount) throw "Amount not found! Check your transaction template.";
 
-  return [WizData.fromHex(currentOutputAmount), WizData.fromNumber(1)];
+  const outputAmountLE = Buffer.from(currentOutputAmount, "hex").reverse().toString("hex");
+
+  return [WizData.fromHex(outputAmountLE), WizData.fromNumber(1)];
+};
+
+export const inspectOutputNonce = (wizData: WizData, txOutputs: TxOutput[]): WizData => {
+  let currentTxOutputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxOutputIndex = 0;
+  }
+  const txOutputLength = txOutputs.length;
+
+  if (currentTxOutputIndex === undefined) throw "Invalid transaction output index!";
+
+  if (currentTxOutputIndex < 0) throw "Invalid transaction output index must at least zero!";
+
+  if (txOutputLength === 0) throw "Transaction output template must include at least an element.";
+
+  if (txOutputLength < currentTxOutputIndex + 1) throw "Output index must less than transaction outputs length!";
+
+  return WizData.fromNumber(0);
 };
