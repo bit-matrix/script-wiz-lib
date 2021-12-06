@@ -1021,6 +1021,69 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
 
+  if (word === "OP_INSPECTOUTPUTNONCE") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTOUTPUTNONCE Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTOUTPUTNONCE Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = [introspection.inspectOutputNonce(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.outputs)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTVERSION") {
+    if (!stackDataList.txData) throw "OP_INSPECTVERSION Error: transaction template must include data.";
+
+    if (!stackDataList.txData.version) throw "OP_INSPECTVERSION Error: transaction template must include version data.";
+
+    const versionLE: string = Buffer.from(stackDataList.txData.version, "hex").reverse().toString("hex");
+
+    const addDataArray: WizData[] = [WizData.fromHex(versionLE)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTLOCKTIME") {
+    if (!stackDataList.txData) throw "OP_INSPECTLOCKTIME Error: transaction template must include data.";
+
+    if (!stackDataList.txData.timelock) throw "OP_INSPECTLOCKTIME Error: transaction template must include timelock data.";
+
+    const timeLockLE: string = Buffer.from(stackDataList.txData.timelock, "hex").reverse().toString("hex");
+
+    const addDataArray: WizData[] = [WizData.fromHex(timeLockLE)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTNUMINPUTS") {
+    if (!stackDataList.txData) throw "OP_INSPECTNUMINPUTS Error: transaction template must include data.";
+
+    const inspectInputsLength: number = stackDataList.txData.inputs.length;
+
+    const addDataArray: WizData[] = [WizData.fromNumber(inspectInputsLength)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTNUMOUTPUTS") {
+    if (!stackDataList.txData) throw "OP_INSPECTNUMOUTPUTS Error: transaction template must include data.";
+
+    const inspectOutputsLength: number = stackDataList.txData.outputs.length;
+
+    const addDataArray: WizData[] = [WizData.fromNumber(inspectOutputsLength)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
   /*
    * Conversion
    * 215 - 227
