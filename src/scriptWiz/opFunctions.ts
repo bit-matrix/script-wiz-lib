@@ -1020,6 +1020,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     return { main: { addDataArray, removeLastSize }, alt };
   }
+
   /*
    * Conversion
    * 215 - 227
