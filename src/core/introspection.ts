@@ -1,5 +1,31 @@
 import WizData from "@script-wiz/wiz-data";
 import { TxInput, TxOutput } from "../model/TxData";
+import * as crypto from "../core/crypto";
+
+export const inspectInputOutPoint = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
+  let currentTxInputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxInputIndex = 0;
+  }
+  const txInputLength = txInputs.length;
+
+  if (currentTxInputIndex === undefined) throw "Invalid transaction input index!";
+
+  if (currentTxInputIndex < 0) throw "Invalid transaction input index must at least zero!";
+
+  if (txInputLength === 0) throw "Transaction input template must include at least an element.";
+
+  if (txInputLength < currentTxInputIndex + 1) throw "Input index must less than transaction inputs length!";
+
+  const currentInputPreviousTxId = txInputs[currentTxInputIndex].previousTxId;
+  const currentInputVout = txInputs[currentTxInputIndex].vout;
+
+  if (!currentInputPreviousTxId) throw "Previous Tx Id not found! Check your transaction template.";
+
+  if (!currentInputVout) throw "Vout not found! Check your transaction template.";
+
+  return [WizData.fromHex(currentInputPreviousTxId), WizData.fromHex(currentInputVout), WizData.fromHex("00")];
+};
 
 export const inspectInputAsset = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
   let currentTxInputIndex = wizData.number;
@@ -49,7 +75,7 @@ export const inspectInputValue = (wizData: WizData, txInputs: TxInput[]): WizDat
   return [WizData.fromHex(inputAmountLE), WizData.fromNumber(1)];
 };
 
-export const inspectInputOutPoint = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
+export const inspectInputScriptPubKey = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
   let currentTxInputIndex = wizData.number;
   if (wizData.hex === "00") {
     currentTxInputIndex = 0;
@@ -64,14 +90,27 @@ export const inspectInputOutPoint = (wizData: WizData, txInputs: TxInput[]): Wiz
 
   if (txInputLength < currentTxInputIndex + 1) throw "Input index must less than transaction inputs length!";
 
-  const currentInputPreviousTxId = txInputs[currentTxInputIndex].previousTxId;
-  const currentInputVout = txInputs[currentTxInputIndex].vout;
+  if (!txInputs[currentTxInputIndex].scriptPubKey) throw "ScriptPubKey not found! Check your transaction template.";
 
-  if (!currentInputPreviousTxId) throw "Previous Tx Id not found! Check your transaction template.";
+  const currentScriptPubKey = txInputs[currentTxInputIndex].scriptPubKey;
 
-  if (!currentInputVout) throw "Vout not found! Check your transaction template.";
+  const witnessVersion = currentScriptPubKey.substr(0, 2);
+  const witnessProgram = currentScriptPubKey.substring(4);
+  const witnessProgramLength = WizData.fromHex(witnessProgram).bytes.length;
 
-  return [WizData.fromHex(currentInputPreviousTxId), WizData.fromHex(currentInputVout), WizData.fromHex("00")];
+  let result: WizData[] = [];
+  // Segwit (v0): first byte = 0, witnessProgram length 32 or 20 byte
+  if (witnessVersion === "00" && (witnessProgramLength === 20 || witnessProgramLength === 32)) {
+    result = [WizData.fromHex(witnessProgram), WizData.fromNumber(0)];
+    // Taproot (v1):first byte = 51, witnessProgram length 32 byte
+  } else if (witnessVersion === "51" && witnessProgramLength === 32) {
+    result = [WizData.fromHex(witnessProgram), WizData.fromNumber(1)];
+  } else {
+    // Legacy: none segwit and none taproot
+    const pubKeySha256 = crypto.sha256(WizData.fromHex(currentScriptPubKey)).toString();
+    result = [WizData.fromHex(pubKeySha256), WizData.fromNumber(-1)];
+  }
+  return result;
 };
 
 export const inspectInputSequence = (wizData: WizData, txInputs: TxInput[]): WizData => {
