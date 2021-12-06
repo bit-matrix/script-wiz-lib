@@ -113,6 +113,24 @@ export const inspectInputScriptPubKey = (wizData: WizData, txInputs: TxInput[]):
   return result;
 };
 
+export const inspectInputIssuance = (wizData: WizData, txInputs: TxInput[]): WizData => {
+  let currentTxInputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxInputIndex = 0;
+  }
+  const txInputLength = txInputs.length;
+
+  if (currentTxInputIndex === undefined) throw "Invalid transaction input index!";
+
+  if (currentTxInputIndex < 0) throw "Invalid transaction input index must at least zero!";
+
+  if (txInputLength === 0) throw "Transaction input template must include at least an element.";
+
+  if (txInputLength < currentTxInputIndex + 1) throw "Input index must less than transaction inputs length!";
+
+  return WizData.fromNumber(0);
+};
+
 export const inspectInputSequence = (wizData: WizData, txInputs: TxInput[]): WizData => {
   let currentTxInputIndex = wizData.number;
   if (wizData.hex === "00") {
@@ -199,4 +217,42 @@ export const inspectOutputNonce = (wizData: WizData, txOutputs: TxOutput[]): Wiz
   if (txOutputLength < currentTxOutputIndex + 1) throw "Output index must less than transaction outputs length!";
 
   return WizData.fromNumber(0);
+};
+
+export const inspectOutputScriptPubKey = (wizData: WizData, txOutputs: TxOutput[]): WizData[] => {
+  let currentTxOutputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxOutputIndex = 0;
+  }
+  const txOutputLength = txOutputs.length;
+
+  if (currentTxOutputIndex === undefined) throw "Invalid transaction output index!";
+
+  if (currentTxOutputIndex < 0) throw "Invalid transaction output index must at least zero!";
+
+  if (txOutputLength === 0) throw "Transaction output template must include at least an element.";
+
+  if (txOutputLength < currentTxOutputIndex + 1) throw "Output index must less than transaction outputs length!";
+
+  if (!txOutputs[currentTxOutputIndex].scriptPubKey) throw "ScriptPubKey not found! Check your transaction template.";
+
+  const currentScriptPubKey = txOutputs[currentTxOutputIndex].scriptPubKey;
+
+  const witnessVersion = currentScriptPubKey.substr(0, 2);
+  const witnessProgram = currentScriptPubKey.substring(4);
+  const witnessProgramLength = WizData.fromHex(witnessProgram).bytes.length;
+
+  let result: WizData[] = [];
+  // Segwit (v0): first byte = 0, witnessProgram length 32 or 20 byte
+  if (witnessVersion === "00" && (witnessProgramLength === 20 || witnessProgramLength === 32)) {
+    result = [WizData.fromHex(witnessProgram), WizData.fromNumber(0)];
+    // Taproot (v1):first byte = 51, witnessProgram length 32 byte
+  } else if (witnessVersion === "51" && witnessProgramLength === 32) {
+    result = [WizData.fromHex(witnessProgram), WizData.fromNumber(1)];
+  } else {
+    // Legacy: none segwit and none taproot
+    const pubKeySha256 = crypto.sha256(WizData.fromHex(currentScriptPubKey)).toString();
+    result = [WizData.fromHex(pubKeySha256), WizData.fromNumber(-1)];
+  }
+  return result;
 };
