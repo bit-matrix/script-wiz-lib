@@ -1,5 +1,6 @@
 import WizData from "@script-wiz/wiz-data";
 import BN from "bn.js";
+import { ZERO_64 } from "../utils";
 
 // export const numToLE64 = (wizData: WizData): WizData => {
 //   const inputByteLength = wizData.bytes.length;
@@ -26,9 +27,26 @@ import BN from "bn.js";
 //   return wizData;
 // };
 
-export const convert64 = (value: BN): WizData => {
-  const byteArray = new Uint8Array(value.toArray("le", 8));
-  return WizData.fromBytes(byteArray);
+export const convert64 = (wizData: WizData): WizData => {
+  const isNegate = wizData.bin.charAt(0) === "1";
+
+  let input = new BN(wizData.bin, 2);
+
+  if (!isNegate) {
+    const input64 = input.toString(2, 64);
+
+    return WizData.fromBin(input64);
+  } else {
+    if (wizData.number) input = new BN(wizData.number || 0);
+
+    const negateValue = input.abs().neg();
+
+    const twosNegateValue = negateValue.toTwos(64);
+
+    const twosNegateValue64 = twosNegateValue.toString(2, 64);
+
+    return WizData.fromBin(twosNegateValue64);
+  }
 };
 
 export const numToLE64 = (wizData: WizData): WizData => {
@@ -36,7 +54,7 @@ export const numToLE64 = (wizData: WizData): WizData => {
 
   if (inputByteLength > 8) throw "Input byte length must be maximum 8 byte";
 
-  return convert64(new BN(wizData.bin, 2));
+  return convert64(wizData);
 };
 
 export const LE64ToNum = (wizData: WizData): WizData => {
