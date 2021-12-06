@@ -2,10 +2,10 @@ import WizData from "@script-wiz/wiz-data";
 import BN from "bn.js";
 import { convert64, numToLE64 } from "./conversion";
 
-const MAX_INTEGER = new BN("7fffffffffffffff", "hex");
-const MIN_INTEGER = new BN("8000000000000000", "hex");
-const BN_ZERO = new BN(0);
-const NEGATIVE_1 = new BN(-1);
+const MAX_INTEGER = new BN("1111111111111111111111111111111111111111111111111111111101111111", 2);
+const MIN_INTEGER = new BN("0000000000000000000000000000000000000000000000000000000010000000", 2);
+const BN_ZERO = new BN("0000000000000000000000000000000000000000000000000000000000000000", 2);
+const NEGATIVE_1 = new BN("0000000000000000000000000000000000000000000000000000000010000001", 2);
 
 export const add64 = (wizData: WizData, wizData2: WizData): WizData[] => {
   if (wizData.bytes.length != 8 || wizData2.bytes.length != 8) throw "Input bytes length must be equal 8 byte";
@@ -83,13 +83,17 @@ export const neg64 = (wizData: WizData): WizData[] => {
 
   const data = new BN(wizData.bin, 2);
 
+  console.log(wizData.bin);
+
   if (data.eq(MIN_INTEGER)) return [WizData.fromNumber(0)];
 
   const negateValue = data.neg();
 
-  const newNegateValue = new BN(new BN(negateValue).toString("hex"));
+  const twosNegateValue = negateValue.toTwos(64);
 
-  return [convert64(new BN(newNegateValue)), WizData.fromNumber(1)];
+  const twosNegateValue64 = twosNegateValue.toString(2, 64);
+
+  return [WizData.fromBin(twosNegateValue64), WizData.fromNumber(1)];
 };
 
 export const lessThan64 = (wizData: WizData, wizData2: WizData): WizData => {
