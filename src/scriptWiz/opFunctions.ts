@@ -883,12 +883,21 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_CHECKSIGFROMSTACKVERIFY") {
     if (mainStackDataArrayLength < 3) throw "OP_CHECKSIGFROMSTACKVERIFY Error: stack data array must include min 3 data!";
     let isStackFailed: boolean = false;
+    let verifyResult;
 
-    const verifyResult: WizData = crypto.ecdsaVerify(
-      mainStackDataArray[mainStackDataArrayLength - 3],
-      mainStackDataArray[mainStackDataArrayLength - 2],
-      mainStackDataArray[mainStackDataArrayLength - 1]
-    );
+    if (vm && vm.ver === VM_NETWORK_VERSION.TAPSCRIPT) {
+      verifyResult = crypto.shnorrSigVerify(
+        mainStackDataArray[mainStackDataArrayLength - 3],
+        mainStackDataArray[mainStackDataArrayLength - 2],
+        mainStackDataArray[mainStackDataArrayLength - 1]
+      );
+    } else {
+      verifyResult = crypto.ecdsaVerify(
+        mainStackDataArray[mainStackDataArrayLength - 3],
+        mainStackDataArray[mainStackDataArrayLength - 2],
+        mainStackDataArray[mainStackDataArrayLength - 1]
+      );
+    }
 
     if (verifyResult.number === 0) isStackFailed = true;
 
