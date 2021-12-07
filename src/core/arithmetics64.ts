@@ -89,7 +89,7 @@ export const div64 = (wizData: WizData, wizData2: WizData): WizData[] => {
     q = q.add(new BN(1));
   }
 
-  return [convert64(WizData.fromBin(r.toString(2))), convert64(WizData.fromBin(q.toString(2))), WizData.fromNumber(1)];
+  return [WizData.fromBin(r.toString(2, 64)), WizData.fromBin(q.toString(2, 64)), WizData.fromNumber(1)];
 };
 
 export const neg64 = (wizData: WizData): WizData[] => {
