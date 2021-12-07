@@ -1,6 +1,7 @@
 import WizData from "@script-wiz/wiz-data";
 import { ParseResult, ParseResultData, WizDataList } from "../model";
 import { Opcode } from "../opcodes/model/Opcode";
+import { VM } from "../opcodes/model/VM";
 import { opcodeToWord, opHexToWord, opWordToHex } from "../utils";
 import { compileData } from "./compileAll";
 import { opFunctions } from "./opFunctions";
@@ -14,7 +15,8 @@ export const parse = (
   inputNumberParam?: number,
   inputTextParam?: string,
   inputBinParam?: string,
-  inputOpCodeParam?: string
+  inputOpCodeParam?: string,
+  version?: VM
 ): ParseResult => {
   let emptyParseResultData: ParseResultData = {
     main: { addDataArray: [], removeLastSize: 0 },
@@ -48,7 +50,7 @@ export const parse = (
 
     if (opWord === undefined || opWord === "") throw "Unknown OP code";
 
-    if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFunctions(opWord, stackDataList, opWordCodes);
+    if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFunctions(opWord, stackDataList, opWordCodes, version);
     return { ...emptyParseResultData, inputHex };
   } catch (ex) {
     return { inputHex, errorMessage: ex as string, main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };

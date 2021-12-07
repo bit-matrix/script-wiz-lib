@@ -3,7 +3,7 @@ import elliptic from "elliptic";
 import BN from "bn.js";
 import WizData from "@script-wiz/wiz-data";
 import * as tapRoot from "../taproot";
-import { formattedPubkey } from "../utils";
+import bcrypto from "bcrypto";
 
 // TO DO @afarukcali review
 
@@ -110,6 +110,22 @@ export const tweakVerify = (wizData: WizData, wizData2: WizData, wizData3: WizDa
   const isChecked: boolean = tapRoot.publicKeyTweakCheckWithPrefix(internalKey, vchTweak, vchTweakedKey);
 
   return WizData.fromNumber(isChecked ? 1 : 0);
+};
+
+export const shnorrSigVerify = (sig: WizData, msg: WizData, pubkey: WizData): WizData => {
+  if (pubkey.bytes.length !== 32) throw "Schnorr Verify error : invalid public key length";
+
+  if (sig.bytes.length !== 64) throw "Schnorr Verify error : signature length must be equal 64 byte";
+
+  const publicKey = Buffer.from(pubkey.hex, "hex");
+  const signature = Buffer.from(sig.hex, "hex");
+  const message = Buffer.from(msg.hex, "hex");
+
+  try {
+    return WizData.fromNumber(bcrypto.schnorr.verify(message, signature, publicKey) ? 1 : 0);
+  } catch {
+    throw "ECDSA Verify error : something went wrong";
+  }
 };
 
 // const ECDSA = (messageHash: string, publicKey: string): string => {
