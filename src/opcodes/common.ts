@@ -116,7 +116,7 @@ export const commonOpcodes: Opcode[] = [
    * Bitwise logic
    * 131 - 136
    */
-  // { word: "OP_EQUAL", opcode: 135, hex: "0x87", description: "Returns 1 if the inputs are exactly equal, 0 otherwise." }, //	x1 x2	True / false	Returns 1 if the inputs are exactly equal, 0 otherwise.
+  { word: "OP_EQUAL", opcode: 135, hex: "0x87", description: "Returns 1 if the inputs are exactly equal, 0 otherwise." }, //	x1 x2	True / false	Returns 1 if the inputs are exactly equal, 0 otherwise.
   { word: "OP_EQUALVERIFY", opcode: 136, hex: "0x88", description: "Same as OP_EQUAL, but runs OP_VERIFY afterward." }, //	x1 x2	Nothing / fail	Same as OP_EQUAL, but runs OP_VERIFY afterward.
 
   /*
