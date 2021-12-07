@@ -12,8 +12,9 @@ import { ParseResultData, WizDataList } from "../model";
 import * as introspection from "../core/introspection";
 import { Opcode } from "../opcodes/model/Opcode";
 import { currentScope } from "../utils";
+import { VM, VM_NETWORK, VM_NETWORK_VERSION } from "..";
 
-export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[]): ParseResultData => {
+export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[], vm?: VM): ParseResultData => {
   const mainStackDataArray: WizData[] = stackDataList.main;
   const mainStackDataArrayLength = mainStackDataArray.length;
 
@@ -858,9 +859,20 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_CHECKSIGFROMSTACK") {
     if (mainStackDataArrayLength < 3) throw "OP_CHECKSIGFROMSTACK Error: stack data array must include min 3 data!";
 
-    const addDataArray: WizData[] = [
-      crypto.ecdsaVerify(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]),
-    ];
+    let addDataArray = [];
+    if (vm && vm.ver === VM_NETWORK_VERSION.TAPSCRIPT) {
+      addDataArray = [
+        crypto.shnorrSigVerify(
+          mainStackDataArray[mainStackDataArrayLength - 3],
+          mainStackDataArray[mainStackDataArrayLength - 2],
+          mainStackDataArray[mainStackDataArrayLength - 1]
+        ),
+      ];
+    } else {
+      addDataArray = [
+        crypto.ecdsaVerify(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]),
+      ];
+    }
 
     const removeLastSize: number = 3;
     const alt = { removeLastStackData: false };

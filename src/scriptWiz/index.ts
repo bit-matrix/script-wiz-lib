@@ -55,7 +55,7 @@ export class ScriptWiz {
 
     let parseResult: ParseResult;
 
-    parseResult = parse(this.opCodes.data, this.stackDataList, currentScopeParse, currentScopeParseException, inputHex, inputNumber, inputText, inputBin, inputOpCode);
+    parseResult = parse(this.opCodes.data, this.stackDataList, currentScopeParse, currentScopeParseException, inputHex, inputNumber, inputText, inputBin, inputOpCode, this.vm);
 
     this.parseResultCommit(parseResult);
   };
