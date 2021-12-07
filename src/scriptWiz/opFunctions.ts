@@ -1169,5 +1169,5 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   /*
    * Not implemented yet
    */
-  throw "Known OP word but not implemented yet!";
+  throw "Unknown op code";
 };
