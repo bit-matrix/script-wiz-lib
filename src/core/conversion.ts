@@ -1,31 +1,5 @@
 import WizData from "@script-wiz/wiz-data";
 import BN from "bn.js";
-import { ZERO_64 } from "../utils";
-
-// export const numToLE64 = (wizData: WizData): WizData => {
-//   const inputByteLength = wizData.bytes.length;
-
-//   if (inputByteLength > 8) throw "Input byte length must be maximum 8 byte";
-
-//   if (inputByteLength < 8) {
-//     const emptyByte = 8 - inputByteLength;
-//     let i = 0;
-//     let emptyBytes = [];
-
-//     while (i < emptyByte) {
-//       emptyBytes.push(0);
-//       i++;
-//     }
-
-//     let mergedArray = new Uint8Array(inputByteLength + emptyBytes.length);
-//     mergedArray.set(wizData.bytes);
-//     mergedArray.set(emptyBytes, inputByteLength);
-
-//     return WizData.fromBytes(mergedArray);
-//   }
-
-//   return wizData;
-// };
 
 export const convert64 = (wizData: WizData): WizData => {
   const isNegate = wizData.bin.charAt(0) === "1";
@@ -62,20 +36,23 @@ export const LE64ToNum = (wizData: WizData): WizData => {
 
   if (inputBytes.length !== 8) throw "Input byte length must be equal 8 byte";
 
-  let resultHex = wizData.hex;
+  const inputBN = new BN(wizData.bin, 2);
 
-  let i = 7;
+  const inputBnByteLength = inputBN.byteLength();
 
-  while (i >= 0) {
-    if (inputBytes[i] > 0) {
-      break;
+  if (wizData.bin.charAt(0) === "1") {
+    const binputPos = inputBN.fromTwos(64).abs();
+
+    const inputWizData = WizData.fromBin(binputPos.toString(2, binputPos.byteLength() * 8));
+
+    if (inputWizData.number) {
+      return WizData.fromNumber(inputWizData.number * -1);
     }
 
-    resultHex = resultHex.slice(0, -2);
-    i--;
+    return inputWizData;
   }
 
-  return WizData.fromHex(resultHex);
+  return WizData.fromBin(inputBN.toString(2, inputBnByteLength * 8));
 };
 
 export const LE32toLE64 = (wizData: WizData): WizData => {
