@@ -162,8 +162,6 @@ export const greaterThan64 = (wizData: WizData, wizData2: WizData): WizData => {
   } else if (!isANeg && isBNeg) {
     return WizData.fromNumber(1);
   } else if (isANeg && isBNeg) {
-    console.log(bigA.toTwos(64).toString(2));
-    console.log(bigB.toString(2));
     return WizData.fromNumber(bigB.neg().gt(bigA.neg()) ? 1 : 0);
   }
 
