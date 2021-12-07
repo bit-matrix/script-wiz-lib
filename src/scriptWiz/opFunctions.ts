@@ -12,7 +12,7 @@ import { ParseResultData, WizDataList } from "../model";
 import * as introspection from "../core/introspection";
 import { Opcode } from "../opcodes/model/Opcode";
 import { currentScope } from "../utils";
-import { VM, VM_NETWORK, VM_NETWORK_VERSION } from "..";
+import { VM, VM_NETWORK_VERSION } from "..";
 
 export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[], vm?: VM): ParseResultData => {
   const mainStackDataArray: WizData[] = stackDataList.main;
