@@ -65,7 +65,7 @@ export const tagHash = (tag: string, data: WizData) => {
 export const treeHelper = (scripts: WizData[], version: string): string => {
   let treeHelperResultHex = "";
   const leaftag = version === "c4" ? "TapLeaf/elements" : "TapLeaf";
-  const tapBranchtag = version === "c4" ? "TapBranch/elements" : "TapBranch";
+  // const tapBranchtag = version === "c4" ? "TapBranch/elements" : "TapBranch";
 
   scripts.forEach((script) => {
     const scriptLength = WizData.fromNumber(script.hex.length / 2).hex;
@@ -118,5 +118,9 @@ export const tapRoot = (pubKey: WizData, scripts: WizData[], vm: VM): Taproot =>
 
   const bech32 = segwit_addr.encode("bc", 1, WizData.fromHex(finalTweaked).bytes) || "";
 
-  return { scriptPubKey: WizData.fromHex(op1Hex + WizData.fromNumber(finalTweaked.length / 2).hex + finalTweaked), tweak: tweaked, bech32 };
+  const scriptPubKey = WizData.fromHex(op1Hex + WizData.fromNumber(finalTweaked.length / 2).hex + finalTweaked);
+
+  console.log("script pub key", scriptPubKey.hex);
+
+  return { scriptPubKey: scriptPubKey, tweak: tweaked, bech32 };
 };
