@@ -135,11 +135,21 @@ export const lessThanOrEqual64 = (wizData: WizData, wizData2: WizData): WizData 
 export const greaterThan64 = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.bytes.length != 8 || wizData2.bytes.length != 8) throw "Input bytes length must be equal 8 byte";
 
-  const a = numToLE64(wizData);
-  const b = numToLE64(wizData2);
+  const bigA = new BN(wizData.bin, 2);
+  const bigB = new BN(wizData2.bin, 2);
 
-  const bigA = new BN(a.bin, 2);
-  const bigB = new BN(b.bin, 2);
+  const isANeg = wizData.bin.charAt(0) === "1";
+  const isBNeg = wizData2.bin.charAt(0) === "1";
+
+  if (isANeg && !isBNeg) {
+    return WizData.fromNumber(0);
+  } else if (!isANeg && isBNeg) {
+    return WizData.fromNumber(1);
+  } else if (isANeg && isBNeg) {
+    console.log(bigA.toTwos(64).toString(2));
+    console.log(bigB.toString(2));
+    return WizData.fromNumber(bigB.neg().gt(bigA.neg()) ? 1 : 0);
+  }
 
   return WizData.fromNumber(bigA.gt(bigB) ? 1 : 0);
 };
@@ -147,11 +157,19 @@ export const greaterThan64 = (wizData: WizData, wizData2: WizData): WizData => {
 export const greaterThanOrEqual64 = (wizData: WizData, wizData2: WizData): WizData => {
   if (wizData.bytes.length != 8 || wizData2.bytes.length != 8) throw "Input bytes length must be equal 8 byte";
 
-  const a = numToLE64(wizData);
-  const b = numToLE64(wizData2);
+  const bigA = new BN(wizData.bin, 2);
+  const bigB = new BN(wizData2.bin, 2);
 
-  const bigA = new BN(a.bin, 2);
-  const bigB = new BN(b.bin, 2);
+  const isANeg = wizData.bin.charAt(0) === "1";
+  const isBNeg = wizData2.bin.charAt(0) === "1";
+
+  if (isANeg && !isBNeg) {
+    return WizData.fromNumber(0);
+  } else if (!isANeg && isBNeg) {
+    return WizData.fromNumber(1);
+  } else if (isANeg && isBNeg) {
+    return WizData.fromNumber(bigB.neg().gte(bigA.neg()) ? 1 : 0);
+  }
 
   return WizData.fromNumber(bigA.gte(bigB) ? 1 : 0);
 };
