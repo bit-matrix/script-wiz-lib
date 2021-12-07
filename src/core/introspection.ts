@@ -1,58 +1,24 @@
 import WizData from "@script-wiz/wiz-data";
 import { TxInput, TxOutput } from "../model/TxData";
-
-export const inspectInputAsset = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
-  const currentTxInputIndex = wizData.number;
-  const txInputLength = txInputs.length;
-
-  if (!currentTxInputIndex) throw "Invalid transaction input index!";
-
-  if (txInputLength === 0) throw "Transaction input template must include at least an element.";
-
-  const txInputIndex = currentTxInputIndex - 1;
-
-  if (txInputLength < currentTxInputIndex) throw "Input index must less than transaction inputs length!";
-
-  const currentInputAssetId = txInputs[txInputIndex].assetId;
-
-  if (!currentInputAssetId) throw "Asset id not found! Check your transaction template.";
-
-  return [WizData.fromHex(currentInputAssetId), WizData.fromHex("01")];
-};
-
-export const inspectInputValue = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
-  const currentTxInputIndex = wizData.number;
-  const txInputLength = txInputs.length;
-
-  if (!currentTxInputIndex) throw "Invalid transaction input index!";
-
-  if (txInputLength === 0) throw "Transaction input template must include at least an element.";
-
-  const txInputIndex = currentTxInputIndex - 1;
-
-  if (txInputLength < currentTxInputIndex) throw "Input index must less than transaction inputs length!";
-
-  const currentInputAmount = txInputs[txInputIndex].amount;
-
-  if (!currentInputAmount) throw "Amount not found! Check your transaction template.";
-
-  return [WizData.fromHex(currentInputAmount), WizData.fromHex("01")];
-};
+import * as crypto from "../core/crypto";
 
 export const inspectInputOutPoint = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
-  const currentTxInputIndex = wizData.number;
+  let currentTxInputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxInputIndex = 0;
+  }
   const txInputLength = txInputs.length;
 
-  if (!currentTxInputIndex) throw "Invalid transaction input index!";
+  if (currentTxInputIndex === undefined) throw "Invalid transaction input index!";
+
+  if (currentTxInputIndex < 0) throw "Invalid transaction input index must at least zero!";
 
   if (txInputLength === 0) throw "Transaction input template must include at least an element.";
 
-  const txInputIndex = currentTxInputIndex - 1;
+  if (txInputLength < currentTxInputIndex + 1) throw "Input index must less than transaction inputs length!";
 
-  if (txInputLength < currentTxInputIndex) throw "Input index must less than transaction inputs length!";
-
-  const currentInputPreviousTxId = txInputs[txInputIndex].previousTxId;
-  const currentInputVout = txInputs[txInputIndex].vout;
+  const currentInputPreviousTxId = txInputs[currentTxInputIndex].previousTxId;
+  const currentInputVout = txInputs[currentTxInputIndex].vout;
 
   if (!currentInputPreviousTxId) throw "Previous Tx Id not found! Check your transaction template.";
 
@@ -61,59 +27,232 @@ export const inspectInputOutPoint = (wizData: WizData, txInputs: TxInput[]): Wiz
   return [WizData.fromHex(currentInputPreviousTxId), WizData.fromHex(currentInputVout), WizData.fromHex("00")];
 };
 
-export const inspectInputSequence = (wizData: WizData, txInputs: TxInput[]): WizData => {
-  const currentTxInputIndex = wizData.number;
+export const inspectInputAsset = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
+  let currentTxInputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxInputIndex = 0;
+  }
   const txInputLength = txInputs.length;
 
-  if (!currentTxInputIndex) throw "Invalid transaction input index!";
+  if (currentTxInputIndex === undefined) throw "Invalid transaction input index!";
+
+  if (currentTxInputIndex < 0) throw "Invalid transaction input index must at least zero!";
 
   if (txInputLength === 0) throw "Transaction input template must include at least an element.";
 
-  const txInputIndex = currentTxInputIndex - 1;
+  //   const txInputIndex = currentTxInputIndex - 1;
 
-  if (txInputLength < currentTxInputIndex) throw "Input index must less than transaction inputs length!";
+  if (txInputLength < currentTxInputIndex + 1) throw "Input index must less than transaction inputs length!";
 
-  const currentInputSequence = txInputs[txInputIndex].sequence;
+  const currentInputAssetId = txInputs[currentTxInputIndex].assetId;
+
+  if (!currentInputAssetId) throw "Asset id not found! Check your transaction template.";
+
+  return [WizData.fromHex(currentInputAssetId), WizData.fromNumber(1)];
+};
+
+export const inspectInputValue = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
+  let currentTxInputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxInputIndex = 0;
+  }
+  const txInputLength = txInputs.length;
+
+  if (currentTxInputIndex === undefined) throw "Invalid transaction input index!";
+
+  if (currentTxInputIndex < 0) throw "Invalid transaction input index must at least zero!";
+
+  if (txInputLength === 0) throw "Transaction input template must include at least an element.";
+
+  if (txInputLength < currentTxInputIndex + 1) throw "Input index must less than transaction inputs length!";
+
+  const currentInputAmount = txInputs[currentTxInputIndex].amount;
+
+  if (!currentInputAmount) throw "Amount not found! Check your transaction template.";
+
+  const inputAmountLE = Buffer.from(currentInputAmount, "hex").reverse().toString("hex");
+
+  return [WizData.fromHex(inputAmountLE), WizData.fromNumber(1)];
+};
+
+export const inspectInputScriptPubKey = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
+  let currentTxInputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxInputIndex = 0;
+  }
+  const txInputLength = txInputs.length;
+
+  if (currentTxInputIndex === undefined) throw "Invalid transaction input index!";
+
+  if (currentTxInputIndex < 0) throw "Invalid transaction input index must at least zero!";
+
+  if (txInputLength === 0) throw "Transaction input template must include at least an element.";
+
+  if (txInputLength < currentTxInputIndex + 1) throw "Input index must less than transaction inputs length!";
+
+  if (!txInputs[currentTxInputIndex].scriptPubKey) throw "ScriptPubKey not found! Check your transaction template.";
+
+  const currentScriptPubKey = txInputs[currentTxInputIndex].scriptPubKey;
+
+  const witnessVersion = currentScriptPubKey.substr(0, 2);
+  const witnessProgram = currentScriptPubKey.substring(4);
+  const witnessProgramLength = WizData.fromHex(witnessProgram).bytes.length;
+
+  let result: WizData[] = [];
+  // Segwit (v0): first byte = 0, witnessProgram length 32 or 20 byte
+  if (witnessVersion === "00" && (witnessProgramLength === 20 || witnessProgramLength === 32)) {
+    result = [WizData.fromHex(witnessProgram), WizData.fromNumber(0)];
+    // Taproot (v1):first byte = 51, witnessProgram length 32 byte
+  } else if (witnessVersion === "51" && witnessProgramLength === 32) {
+    result = [WizData.fromHex(witnessProgram), WizData.fromNumber(1)];
+  } else {
+    // Legacy: none segwit and none taproot
+    const pubKeySha256 = crypto.sha256(WizData.fromHex(currentScriptPubKey)).toString();
+    result = [WizData.fromHex(pubKeySha256), WizData.fromNumber(-1)];
+  }
+  return result;
+};
+
+export const inspectInputIssuance = (wizData: WizData, txInputs: TxInput[]): WizData => {
+  let currentTxInputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxInputIndex = 0;
+  }
+  const txInputLength = txInputs.length;
+
+  if (currentTxInputIndex === undefined) throw "Invalid transaction input index!";
+
+  if (currentTxInputIndex < 0) throw "Invalid transaction input index must at least zero!";
+
+  if (txInputLength === 0) throw "Transaction input template must include at least an element.";
+
+  if (txInputLength < currentTxInputIndex + 1) throw "Input index must less than transaction inputs length!";
+
+  return WizData.fromNumber(0);
+};
+
+export const inspectInputSequence = (wizData: WizData, txInputs: TxInput[]): WizData => {
+  let currentTxInputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxInputIndex = 0;
+  }
+  const txInputLength = txInputs.length;
+
+  if (currentTxInputIndex === undefined) throw "Invalid transaction input index!";
+
+  if (currentTxInputIndex < 0) throw "Invalid transaction input index must at least zero!";
+
+  if (txInputLength === 0) throw "Transaction input template must include at least an element.";
+
+  if (txInputLength < currentTxInputIndex + 1) throw "Input index must less than transaction inputs length!";
+
+  const currentInputSequence = txInputs[currentTxInputIndex].sequence;
 
   if (!currentInputSequence) throw "Sequence not found! Check your transaction template.";
 
-  return WizData.fromHex(currentInputSequence);
+  const inputSequenceLE = Buffer.from(currentInputSequence, "hex").reverse().toString("hex");
+
+  return WizData.fromHex(inputSequenceLE);
 };
 
 export const inspectOutputAsset = (wizData: WizData, txOutputs: TxOutput[]): WizData[] => {
-  const currentTxOutputIndex = wizData.number;
+  let currentTxOutputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxOutputIndex = 0;
+  }
   const txOutputLength = txOutputs.length;
 
-  if (!currentTxOutputIndex) throw "Invalid transaction output index!";
+  if (currentTxOutputIndex === undefined) throw "Invalid transaction output index!";
+
+  if (currentTxOutputIndex < 0) throw "Invalid transaction output index must at least zero!";
 
   if (txOutputLength === 0) throw "Transaction output template must include at least an element.";
 
-  const txOutputIndex = currentTxOutputIndex - 1;
+  if (txOutputLength < currentTxOutputIndex + 1) throw "Output index must less than transaction outputs length!";
 
-  if (txOutputLength < currentTxOutputIndex) throw "Output index must less than transaction outputs length!";
-
-  const currentOutputAssetId = txOutputs[txOutputIndex].assetId;
+  const currentOutputAssetId = txOutputs[currentTxOutputIndex].assetId;
 
   if (!currentOutputAssetId) throw "Output Asset id not found! Check your transaction template.";
 
-  return [WizData.fromHex(currentOutputAssetId), WizData.fromHex("01")];
+  return [WizData.fromHex(currentOutputAssetId), WizData.fromNumber(1)];
 };
 
 export const inspectOutputValue = (wizData: WizData, txOutputs: TxOutput[]): WizData[] => {
-  const currentTxOutputIndex = wizData.number;
+  let currentTxOutputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxOutputIndex = 0;
+  }
   const txOutputLength = txOutputs.length;
 
-  if (!currentTxOutputIndex) throw "Invalid transaction output index!";
+  if (currentTxOutputIndex === undefined) throw "Invalid transaction output index!";
+
+  if (currentTxOutputIndex < 0) throw "Invalid transaction output index must at least zero!";
 
   if (txOutputLength === 0) throw "Transaction output template must include at least an element.";
 
-  const txOutputIndex = currentTxOutputIndex - 1;
+  if (txOutputLength < currentTxOutputIndex + 1) throw "Output index must less than transaction outputs length!";
 
-  if (txOutputLength < currentTxOutputIndex) throw "Output index must less than transaction outputs length!";
-
-  const currentOutputAmount = txOutputs[txOutputIndex].amount;
+  const currentOutputAmount = txOutputs[currentTxOutputIndex].amount;
 
   if (!currentOutputAmount) throw "Amount not found! Check your transaction template.";
 
-  return [WizData.fromHex(currentOutputAmount), WizData.fromHex("01")];
+  const outputAmountLE = Buffer.from(currentOutputAmount, "hex").reverse().toString("hex");
+
+  return [WizData.fromHex(outputAmountLE), WizData.fromNumber(1)];
+};
+
+export const inspectOutputNonce = (wizData: WizData, txOutputs: TxOutput[]): WizData => {
+  let currentTxOutputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxOutputIndex = 0;
+  }
+  const txOutputLength = txOutputs.length;
+
+  if (currentTxOutputIndex === undefined) throw "Invalid transaction output index!";
+
+  if (currentTxOutputIndex < 0) throw "Invalid transaction output index must at least zero!";
+
+  if (txOutputLength === 0) throw "Transaction output template must include at least an element.";
+
+  if (txOutputLength < currentTxOutputIndex + 1) throw "Output index must less than transaction outputs length!";
+
+  return WizData.fromNumber(0);
+};
+
+export const inspectOutputScriptPubKey = (wizData: WizData, txOutputs: TxOutput[]): WizData[] => {
+  let currentTxOutputIndex = wizData.number;
+  if (wizData.hex === "00") {
+    currentTxOutputIndex = 0;
+  }
+  const txOutputLength = txOutputs.length;
+
+  if (currentTxOutputIndex === undefined) throw "Invalid transaction output index!";
+
+  if (currentTxOutputIndex < 0) throw "Invalid transaction output index must at least zero!";
+
+  if (txOutputLength === 0) throw "Transaction output template must include at least an element.";
+
+  if (txOutputLength < currentTxOutputIndex + 1) throw "Output index must less than transaction outputs length!";
+
+  if (!txOutputs[currentTxOutputIndex].scriptPubKey) throw "ScriptPubKey not found! Check your transaction template.";
+
+  const currentScriptPubKey = txOutputs[currentTxOutputIndex].scriptPubKey;
+
+  const witnessVersion = currentScriptPubKey.substr(0, 2);
+  const witnessProgram = currentScriptPubKey.substring(4);
+  const witnessProgramLength = WizData.fromHex(witnessProgram).bytes.length;
+
+  let result: WizData[] = [];
+  // Segwit (v0): first byte = 0, witnessProgram length 32 or 20 byte
+  if (witnessVersion === "00" && (witnessProgramLength === 20 || witnessProgramLength === 32)) {
+    result = [WizData.fromHex(witnessProgram), WizData.fromNumber(0)];
+    // Taproot (v1):first byte = 51, witnessProgram length 32 byte
+  } else if (witnessVersion === "51" && witnessProgramLength === 32) {
+    result = [WizData.fromHex(witnessProgram), WizData.fromNumber(1)];
+  } else {
+    // Legacy: none segwit and none taproot
+    const pubKeySha256 = crypto.sha256(WizData.fromHex(currentScriptPubKey)).toString();
+    result = [WizData.fromHex(pubKeySha256), WizData.fromNumber(-1)];
+  }
+  return result;
 };

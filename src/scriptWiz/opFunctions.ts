@@ -12,7 +12,7 @@ import { ParseResultData, WizDataList } from "../model";
 import * as introspection from "../core/introspection";
 import { Opcode } from "../opcodes/model/Opcode";
 import { currentScope } from "../utils";
-import { VM, VM_NETWORK, VM_NETWORK_VERSION } from "..";
+import { VM, VM_NETWORK_VERSION } from "..";
 
 export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[], vm?: VM): ParseResultData => {
   const mainStackDataArray: WizData[] = stackDataList.main;
@@ -965,7 +965,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (!stackDataList.txData) throw "OP_INSPECTINPUTOUTPOINT Error: transaction template must include data.";
 
     const addDataArray: WizData[] = introspection.inspectInputOutPoint(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs);
-    const removeLastSize: number = 0;
+    const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
@@ -977,7 +977,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (!stackDataList.txData) throw "OP_INSPECTINPUTASSET Error: transaction template must include data.";
 
     const addDataArray: WizData[] = introspection.inspectInputAsset(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs);
-    const removeLastSize: number = 0;
+    const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
@@ -989,7 +989,19 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (!stackDataList.txData) throw "OP_INSPECTINPUTVALUE Error: transaction template must include data.";
 
     const addDataArray: WizData[] = introspection.inspectInputValue(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs);
-    const removeLastSize: number = 0;
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTINPUTSCRIPTPUBKEY") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTSCRIPTPUBKEY Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTINPUTSCRIPTPUBKEY Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = introspection.inspectInputScriptPubKey(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs);
+    const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
@@ -1001,7 +1013,19 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (!stackDataList.txData) throw "OP_INSPECTINPUTSEQUENCE Error: transaction template must include data.";
 
     const addDataArray: WizData[] = [introspection.inspectInputSequence(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs)];
-    const removeLastSize: number = 0;
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTINPUTISSUANCE") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTISSUANCE Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTINPUTISSUANCE Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = [introspection.inspectInputIssuance(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.inputs)];
+    const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
@@ -1024,7 +1048,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (!stackDataList.txData) throw "OP_INSPECTOUTPUTASSET Error: transaction template must include data.";
 
     const addDataArray: WizData[] = introspection.inspectOutputAsset(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.outputs);
-    const removeLastSize: number = 0;
+    const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
@@ -1036,6 +1060,82 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (!stackDataList.txData) throw "OP_INSPECTOUTPUTVALUE Error: transaction template must include data.";
 
     const addDataArray: WizData[] = introspection.inspectOutputValue(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.outputs);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTOUTPUTNONCE") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTOUTPUTNONCE Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTOUTPUTNONCE Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = [introspection.inspectOutputNonce(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.outputs)];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTOUTPUTSCRIPTPUBKEY") {
+    if (mainStackDataArrayLength < 1) throw "OP_INSPECTOUTPUTSCRIPTPUBKEY Error: stack data array must include min 1 data!";
+
+    if (!stackDataList.txData) throw "OP_INSPECTOUTPUTSCRIPTPUBKEY Error: transaction template must include data.";
+
+    const addDataArray: WizData[] = introspection.inspectOutputScriptPubKey(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData.outputs);
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTVERSION") {
+    if (!stackDataList.txData) throw "OP_INSPECTVERSION Error: transaction template must include data.";
+
+    if (!stackDataList.txData.version) throw "OP_INSPECTVERSION Error: transaction template must include version data.";
+
+    const versionLE: string = Buffer.from(stackDataList.txData.version, "hex").reverse().toString("hex");
+
+    const addDataArray: WizData[] = [WizData.fromHex(versionLE)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTLOCKTIME") {
+    if (!stackDataList.txData) throw "OP_INSPECTLOCKTIME Error: transaction template must include data.";
+
+    if (!stackDataList.txData.timelock) throw "OP_INSPECTLOCKTIME Error: transaction template must include timelock data.";
+
+    const timeLockLE: string = Buffer.from(stackDataList.txData.timelock, "hex").reverse().toString("hex");
+
+    const addDataArray: WizData[] = [WizData.fromHex(timeLockLE)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTNUMINPUTS") {
+    if (!stackDataList.txData) throw "OP_INSPECTNUMINPUTS Error: transaction template must include data.";
+
+    const inspectInputsLength: number = stackDataList.txData.inputs.length;
+
+    const addDataArray: WizData[] = [WizData.fromNumber(inspectInputsLength)];
+    const removeLastSize: number = 0;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_INSPECTNUMOUTPUTS") {
+    if (!stackDataList.txData) throw "OP_INSPECTNUMOUTPUTS Error: transaction template must include data.";
+
+    const inspectOutputsLength: number = stackDataList.txData.outputs.length;
+
+    const addDataArray: WizData[] = [WizData.fromNumber(inspectOutputsLength)];
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
