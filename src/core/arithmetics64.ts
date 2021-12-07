@@ -50,16 +50,21 @@ export const mul64 = (wizData: WizData, wizData2: WizData): WizData[] => {
   const a = new BN(wizData.bin, 2);
   const b = new BN(wizData2.bin, 2);
 
+  const isANeg = a.toString(2).charAt(0) === "1";
+
   if (
-    (a.gt(ZERO_64) && b.gt(ZERO_64) && a.gt(MAX_INTEGER_64.div(b))) ||
-    (a.gt(ZERO_64) && b.lt(ZERO_64) && b.lt(MIN_INTEGER_64.div(a))) ||
-    (a.lt(ZERO_64) && b.gt(ZERO_64) && a.lt(MIN_INTEGER_64.div(b))) ||
-    (a.lt(ZERO_64) && b.lt(ZERO_64) && b.lt(MAX_INTEGER_64.div(a)))
+    (!isANeg && b.gt(ZERO_64) && a.gt(MAX_INTEGER_64.div(b))) ||
+    (!isANeg && b.lt(ZERO_64) && b.lt(MIN_INTEGER_64.div(a))) ||
+    (isANeg && b.gt(ZERO_64) && a.lt(MIN_INTEGER_64.div(b))) ||
+    (isANeg && b.lt(ZERO_64) && b.lt(MAX_INTEGER_64.div(a)))
   ) {
     return [WizData.fromNumber(0)];
   } else {
     const mulValue = a.mul(b);
-    return [convert64(WizData.fromBin(mulValue.toString(2))), WizData.fromNumber(1)];
+    let mulValueBin = mulValue.toString(2, 64);
+    const modifiedMulValueBin = mulValueBin.slice(-64);
+
+    return [WizData.fromBin(modifiedMulValueBin), WizData.fromNumber(1)];
   }
 };
 
