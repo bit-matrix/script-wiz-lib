@@ -28,11 +28,19 @@ export const sub64 = (wizData: WizData, wizData2: WizData): WizData[] => {
   const a = new BN(wizData.bin, 2);
   const b = new BN(wizData2.bin, 2);
 
-  if ((b.gt(ZERO_64) && a.lt(MIN_INTEGER_64.add(b))) || (b.lt(ZERO_64) && a.gt(MAX_INTEGER_64.add(b)))) {
+  const isBNeg = b.toString(2).charAt(0) === "1";
+
+  if ((!isBNeg && a.lt(MIN_INTEGER_64.add(b))) || (isBNeg && a.gt(MAX_INTEGER_64.add(b)))) {
     return [WizData.fromNumber(0)];
   } else {
     const subValue = a.sub(b);
-    return [convert64(WizData.fromBin(subValue.toString(2, 64))), WizData.fromNumber(1)];
+
+    let subValueBin = subValue.toString(2, 64);
+    if (subValue.isNeg()) subValueBin = subValue.toTwos(64).toString(2, 64);
+
+    const modifiedSubValueBin = subValueBin.slice(-64);
+
+    return [WizData.fromBin(modifiedSubValueBin), WizData.fromNumber(1)];
   }
 };
 
