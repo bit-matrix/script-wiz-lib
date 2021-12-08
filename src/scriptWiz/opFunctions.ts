@@ -1095,9 +1095,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     if (!stackDataList.txData.version) throw "OP_INSPECTVERSION Error: transaction template must include version data.";
 
-    const versionLE: string = Buffer.from(stackDataList.txData.version, "hex").reverse().toString("hex");
-
-    const addDataArray: WizData[] = [WizData.fromHex(versionLE)];
+    const addDataArray: WizData[] = [WizData.fromHex(stackDataList.txData.version)];
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
@@ -1109,9 +1107,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     if (!stackDataList.txData.timelock) throw "OP_INSPECTLOCKTIME Error: transaction template must include timelock data.";
 
-    const timeLockLE: string = Buffer.from(stackDataList.txData.timelock, "hex").reverse().toString("hex");
-
-    const addDataArray: WizData[] = [WizData.fromHex(timeLockLE)];
+    const addDataArray: WizData[] = [WizData.fromHex(stackDataList.txData.timelock)];
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
