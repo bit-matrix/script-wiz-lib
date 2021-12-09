@@ -23,7 +23,7 @@ export const commonOpcodes: Opcode[] = [
   // { word: "OP_PUSHDATA1", opcode: 76, hex: "0x4c" }, //	(special)	data	The next byte contains the number of bytes to be pushed onto the stack.
   // { word: "OP_PUSHDATA2", opcode: 77, hex: "0x4d" }, //	(special)	data	The next two bytes contain the number of bytes to be pushed onto the stack in little endian order.
   // { word: "OP_PUSHDATA4", opcode: 78, hex: "0x4e" }, //	(special)	data	The next four bytes contain the number of bytes to be pushed onto the stack in little endian order.
-  // { word: "OP_1NEGATE", opcode: 79, hex: "0x4f" }, //	Nothing.	-1	The number -1 is pushed onto the stack.
+  { word: "OP_1NEGATE", opcode: 79, hex: "0x4f", output: -1, description: "	-1	The number -1 is pushed onto the stack." }, //	Nothing.	-1	The number -1 is pushed onto the stack.
   { word: "OP_1", opcode: 81, hex: "0x51", output: 1, description: "The number 1 is pushed onto the stack." }, // Nothing.	1	The number 1 is pushed onto the stack.
   { word: "OP_TRUE", opcode: 81, hex: "0x51", output: 1, description: "The number 1 is pushed onto the stack." }, // Nothing.	1	The number 1 is pushed onto the stack.
   { word: "OP_2", opcode: 82, hex: "0x52", output: 2, description: "The number 2 is pushed onto the stack." }, // Nothing.	2	The number 2 is pushed onto the stack.

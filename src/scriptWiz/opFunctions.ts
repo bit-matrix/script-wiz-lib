@@ -41,7 +41,8 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     word === "OP_13" ||
     word === "OP_14" ||
     word === "OP_15" ||
-    word === "OP_16"
+    word === "OP_16" ||
+    word === "OP_1NEGATE"
   ) {
     const currentOpCode = opCodes.find((oc) => oc.word === word);
     const addDataArray: WizData[] = [WizData.fromNumber(currentOpCode?.output || 0)];
