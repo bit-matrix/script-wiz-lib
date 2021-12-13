@@ -50,7 +50,9 @@ export const inspectInputAsset = (wizData: WizData, txInputs: TxInput[]): WizDat
 
   if (!currentInputAssetId) throw "Asset id not found! Check your transaction template.";
 
-  return [WizData.fromHex(currentInputAssetId), WizData.fromNumber(1)];
+  const inputAssetIdLE = Buffer.from(currentInputAssetId, "hex").reverse().toString("hex");
+
+  return [WizData.fromHex(inputAssetIdLE), WizData.fromNumber(1)];
 };
 
 export const inspectInputValue = (wizData: WizData, txInputs: TxInput[]): WizData[] => {
