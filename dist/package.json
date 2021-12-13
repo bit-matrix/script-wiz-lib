@@ -16,12 +16,6 @@
   },
   "homepage": "https://github.com/bit-matrix/script-wiz-lib#readme",
   "dependencies": {
-    "@script-wiz/wiz-data": "^0.1.1",
-    "bcrypto": "^5.4.0",
-    "big-integer": "^1.6.50",
-    "bn.js": "^5.2.0",
-    "crypto-js": "^4.0.0",
-    "elliptic": "^6.5.4",
-    "secp256k1": "^4.0.2"
+    "@script-wiz/wiz-data": "^0.1.1"
   }
 }
