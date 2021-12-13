@@ -1,5 +1,5 @@
-import { ScriptWiz } from "..";
-import { VM, VM_NETWORK, VM_NETWORK_VERSION } from "../../opcodes/model/VM";
+import { ScriptWiz } from "./ScriptWiz";
+import { VM, VM_NETWORK, VM_NETWORK_VERSION } from "./opcodes/model/VM";
 
 let scriptWiz: ScriptWiz;
 

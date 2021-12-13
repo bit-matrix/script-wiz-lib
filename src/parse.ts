@@ -1,9 +1,9 @@
 import WizData from "@script-wiz/wiz-data";
-import { ParseResult, ParseResultData, WizDataList } from "../model";
-import { Opcode } from "../opcodes/model/Opcode";
-import { VM } from "../opcodes/model/VM";
-import { opcodeToWord, opHexToWord, opWordToHex } from "../utils";
-import { compileData } from "./compileAll";
+import { ParseResult, ParseResultData, WizDataList } from "./model";
+import { Opcode } from "./opcodes/model/Opcode";
+import { VM } from "./opcodes/model/VM";
+import { opcodeToWord, opHexToWord, opWordToHex } from "./utils";
+import { compileData } from "./utils/compileAll";
 import { opFunctions } from "./opFunctions";
 
 export const parse = (

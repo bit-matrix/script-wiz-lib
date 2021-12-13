@@ -1,10 +1,10 @@
 import WizData from "@script-wiz/wiz-data";
 import { arithmetics, arithmetics64, bitwise, conversion, crypto, introspection, locktime, splices, stacks } from "@script-wiz/lib-core";
-import * as flow from "./flow";
-import { ParseResultData, WizDataList } from "../model";
-import { Opcode } from "../opcodes/model/Opcode";
-import { currentScope } from "../utils";
-import { VM, VM_NETWORK_VERSION } from "..";
+import * as flow from "./utils/flow";
+import { ParseResultData, WizDataList } from "./model";
+import { Opcode } from "./opcodes/model/Opcode";
+import { currentScope } from "./utils";
+import { VM, VM_NETWORK_VERSION } from ".";
 
 export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[], vm?: VM): ParseResultData => {
   const mainStackDataArray: WizData[] = stackDataList.main;

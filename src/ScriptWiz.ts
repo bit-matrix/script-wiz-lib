@@ -1,9 +1,9 @@
 import { model } from "@script-wiz/lib-core";
-import { ParseResult, WizDataList } from "../model";
-import { Opcodes } from "../opcodes";
-import { VM } from "../opcodes/model/VM";
-import { currentScope } from "../utils";
-import { compileJoin } from "./compileAll";
+import { ParseResult, WizDataList } from "./model";
+import { Opcodes } from "./opcodes";
+import { VM } from "./opcodes/model/VM";
+import { currentScope } from "./utils";
+import { compileJoin } from "./utils/compileAll";
 import { parse } from "./parse";
 
 const initialStackDataList: WizDataList = {

@@ -1,6 +1,6 @@
 import WizData from "@script-wiz/wiz-data";
 import { WizDataList } from "../model";
-import { currentScope } from "../utils";
+import { currentScope } from ".";
 
 export const flowVerify = (wizData: WizData): boolean => wizData.hex !== "" && wizData.hex !== "00";
 
