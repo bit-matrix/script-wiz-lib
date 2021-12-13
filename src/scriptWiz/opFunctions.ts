@@ -1,15 +1,7 @@
 import WizData from "@script-wiz/wiz-data";
-import * as arithmetics from "../core/arithmetics";
-import * as bitwise from "../core/bitwise";
-import * as conversion from "../core/conversion";
-import * as arithmetics64 from "../core/arithmetics64";
-import * as crypto from "../core/crypto";
-import * as flow from "../core/flow";
-import * as locktime from "../core/locktime";
-import * as splices from "../core/splices";
-import * as stacks from "../core/stacks";
+import { arithmetics, arithmetics64, bitwise, conversion, crypto, introspection, locktime, splices, stacks } from "@script-wiz/lib-core";
+import * as flow from "./flow";
 import { ParseResultData, WizDataList } from "../model";
-import * as introspection from "../core/introspection";
 import { Opcode } from "../opcodes/model/Opcode";
 import { currentScope } from "../utils";
 import { VM, VM_NETWORK_VERSION } from "..";

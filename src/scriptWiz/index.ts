@@ -1,4 +1,4 @@
-import { TxData } from "..";
+import { model } from "@script-wiz/lib-core";
 import { ParseResult, WizDataList } from "../model";
 import { Opcodes } from "../opcodes";
 import { VM } from "../opcodes/model/VM";
@@ -41,7 +41,7 @@ export class ScriptWiz {
 
   parseOpcode = (input: string): void => this.parseInput(undefined, undefined, undefined, undefined, input);
 
-  parseTxData = (input: TxData): void => {
+  parseTxData = (input: model.TxData): void => {
     this.stackDataList = { ...this.stackDataList, txData: input };
   };
 
