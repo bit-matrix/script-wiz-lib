@@ -1,5 +1,5 @@
 import WizData from "@script-wiz/wiz-data";
-import { TxData } from "./TxData";
+import { model } from "@script-wiz/lib-core";
 
 export type WizDataList = {
   inputHexes: string[];
@@ -9,5 +9,5 @@ export type WizDataList = {
   altFlow: boolean[];
   isStackFailed: boolean;
   errorMessage?: string;
-  txData?: TxData;
+  txData?: model.TxData;
 };
