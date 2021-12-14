@@ -1,6 +1,6 @@
 {
   "name": "@script-wiz/lib",
-  "version": "0.1.41",
+  "version": "0.1.42",
   "description": "",
   "scripts": {
     "wp-umd": "npx webpack --mode production --config webpack.config.umd.js",
@@ -35,6 +35,6 @@
   },
   "homepage": "https://github.com/swap-cash/script-wiz-lib#readme",
   "dependencies": {
-    "@script-wiz/lib-core": "^0.0.5"
+    "@script-wiz/lib-core": "^0.0.6"
   }
 }
