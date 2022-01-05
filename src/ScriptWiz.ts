@@ -1,10 +1,10 @@
-import { model } from "@script-wiz/lib-core";
 import { ParseResult, WizDataList } from "./model";
 import { Opcodes } from "./opcodes";
 import { VM } from "./opcodes/model/VM";
 import { currentScope } from "./utils";
 import { compileJoin } from "./utils/compileAll";
 import { parse } from "./parse";
+import { TxData } from "@script-wiz/lib-core";
 
 const initialStackDataList: WizDataList = {
   inputHexes: [],
@@ -41,7 +41,7 @@ export class ScriptWiz {
 
   parseOpcode = (input: string): void => this.parseInput(undefined, undefined, undefined, undefined, input);
 
-  parseTxData = (input: model.TxData): void => {
+  parseTxData = (input: TxData): void => {
     this.stackDataList = { ...this.stackDataList, txData: input };
   };
 
