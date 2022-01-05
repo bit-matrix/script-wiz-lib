@@ -620,6 +620,16 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
 
+  if (word === "OP_MOD") {
+    if (mainStackDataArrayLength < 2) throw "OP_MOD Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = [arithmetics.mod(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
   if (word === "OP_LSHIFT") {
     if (mainStackDataArrayLength < 2) throw "OP_LSHIFT Error: stack data array must include min 2 data!";
 

@@ -41,6 +41,8 @@ export const opcodesLiquidSegwit: Opcode[] = [
    * Arithmetic
    * 139 - 165
    */
+
+  { word: "OP_MOD", opcode: 151, hex: "0x97", description: "a b	out	Returns the remainder after dividing a by b. " }, //	a b	out	Returns the remainder after dividing a by b. disabled.
   { word: "OP_LSHIFT", opcode: 152, hex: "0x98", description: "Shifts a left b bits, preserving sign." }, //	a b	out	Shifts a left b bits, preserving sign. disabled.
   { word: "OP_RSHIFT", opcode: 153, hex: "0x99", description: "Shifts a right b bits, preserving sign." }, //	a b	out	Shifts a right b bits, preserving sign. disabled.
 
