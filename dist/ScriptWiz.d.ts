@@ -1,7 +1,7 @@
-import { model } from "@script-wiz/lib-core";
 import { WizDataList } from "./model";
 import { Opcodes } from "./opcodes";
 import { VM } from "./opcodes/model/VM";
+import { TxData } from "@script-wiz/lib-core";
 export declare class ScriptWiz {
     vm: VM;
     opCodes: Opcodes;
@@ -13,7 +13,7 @@ export declare class ScriptWiz {
     parseText: (input: string) => void;
     parseBin: (input: string) => void;
     parseOpcode: (input: string) => void;
-    parseTxData: (input: model.TxData) => void;
+    parseTxData: (input: TxData) => void;
     compile: () => string;
     private parseInput;
     private parseResultCommit;
