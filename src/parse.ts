@@ -16,7 +16,8 @@ export const parse = (
   inputTextParam?: string,
   inputBinParam?: string,
   inputOpCodeParam?: string,
-  version?: VM
+  version?: VM,
+  isStackElement?: boolean
 ): ParseResult => {
   let emptyParseResultData: ParseResultData = {
     main: { addDataArray: [], removeLastSize: 0 },
@@ -29,7 +30,7 @@ export const parse = (
     // Values
     if (inputOpCodeParam === undefined) {
       const wizData: WizData = parseValueInputs(inputHexParam, inputNumberParam, inputTextParam, inputBinParam);
-      inputHex = compileData(wizData.hex);
+      inputHex = !isStackElement ? compileData(wizData.hex) : "";
 
       if (currentScopeParse) return { inputHex, main: { addDataArray: [wizData], removeLastSize: 0 }, alt: { removeLastStackData: false } };
       else return { ...emptyParseResultData, inputHex };

@@ -31,15 +31,15 @@ export class ScriptWiz {
     this.stackDataList = { ...initialStackDataList };
   };
 
-  parseHex = (input: string): void => this.parseInput(input);
+  parseHex = (input: string, isStackElement = false): void => this.parseInput(isStackElement, input);
 
-  parseNumber = (input: number): void => this.parseInput(undefined, input);
+  parseNumber = (input: number, isStackElement = false): void => this.parseInput(isStackElement, undefined, input);
 
-  parseText = (input: string): void => this.parseInput(undefined, undefined, input);
+  parseText = (input: string, isStackElement = false): void => this.parseInput(isStackElement, undefined, undefined, input);
 
-  parseBin = (input: string): void => this.parseInput(undefined, undefined, undefined, input);
+  parseBin = (input: string, isStackElement = false): void => this.parseInput(isStackElement, undefined, undefined, undefined, input);
 
-  parseOpcode = (input: string): void => this.parseInput(undefined, undefined, undefined, undefined, input);
+  parseOpcode = (input: string, isStackElement = false): void => this.parseInput(isStackElement, undefined, undefined, undefined, undefined, input);
 
   parseTxData = (input: TxData): void => {
     this.stackDataList = { ...this.stackDataList, txData: input };
@@ -48,14 +48,26 @@ export class ScriptWiz {
   //
   compile = () => compileJoin(this.stackDataList.inputHexes);
 
-  private parseInput = (inputHex?: string, inputNumber?: number, inputText?: string, inputBin?: string, inputOpCode?: string): void => {
+  private parseInput = (isStackElement?: boolean, inputHex?: string, inputNumber?: number, inputText?: string, inputBin?: string, inputOpCode?: string): void => {
     const currentScopeParse: boolean = currentScope(this.stackDataList);
     let currentScopeParseException: boolean = false;
     if (inputOpCode !== undefined) currentScopeParseException = inputOpCode === "OP_IF" || inputOpCode === "OP_NOTIF" || inputOpCode === "OP_ELSE" || inputOpCode === "OP_ENDIF";
 
     let parseResult: ParseResult;
 
-    parseResult = parse(this.opCodes.data, this.stackDataList, currentScopeParse, currentScopeParseException, inputHex, inputNumber, inputText, inputBin, inputOpCode, this.vm);
+    parseResult = parse(
+      this.opCodes.data,
+      this.stackDataList,
+      currentScopeParse,
+      currentScopeParseException,
+      inputHex,
+      inputNumber,
+      inputText,
+      inputBin,
+      inputOpCode,
+      this.vm,
+      isStackElement
+    );
 
     this.parseResultCommit(parseResult);
   };
