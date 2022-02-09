@@ -45,6 +45,13 @@ export class ScriptWiz {
     this.stackDataList = { ...this.stackDataList, txData: input };
   };
 
+  assignLabel = (label: string) => {
+    if (!currentScope(this.stackDataList)) return;
+    if (!this.stackDataList.main.length) throw new Error('nothing to label');
+    const lastStack = this.stackDataList.main[this.stackDataList.main.length-1];
+    lastStack.label = label;
+  }
+
   //
   compile = () => compileJoin(this.stackDataList.inputHexes);
 
