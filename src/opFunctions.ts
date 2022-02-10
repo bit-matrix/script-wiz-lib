@@ -837,8 +837,11 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
   if (word === "OP_CHECKSIG") {
     if (mainStackDataArrayLength < 2) throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
+    if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty ";
+    console.log(mainStackDataArray);
+    console.log(stackDataList.txData);
 
-    const addDataArray: WizData[] = [crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData)];
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
@@ -847,10 +850,11 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
   if (word === "OP_CHECKSIGVERIFY") {
     if (mainStackDataArrayLength < 2) throw "OP_CHECKSIGVERIFY Error: stack data array must include min 2 data!";
+    if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty ";
 
     let isStackFailed: boolean = false;
 
-    const checkSigResult: WizData = crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const checkSigResult: WizData = crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData);
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
