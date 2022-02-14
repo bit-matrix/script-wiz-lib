@@ -31,24 +31,23 @@ export class ScriptWiz {
     this.stackDataList = { ...initialStackDataList };
   };
 
-  parseHex = (input: string, isStackElement = false): void => this.parseInput(isStackElement, input);
+  parseHex = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, input);
 
-  parseNumber = (input: number, isStackElement = false): void => this.parseInput(isStackElement, undefined, input);
+  parseNumber = (input: number, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, undefined, input);
 
-  parseText = (input: string, isStackElement = false): void => this.parseInput(isStackElement, undefined, undefined, input);
+  parseText = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, undefined, undefined, input);
 
-  parseBin = (input: string, isStackElement = false): void => this.parseInput(isStackElement, undefined, undefined, undefined, input);
+  parseBin = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, undefined, undefined, undefined, input);
 
-  parseOpcode = (input: string, isStackElement = false): void => this.parseInput(isStackElement, undefined, undefined, undefined, undefined, input);
+  parseOpcode = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, undefined, undefined, undefined, undefined, input);
 
   parseTxData = (input: TxData): void => {
     this.stackDataList = { ...this.stackDataList, txData: input };
   };
 
-  //
   compile = () => compileJoin(this.stackDataList.inputHexes);
 
-  private parseInput = (isStackElement?: boolean, inputHex?: string, inputNumber?: number, inputText?: string, inputBin?: string, inputOpCode?: string): void => {
+  private parseInput = (isWitnessElement: boolean, inputHex?: string, inputNumber?: number, inputText?: string, inputBin?: string, inputOpCode?: string): void => {
     const currentScopeParse: boolean = currentScope(this.stackDataList);
     let currentScopeParseException: boolean = false;
     if (inputOpCode !== undefined) currentScopeParseException = inputOpCode === "OP_IF" || inputOpCode === "OP_NOTIF" || inputOpCode === "OP_ELSE" || inputOpCode === "OP_ENDIF";
@@ -60,13 +59,13 @@ export class ScriptWiz {
       this.stackDataList,
       currentScopeParse,
       currentScopeParseException,
+      isWitnessElement,
       inputHex,
       inputNumber,
       inputText,
       inputBin,
       inputOpCode,
-      this.vm,
-      isStackElement
+      this.vm
     );
 
     this.parseResultCommit(parseResult);
