@@ -5,6 +5,7 @@ import { ParseResultData, WizDataList } from "./model";
 import { Opcode } from "./opcodes/model/Opcode";
 import { currentScope } from "./utils";
 import { VM, VM_NETWORK_VERSION } from ".";
+import { compileData } from "./utils/compileAll";
 
 export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[], vm?: VM): ParseResultData => {
   const mainStackDataArray: WizData[] = stackDataList.main;
@@ -879,8 +880,9 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     const signatureList: WizData[] = mainStackDataArray.slice(mainStackDataArrayLength - (publicKeyLength + signatureLength), mainStackDataArrayLength - (publicKeyLength + 2));
 
-    const addDataArray: WizData[] = [crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData)];
+    const addDataArray: WizData[] = [crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData)];
     const removeLastSize: number = 2;
+
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
