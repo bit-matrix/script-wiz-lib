@@ -1,5 +1,5 @@
 import WizData from "@script-wiz/wiz-data";
-import { arithmetics, arithmetics64, bitwise, conversion, crypto, introspection, locktime, splices, stacks } from "@script-wiz/lib-core";
+import { arithmetics, arithmetics64, bitwise, convertion, crypto, introspection, locktime, splices, stacks } from "@script-wiz/lib-core";
 import * as flow from "./utils/flow";
 import { ParseResultData, WizDataList } from "./model";
 import { Opcode } from "./opcodes/model/Opcode";
@@ -1145,7 +1145,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
   /*
-   * Conversion
+   * Convertion
    * 215 - 227
    */
 
@@ -1242,7 +1242,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_SCRIPTNUMTOLE64") {
     if (mainStackDataArrayLength < 1) throw "OP_SCRIPTNUMTOLE64 Error: stack data array must include min 1 data!";
 
-    const addDataArray: WizData[] = [conversion.numToLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [convertion.numToLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
@@ -1252,7 +1252,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_LE64TOSCRIPTNUM") {
     if (mainStackDataArrayLength < 1) throw "OP_LE64TOSCRIPTNUM Error: stack data array must include min 1 data!";
 
-    const addDataArray: WizData[] = [conversion.LE64ToNum(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [convertion.LE64ToNum(mainStackDataArray[mainStackDataArrayLength - 1])];
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
@@ -1262,7 +1262,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_LE32TOLE64") {
     if (mainStackDataArrayLength < 1) throw "LE32toLE64 Error: stack data array must include min 1 data!";
 
-    const addDataArray: WizData[] = [conversion.LE32toLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [convertion.LE32toLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
