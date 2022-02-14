@@ -8,11 +8,11 @@ export declare class ScriptWiz {
     stackDataList: WizDataList;
     constructor(vm: VM);
     clearStackDataList: () => void;
-    parseHex: (input: string, isStackElement?: boolean) => void;
-    parseNumber: (input: number, isStackElement?: boolean) => void;
-    parseText: (input: string, isStackElement?: boolean) => void;
-    parseBin: (input: string, isStackElement?: boolean) => void;
-    parseOpcode: (input: string, isStackElement?: boolean) => void;
+    parseHex: (input: string, isWitnessElement?: boolean) => void;
+    parseNumber: (input: number, isWitnessElement?: boolean) => void;
+    parseText: (input: string, isWitnessElement?: boolean) => void;
+    parseBin: (input: string, isWitnessElement?: boolean) => void;
+    parseOpcode: (input: string, isWitnessElement?: boolean) => void;
     parseTxData: (input: TxData) => void;
     compile: () => string;
     private parseInput;
