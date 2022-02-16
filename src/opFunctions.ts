@@ -866,20 +866,22 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (mainStackDataArrayLength < 4) throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
     if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
 
-    const publicKeyLength: number | undefined = mainStackDataArray[mainStackDataArrayLength - 1].number;
+    const reversedArray = [...mainStackDataArray].reverse();
+
+    const publicKeyLength: number | undefined = reversedArray[0].number;
 
     if (publicKeyLength === undefined) throw "Invalid public key length";
 
-    const publicKeyList: WizData[] = mainStackDataArray.slice(mainStackDataArrayLength - (publicKeyLength + 1), mainStackDataArrayLength - 1);
+    const publicKeyList: WizData[] = reversedArray.slice(1, publicKeyLength + 1);
 
-    const signatureLength: number | undefined = mainStackDataArray[mainStackDataArrayLength - publicKeyLength + 2].number;
+    const signatureLength: number | undefined = reversedArray[publicKeyLength + 1].number;
 
     if (signatureLength === undefined) throw "Invalid signature length";
 
-    const signatureList: WizData[] = mainStackDataArray.slice(mainStackDataArrayLength - (publicKeyLength + signatureLength + 1), mainStackDataArrayLength - (publicKeyLength + 2));
+    const signatureList: WizData[] = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
 
     const addDataArray: WizData[] = [crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData)];
-    const removeLastSize: number = 2;
+    const removeLastSize: number = 0;
 
     const alt = { removeLastStackData: false };
 

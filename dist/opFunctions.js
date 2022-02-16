@@ -734,16 +734,17 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
             throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
         if (stackDataList.txData === undefined)
             throw "OP_CHECKSIG Error : Tx template data is empty";
-        var publicKeyLength = mainStackDataArray[mainStackDataArrayLength - 1].number;
+        var reversedArray = __spreadArray([], mainStackDataArray, true).reverse();
+        var publicKeyLength = reversedArray[0].number;
         if (publicKeyLength === undefined)
             throw "Invalid public key length";
-        var publicKeyList = mainStackDataArray.slice(mainStackDataArrayLength - (publicKeyLength + 1), mainStackDataArrayLength - 1);
-        var signatureLength = mainStackDataArray[mainStackDataArrayLength - publicKeyLength + 2].number;
+        var publicKeyList = reversedArray.slice(1, publicKeyLength + 1);
+        var signatureLength = reversedArray[publicKeyLength + 1].number;
         if (signatureLength === undefined)
             throw "Invalid signature length";
-        var signatureList = mainStackDataArray.slice(mainStackDataArrayLength - (publicKeyLength + signatureLength + 1), mainStackDataArrayLength - (publicKeyLength + 2));
+        var signatureList = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
         var addDataArray = [lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData)];
-        var removeLastSize = 2;
+        var removeLastSize = 0;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
     }
