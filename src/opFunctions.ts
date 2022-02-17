@@ -865,6 +865,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_CHECKMULTISIG") {
     if (mainStackDataArrayLength < 4) throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
     if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
+    if (stackDataList.txData.outputs.length === 0 || stackDataList.txData.inputs.length === 0) throw "OP_CHECKSIG Error : Tx template data is empty";
 
     const reversedArray = [...mainStackDataArray].reverse();
 
