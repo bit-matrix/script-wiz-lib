@@ -32,13 +32,12 @@ var initialStackDataList = {
     flow: [true],
     altFlow: [],
     isStackFailed: false,
-    txData: { inputs: [], outputs: [], version: "", timelock: "", currentInputIndex: 0 },
 };
 var ScriptWiz = /** @class */ (function () {
     function ScriptWiz(vm) {
         var _this = this;
         this.clearStackDataList = function () {
-            _this.stackDataList = __assign({}, initialStackDataList);
+            _this.stackDataList = __assign(__assign({}, initialStackDataList), { txData: _this.stackDataList.txData });
         };
         this.parseHex = function (input, isWitnessElement) {
             if (isWitnessElement === void 0) { isWitnessElement = true; }

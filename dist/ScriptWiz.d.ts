@@ -13,7 +13,7 @@ export declare class ScriptWiz {
     parseText: (input: string, isWitnessElement?: boolean) => void;
     parseBin: (input: string, isWitnessElement?: boolean) => void;
     parseOpcode: (input: string, isWitnessElement?: boolean) => void;
-    parseTxData: (input: TxData) => void;
+    parseTxData: (input?: TxData | undefined) => void;
     compile: () => string;
     private parseInput;
     private parseResultCommit;
