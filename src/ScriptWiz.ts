@@ -13,7 +13,6 @@ const initialStackDataList: WizDataList = {
   flow: [true],
   altFlow: [],
   isStackFailed: false,
-  txData: { inputs: [], outputs: [], version: "", timelock: "", currentInputIndex: 0 },
 };
 
 export class ScriptWiz {
@@ -28,7 +27,7 @@ export class ScriptWiz {
   }
 
   clearStackDataList = () => {
-    this.stackDataList = { ...initialStackDataList };
+    this.stackDataList = { ...initialStackDataList, txData: this.stackDataList.txData };
   };
 
   parseHex = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, input);
@@ -41,7 +40,7 @@ export class ScriptWiz {
 
   parseOpcode = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, undefined, undefined, undefined, undefined, input);
 
-  parseTxData = (input: TxData): void => {
+  parseTxData = (input?: TxData): void => {
     this.stackDataList = { ...this.stackDataList, txData: input };
   };
 
