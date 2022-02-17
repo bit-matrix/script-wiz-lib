@@ -734,6 +734,8 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
             throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
         if (stackDataList.txData === undefined)
             throw "OP_CHECKSIG Error : Tx template data is empty";
+        if (stackDataList.txData.outputs.length === 0 || stackDataList.txData.inputs.length === 0)
+            throw "OP_CHECKSIG Error : Tx template data is empty";
         var reversedArray = __spreadArray([], mainStackDataArray, true).reverse();
         var publicKeyLength = reversedArray[0].number;
         if (publicKeyLength === undefined)
