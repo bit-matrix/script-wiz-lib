@@ -863,7 +863,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   }
 
   if (word === "OP_CHECKMULTISIG") {
-    if (mainStackDataArrayLength < 4) throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
+    if (mainStackDataArrayLength < 5) throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
     if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
     if (stackDataList.txData.outputs.length === 0 || stackDataList.txData.inputs.length === 0) throw "OP_CHECKSIG Error : Tx template data is empty";
 
@@ -887,6 +887,36 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     const alt = { removeLastStackData: false };
 
     return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_CHECKMULTISIGVERIFY") {
+    if (mainStackDataArrayLength < 5) throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
+    if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
+    if (stackDataList.txData.outputs.length === 0 || stackDataList.txData.inputs.length === 0) throw "OP_CHECKSIG Error : Tx template data is empty";
+
+    let isStackFailed: boolean = false;
+    const reversedArray = [...mainStackDataArray].reverse();
+
+    const publicKeyLength: number | undefined = reversedArray[0].number;
+
+    if (publicKeyLength === undefined) throw "Invalid public key length";
+
+    const publicKeyList: WizData[] = reversedArray.slice(1, publicKeyLength + 1);
+
+    const signatureLength: number | undefined = reversedArray[publicKeyLength + 1].number;
+
+    if (signatureLength === undefined) throw "Invalid signature length";
+
+    const signatureList: WizData[] = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
+
+    const verifyResult: WizData = crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData);
+    const removeLastSize: number = 0;
+
+    if (verifyResult.number === 0) isStackFailed = true;
+
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
   }
 
   if (word === "OP_CHECKSIGFROMSTACK") {
