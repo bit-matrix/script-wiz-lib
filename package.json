@@ -1,6 +1,6 @@
 {
   "name": "@script-wiz/lib",
-  "version": "0.1.60",
+  "version": "0.1.61",
   "description": "",
   "scripts": {
     "build": "tsc",
@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/swap-cash/script-wiz-lib#readme",
   "dependencies": {
-    "@script-wiz/lib-core": "^0.0.23"
+    "@script-wiz/lib-core": "^0.0.24"
   }
 }
