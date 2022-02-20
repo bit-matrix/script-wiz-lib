@@ -730,7 +730,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         return { main: { addDataArray: [], removeLastSize: removeLastSize }, alt: alt, isStackFailed: isStackFailed };
     }
     if (word === "OP_CHECKMULTISIG") {
-        if (mainStackDataArrayLength < 4)
+        if (mainStackDataArrayLength < 5)
             throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
         if (stackDataList.txData === undefined)
             throw "OP_CHECKSIG Error : Tx template data is empty";
@@ -749,6 +749,30 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         var removeLastSize = 0;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+    }
+    if (word === "OP_CHECKMULTISIGVERIFY") {
+        if (mainStackDataArrayLength < 5)
+            throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
+        if (stackDataList.txData === undefined)
+            throw "OP_CHECKSIG Error : Tx template data is empty";
+        if (stackDataList.txData.outputs.length === 0 || stackDataList.txData.inputs.length === 0)
+            throw "OP_CHECKSIG Error : Tx template data is empty";
+        var isStackFailed = false;
+        var reversedArray = __spreadArray([], mainStackDataArray, true).reverse();
+        var publicKeyLength = reversedArray[0].number;
+        if (publicKeyLength === undefined)
+            throw "Invalid public key length";
+        var publicKeyList = reversedArray.slice(1, publicKeyLength + 1);
+        var signatureLength = reversedArray[publicKeyLength + 1].number;
+        if (signatureLength === undefined)
+            throw "Invalid signature length";
+        var signatureList = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
+        var verifyResult = lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData);
+        var removeLastSize = 0;
+        if (verifyResult.number === 0)
+            isStackFailed = true;
+        var alt = { removeLastStackData: false };
+        return { main: { addDataArray: [], removeLastSize: removeLastSize }, alt: alt, isStackFailed: isStackFailed };
     }
     if (word === "OP_CHECKSIGFROMSTACK") {
         if (mainStackDataArrayLength < 3)

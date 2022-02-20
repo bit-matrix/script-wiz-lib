@@ -154,7 +154,7 @@ exports.commonOpcodes = [
     { word: "OP_CHECKSIG", opcode: 172, hex: "0xac" },
     { word: "OP_CHECKSIGVERIFY", opcode: 173, hex: "0xad" },
     { word: "OP_CHECKMULTISIG", opcode: 174, hex: "0xae" },
-    // { word: "OP_CHECKMULTISIGVERIFY", opcode: 175, hex: "0xaf" }, //	x sig1 sig2 ... <number of signatures> pub1 pub2 ... <number of public keys>	Nothing / fail	Same as OP_CHECKMULTISIG, but OP_VERIFY is executed afterward.
+    { word: "OP_CHECKMULTISIGVERIFY", opcode: 175, hex: "0xaf" },
     /*
      * Locktime
      * 177 - 178
