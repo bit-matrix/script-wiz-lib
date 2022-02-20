@@ -869,6 +869,10 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     const reversedArray = [...mainStackDataArray].reverse();
 
+    if (reversedArray[reversedArray.length - 1].hex !== "") throw "OP_CHECKSIG Error: Stack elements must start with push empty";
+
+    reversedArray.pop();
+
     const publicKeyLength: number | undefined = reversedArray[0].number;
 
     if (publicKeyLength === undefined) throw "Invalid public key length";
@@ -896,6 +900,10 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     let isStackFailed: boolean = false;
     const reversedArray = [...mainStackDataArray].reverse();
+
+    if (reversedArray[reversedArray.length - 1].hex !== "") throw "OP_CHECKSIG Error: Stack elements must start with push empty";
+
+    reversedArray.pop();
 
     const publicKeyLength: number | undefined = reversedArray[0].number;
 
