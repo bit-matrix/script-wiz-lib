@@ -740,7 +740,6 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         if (reversedArray[reversedArray.length - 1].hex !== "")
             throw "OP_CHECKSIG Error: Stack elements must start with push empty";
         reversedArray.pop();
-        console.log(reversedArray);
         var publicKeyLength = reversedArray[0].number;
         if (publicKeyLength === undefined)
             throw "Invalid public key length";
@@ -763,9 +762,9 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
             throw "OP_CHECKMULTISIGVERIFY Error : Tx template data is empty";
         var isStackFailed = false;
         var reversedArray = __spreadArray([], mainStackDataArray, true).reverse();
-        if (reversedArray[0].hex !== "")
+        if (reversedArray[reversedArray.length - 1].hex !== "")
             throw "OP_CHECKSIG Error: Stack elements must start with push empty";
-        reversedArray.shift();
+        reversedArray.pop();
         var publicKeyLength = reversedArray[0].number;
         if (publicKeyLength === undefined)
             throw "Invalid public key length";
