@@ -835,10 +835,14 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         if (mainStackDataArrayLength < 1)
             throw "OP_CHECKLOCKTIMEVERIFY Error: stack data array must include min 1 data!";
         var isStackFailed = false;
-        var addDataArray = [lib_core_1.locktime.checkLockTimeVerify(mainStackDataArray[mainStackDataArrayLength - 1])];
+        if (!stackDataList.txData)
+            throw "Transaction template cannot be empty";
+        var locktimeResult = lib_core_1.locktime.checkLockTimeVerify(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData);
+        if (locktimeResult.number === 0)
+            isStackFailed = true;
         var removeLastSize = 0;
         var alt = { removeLastStackData: false };
-        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt, isStackFailed: isStackFailed };
+        return { main: { addDataArray: [], removeLastSize: removeLastSize }, alt: alt, isStackFailed: isStackFailed };
     }
     if (word === "OP_CHECKSEQUENCEVERIFY") {
         if (mainStackDataArrayLength < 1)
