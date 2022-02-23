@@ -848,10 +848,14 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         if (mainStackDataArrayLength < 1)
             throw "OP_CHECKSEQUENCEVERIFY Error: stack data array must include min 1 data!";
         var isStackFailed = false;
-        var addDataArray = [lib_core_1.locktime.checkSequenceVerify(mainStackDataArray[mainStackDataArrayLength - 1])];
+        if (!stackDataList.txData)
+            throw "Transaction template cannot be empty";
+        var sequenceResult = lib_core_1.locktime.checkSequenceVerify(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData);
+        if (sequenceResult.number === 0)
+            isStackFailed = true;
         var removeLastSize = 0;
         var alt = { removeLastStackData: false };
-        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt, isStackFailed: isStackFailed };
+        return { main: { addDataArray: [], removeLastSize: removeLastSize }, alt: alt, isStackFailed: isStackFailed };
     }
     /*
      * Introspection
