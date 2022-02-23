@@ -1021,12 +1021,16 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (mainStackDataArrayLength < 1) throw "OP_CHECKSEQUENCEVERIFY Error: stack data array must include min 1 data!";
     let isStackFailed: boolean = false;
 
-    const addDataArray: WizData[] = [locktime.checkSequenceVerify(mainStackDataArray[mainStackDataArrayLength - 1])];
+    if (!stackDataList.txData) throw "Transaction template cannot be empty";
+
+    const sequenceResult: WizData = locktime.checkSequenceVerify(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData);
+
+    if (sequenceResult.number === 0) isStackFailed = true;
 
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
   }
 
   /*
