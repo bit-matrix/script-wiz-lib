@@ -1,14 +1,9 @@
 {
   "name": "@script-wiz/lib",
-  "version": "0.1.59",
+  "version": "0.1.66",
   "description": "",
   "scripts": {
-    "wp-umd": "npx webpack --mode production --config webpack.config.umd.js",
-    "wp-umd-dev": "npx webpack --mode development --config webpack.config.umd.js",
-    "wp-common": "npx webpack --mode production --config webpack.config.js",
-    "wp-common-dev": "npx webpack --mode development --config webpack.config.js",
-    "wp": "yarn wp-umd && yarn wp-common",
-    "wpdev": "yarn wp-umd-dev && yarn wp-common-dev",
+    "build": "tsc",
     "test": "jest"
   },
   "devDependencies": {
@@ -19,10 +14,7 @@
     "@types/jest": "^26.0.23",
     "babel-loader": "^8.0.6",
     "jest": "^26.6.3",
-    "ts-loader": "^8.0.18",
-    "typescript": "^4.2.3",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.12"
+    "typescript": "^4.2.3"
   },
   "repository": {
     "type": "git",
@@ -35,6 +27,6 @@
   },
   "homepage": "https://github.com/swap-cash/script-wiz-lib#readme",
   "dependencies": {
-    "@script-wiz/lib-core": "^0.0.22"
+    "@script-wiz/lib-core": "^0.0.28"
   }
 }
