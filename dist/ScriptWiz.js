@@ -62,6 +62,15 @@ var ScriptWiz = /** @class */ (function () {
         this.parseTxData = function (input) {
             _this.stackDataList = __assign(__assign({}, _this.stackDataList), { txData: input });
         };
+        this.assignLabel = function (label) {
+            if (!(0, utils_1.currentScope)(_this.stackDataList))
+                return;
+            if (!_this.stackDataList.main.length)
+                throw new Error("nothing to label");
+            var lastStack = _this.stackDataList.main[_this.stackDataList.main.length - 1];
+            lastStack.label = label;
+        };
+        //
         this.compile = function () { return (0, compileAll_1.compileJoin)(_this.stackDataList.inputHexes); };
         this.parseInput = function (isWitnessElement, inputHex, inputNumber, inputText, inputBin, inputOpCode) {
             var currentScopeParse = (0, utils_1.currentScope)(_this.stackDataList);

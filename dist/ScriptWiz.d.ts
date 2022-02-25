@@ -14,6 +14,7 @@ export declare class ScriptWiz {
     parseBin: (input: string, isWitnessElement?: boolean) => void;
     parseOpcode: (input: string, isWitnessElement?: boolean) => void;
     parseTxData: (input?: TxData | undefined) => void;
+    assignLabel: (label: string) => void;
     compile: () => string;
     private parseInput;
     private parseResultCommit;
