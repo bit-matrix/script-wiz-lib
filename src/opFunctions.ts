@@ -1,10 +1,11 @@
 import WizData from "@script-wiz/wiz-data";
-import { arithmetics, arithmetics64, bitwise, conversion, crypto, introspection, locktime, splices, stacks } from "@script-wiz/lib-core";
+import { arithmetics, arithmetics64, bitwise, convertion, crypto, introspection, locktime, splices, stacks } from "@script-wiz/lib-core";
 import * as flow from "./utils/flow";
 import { ParseResultData, WizDataList } from "./model";
 import { Opcode } from "./opcodes/model/Opcode";
 import { currentScope } from "./utils";
 import { VM, VM_NETWORK_VERSION } from ".";
+import { compileData } from "./utils/compileAll";
 
 export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[], vm?: VM): ParseResultData => {
   const mainStackDataArray: WizData[] = stackDataList.main;
@@ -837,8 +838,9 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
   if (word === "OP_CHECKSIG") {
     if (mainStackDataArrayLength < 2) throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
+    if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
 
-    const addDataArray: WizData[] = [crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData)];
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
@@ -847,14 +849,80 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
   if (word === "OP_CHECKSIGVERIFY") {
     if (mainStackDataArrayLength < 2) throw "OP_CHECKSIGVERIFY Error: stack data array must include min 2 data!";
+    if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty ";
 
     let isStackFailed: boolean = false;
 
-    const checkSigResult: WizData = crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]);
+    const checkSigResult: WizData = crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData);
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
     if (checkSigResult.number === 0) isStackFailed = true;
+
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
+  }
+
+  if (word === "OP_CHECKMULTISIG") {
+    if (mainStackDataArrayLength < 5) throw "OP_CHECKSIG Error: stack data array must include min 4 data!";
+    if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
+    if (stackDataList.txData.outputs.length === 0 || stackDataList.txData.inputs.length === 0) throw "OP_CHECKSIG Error : Tx template data is empty";
+
+    const reversedArray = [...mainStackDataArray].reverse();
+
+    if (reversedArray[reversedArray.length - 1].hex !== "") throw "OP_CHECKSIG Error: Stack elements must start with push empty";
+
+    reversedArray.pop();
+
+    const publicKeyLength: number | undefined = reversedArray[0].number;
+
+    if (publicKeyLength === undefined) throw "Invalid public key length";
+
+    const publicKeyList: WizData[] = reversedArray.slice(1, publicKeyLength + 1);
+
+    const signatureLength: number | undefined = reversedArray[publicKeyLength + 1].number;
+
+    if (signatureLength === undefined) throw "Invalid signature length";
+
+    const signatureList: WizData[] = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
+
+    const addDataArray: WizData[] = [crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData)];
+    const removeLastSize: number = 0;
+
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_CHECKMULTISIGVERIFY") {
+    if (mainStackDataArrayLength < 5) throw "OP_CHECKMULTISIGVERIFY Error: stack data array must include min 4 data!";
+    if (stackDataList.txData === undefined) throw "OP_CHECKMULTISIGVERIFY Error : Tx template data is empty";
+    if (stackDataList.txData.outputs.length === 0 || stackDataList.txData.inputs.length === 0) throw "OP_CHECKMULTISIGVERIFY Error : Tx template data is empty";
+
+    let isStackFailed: boolean = false;
+    const reversedArray = [...mainStackDataArray].reverse();
+
+    if (reversedArray[reversedArray.length - 1].hex !== "") throw "OP_CHECKSIG Error: Stack elements must start with push empty";
+
+    reversedArray.pop();
+
+    const publicKeyLength: number | undefined = reversedArray[0].number;
+
+    if (publicKeyLength === undefined) throw "Invalid public key length";
+
+    const publicKeyList: WizData[] = reversedArray.slice(1, publicKeyLength + 1);
+
+    const signatureLength: number | undefined = reversedArray[publicKeyLength + 1].number;
+
+    if (signatureLength === undefined) throw "Invalid signature length";
+
+    const signatureList: WizData[] = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
+
+    const verifyResult: WizData = crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData);
+    const removeLastSize: number = 0;
+
+    if (verifyResult.number === 0) isStackFailed = true;
+
+    const alt = { removeLastStackData: false };
 
     return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
   }
@@ -937,24 +1005,32 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (mainStackDataArrayLength < 1) throw "OP_CHECKLOCKTIMEVERIFY Error: stack data array must include min 1 data!";
     let isStackFailed: boolean = false;
 
-    const addDataArray: WizData[] = [locktime.checkLockTimeVerify(mainStackDataArray[mainStackDataArrayLength - 1])];
+    if (!stackDataList.txData) throw "Transaction template cannot be empty";
+
+    const locktimeResult: WizData = locktime.checkLockTimeVerify(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData);
+
+    if (locktimeResult.number === 0) isStackFailed = true;
 
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
   }
 
   if (word === "OP_CHECKSEQUENCEVERIFY") {
     if (mainStackDataArrayLength < 1) throw "OP_CHECKSEQUENCEVERIFY Error: stack data array must include min 1 data!";
     let isStackFailed: boolean = false;
 
-    const addDataArray: WizData[] = [locktime.checkSequenceVerify(mainStackDataArray[mainStackDataArrayLength - 1])];
+    if (!stackDataList.txData) throw "Transaction template cannot be empty";
+
+    const sequenceResult: WizData = locktime.checkSequenceVerify(mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData);
+
+    if (sequenceResult.number === 0) isStackFailed = true;
 
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray, removeLastSize }, alt, isStackFailed };
+    return { main: { addDataArray: [], removeLastSize }, alt, isStackFailed };
   }
 
   /*
@@ -1141,7 +1217,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
   /*
-   * Conversion
+   * Convertion
    * 215 - 227
    */
 
@@ -1238,7 +1314,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_SCRIPTNUMTOLE64") {
     if (mainStackDataArrayLength < 1) throw "OP_SCRIPTNUMTOLE64 Error: stack data array must include min 1 data!";
 
-    const addDataArray: WizData[] = [conversion.numToLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [convertion.numToLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
@@ -1248,7 +1324,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_LE64TOSCRIPTNUM") {
     if (mainStackDataArrayLength < 1) throw "OP_LE64TOSCRIPTNUM Error: stack data array must include min 1 data!";
 
-    const addDataArray: WizData[] = [conversion.LE64ToNum(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [convertion.LE64ToNum(mainStackDataArray[mainStackDataArrayLength - 1])];
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
@@ -1258,7 +1334,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_LE32TOLE64") {
     if (mainStackDataArrayLength < 1) throw "LE32toLE64 Error: stack data array must include min 1 data!";
 
-    const addDataArray: WizData[] = [conversion.LE32toLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [convertion.LE32toLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 

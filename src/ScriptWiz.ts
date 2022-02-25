@@ -13,7 +13,6 @@ const initialStackDataList: WizDataList = {
   flow: [true],
   altFlow: [],
   isStackFailed: false,
-  txData: { inputs: [], outputs: [], version: "", timelock: "", currentInputIndex: 0 },
 };
 
 export class ScriptWiz {
@@ -28,34 +27,45 @@ export class ScriptWiz {
   }
 
   clearStackDataList = () => {
-    this.stackDataList = { ...initialStackDataList };
+    this.stackDataList = { ...initialStackDataList, txData: this.stackDataList.txData };
   };
 
-  parseHex = (input: string): void => this.parseInput(input);
+  parseHex = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, input);
 
-  parseNumber = (input: number): void => this.parseInput(undefined, input);
+  parseNumber = (input: number, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, undefined, input);
 
-  parseText = (input: string): void => this.parseInput(undefined, undefined, input);
+  parseText = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, undefined, undefined, input);
 
-  parseBin = (input: string): void => this.parseInput(undefined, undefined, undefined, input);
+  parseBin = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, undefined, undefined, undefined, input);
 
-  parseOpcode = (input: string): void => this.parseInput(undefined, undefined, undefined, undefined, input);
+  parseOpcode = (input: string, isWitnessElement: boolean = true): void => this.parseInput(isWitnessElement, undefined, undefined, undefined, undefined, input);
 
-  parseTxData = (input: TxData): void => {
+  parseTxData = (input?: TxData): void => {
     this.stackDataList = { ...this.stackDataList, txData: input };
   };
 
-  //
   compile = () => compileJoin(this.stackDataList.inputHexes);
 
-  private parseInput = (inputHex?: string, inputNumber?: number, inputText?: string, inputBin?: string, inputOpCode?: string): void => {
+  private parseInput = (isWitnessElement: boolean, inputHex?: string, inputNumber?: number, inputText?: string, inputBin?: string, inputOpCode?: string): void => {
     const currentScopeParse: boolean = currentScope(this.stackDataList);
     let currentScopeParseException: boolean = false;
     if (inputOpCode !== undefined) currentScopeParseException = inputOpCode === "OP_IF" || inputOpCode === "OP_NOTIF" || inputOpCode === "OP_ELSE" || inputOpCode === "OP_ENDIF";
 
     let parseResult: ParseResult;
 
-    parseResult = parse(this.opCodes.data, this.stackDataList, currentScopeParse, currentScopeParseException, inputHex, inputNumber, inputText, inputBin, inputOpCode, this.vm);
+    parseResult = parse(
+      this.opCodes.data,
+      this.stackDataList,
+      currentScopeParse,
+      currentScopeParseException,
+      isWitnessElement,
+      inputHex,
+      inputNumber,
+      inputText,
+      inputBin,
+      inputOpCode,
+      this.vm
+    );
 
     this.parseResultCommit(parseResult);
   };

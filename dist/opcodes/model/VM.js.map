@@ -1,0 +1,1 @@
+{"version":3,"file":"VM.js","sourceRoot":"","sources":["../../../src/opcodes/model/VM.ts"],"names":[],"mappings":";;;AAAA,IAAY,UAGX;AAHD,WAAY,UAAU;IACpB,yBAAW,CAAA;IACX,+BAAiB,CAAA;AACnB,CAAC,EAHW,UAAU,GAAV,kBAAU,KAAV,kBAAU,QAGrB;AAED,IAAY,kBAGX;AAHD,WAAY,kBAAkB;IAC5B,mCAAa,CAAA;IACb,sCAAgB,CAAA;AAClB,CAAC,EAHW,kBAAkB,GAAlB,0BAAkB,KAAlB,0BAAkB,QAG7B"}

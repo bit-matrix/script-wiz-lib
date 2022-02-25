@@ -11,6 +11,7 @@ export const parse = (
   stackDataList: WizDataList,
   currentScopeParse: boolean,
   currentScopeParseException: boolean,
+  isWitnessElement: boolean,
   inputHexParam?: string,
   inputNumberParam?: number,
   inputTextParam?: string,
@@ -29,7 +30,7 @@ export const parse = (
     // Values
     if (inputOpCodeParam === undefined) {
       const wizData: WizData = parseValueInputs(inputHexParam, inputNumberParam, inputTextParam, inputBinParam);
-      inputHex = compileData(wizData.hex);
+      inputHex = isWitnessElement ? compileData(wizData.hex) : "";
 
       if (currentScopeParse) return { inputHex, main: { addDataArray: [wizData], removeLastSize: 0 }, alt: { removeLastStackData: false } };
       else return { ...emptyParseResultData, inputHex };
