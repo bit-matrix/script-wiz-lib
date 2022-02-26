@@ -711,7 +711,9 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
             throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
         if (stackDataList.txData === undefined)
             throw "OP_CHECKSIG Error : Tx template data is empty";
-        var addDataArray = [lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData)];
+        var addDataArray = [
+            lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, (vm === null || vm === void 0 ? void 0 : vm.ver) || _1.VM_NETWORK_VERSION.SEGWIT),
+        ];
         var removeLastSize = 2;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
@@ -722,7 +724,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         if (stackDataList.txData === undefined)
             throw "OP_CHECKSIG Error : Tx template data is empty ";
         var isStackFailed = false;
-        var checkSigResult = lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData);
+        var checkSigResult = lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, (vm === null || vm === void 0 ? void 0 : vm.ver) || _1.VM_NETWORK_VERSION.SEGWIT);
         var removeLastSize = 2;
         var alt = { removeLastStackData: false };
         if (checkSigResult.number === 0)
@@ -748,7 +750,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         if (signatureLength === undefined)
             throw "Invalid signature length";
         var signatureList = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
-        var addDataArray = [lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData)];
+        var addDataArray = [lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, (vm === null || vm === void 0 ? void 0 : vm.ver) || _1.VM_NETWORK_VERSION.SEGWIT)];
         var removeLastSize = 0;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
@@ -773,7 +775,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         if (signatureLength === undefined)
             throw "Invalid signature length";
         var signatureList = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
-        var verifyResult = lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData);
+        var verifyResult = lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, (vm === null || vm === void 0 ? void 0 : vm.ver) || _1.VM_NETWORK_VERSION.SEGWIT);
         var removeLastSize = 0;
         if (verifyResult.number === 0)
             isStackFailed = true;
