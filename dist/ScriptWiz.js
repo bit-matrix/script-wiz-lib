@@ -10,14 +10,10 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScriptWiz = void 0;
@@ -63,7 +59,7 @@ var ScriptWiz = /** @class */ (function () {
             _this.stackDataList = __assign(__assign({}, _this.stackDataList), { txData: input });
         };
         this.assignLabel = function (label) {
-            if (!(0, utils_1.currentScope)(_this.stackDataList))
+            if (!utils_1.currentScope(_this.stackDataList))
                 return;
             if (!_this.stackDataList.main.length)
                 throw new Error("nothing to label");
@@ -71,19 +67,19 @@ var ScriptWiz = /** @class */ (function () {
             lastStack.label = label;
         };
         //
-        this.compile = function () { return (0, compileAll_1.compileJoin)(_this.stackDataList.inputHexes); };
+        this.compile = function () { return compileAll_1.compileJoin(_this.stackDataList.inputHexes); };
         this.parseInput = function (isWitnessElement, inputHex, inputNumber, inputText, inputBin, inputOpCode) {
-            var currentScopeParse = (0, utils_1.currentScope)(_this.stackDataList);
+            var currentScopeParse = utils_1.currentScope(_this.stackDataList);
             var currentScopeParseException = false;
             if (inputOpCode !== undefined)
                 currentScopeParseException = inputOpCode === "OP_IF" || inputOpCode === "OP_NOTIF" || inputOpCode === "OP_ELSE" || inputOpCode === "OP_ENDIF";
             var parseResult;
-            parseResult = (0, parse_1.parse)(_this.opCodes.data, _this.stackDataList, currentScopeParse, currentScopeParseException, isWitnessElement, inputHex, inputNumber, inputText, inputBin, inputOpCode, _this.vm);
+            parseResult = parse_1.parse(_this.opCodes.data, _this.stackDataList, currentScopeParse, currentScopeParseException, isWitnessElement, inputHex, inputNumber, inputText, inputBin, inputOpCode, _this.vm);
             _this.parseResultCommit(parseResult);
         };
         this.parseResultCommit = function (parseResult) {
             // add input hexes
-            _this.stackDataList = __assign(__assign({}, _this.stackDataList), { inputHexes: __spreadArray(__spreadArray([], _this.stackDataList.inputHexes, true), [parseResult.inputHex], false), errorMessage: parseResult.errorMessage });
+            _this.stackDataList = __assign(__assign({}, _this.stackDataList), { inputHexes: __spreadArray(__spreadArray([], _this.stackDataList.inputHexes), [parseResult.inputHex]), errorMessage: parseResult.errorMessage });
             // return failed after add input hex
             if (_this.stackDataList.isStackFailed) {
                 _this.stackDataList = __assign(__assign({}, _this.stackDataList), { errorMessage: "Failed stack list can't parse input." });
@@ -101,7 +97,7 @@ var ScriptWiz = /** @class */ (function () {
             _this.stackDataList = __assign(__assign({}, _this.stackDataList), { main: _this.stackDataList.main.concat(parseResult.main.addDataArray) });
             // add item to alternate stack
             if (parseResult.alt.addData)
-                _this.stackDataList = __assign(__assign({}, _this.stackDataList), { alt: __spreadArray(__spreadArray([], _this.stackDataList.alt, true), [parseResult.alt.addData], false) });
+                _this.stackDataList = __assign(__assign({}, _this.stackDataList), { alt: __spreadArray(__spreadArray([], _this.stackDataList.alt), [parseResult.alt.addData]) });
             // update flow
             if (parseResult.flow)
                 _this.stackDataList = __assign(__assign({}, _this.stackDataList), { flow: parseResult.flow });

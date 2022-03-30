@@ -1,17 +1,13 @@
 "use strict";
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.opcodesLiquidSegwit = void 0;
 var BITCOIN_SEGWIT_1 = require("./BITCOIN_SEGWIT");
-exports.opcodesLiquidSegwit = __spreadArray(__spreadArray([], BITCOIN_SEGWIT_1.opcodesBitcoinSegwit, true), [
+exports.opcodesLiquidSegwit = __spreadArray(__spreadArray([], BITCOIN_SEGWIT_1.opcodesBitcoinSegwit), [
     /*
      * Constants
      * * 0 - 96
@@ -76,5 +72,5 @@ exports.opcodesLiquidSegwit = __spreadArray(__spreadArray([], BITCOIN_SEGWIT_1.o
         description: "Pop the top 3 items from the stack. Treat the top as a public key, the second as a message, and the third as a signature. If the signature is valid, push a Script Number 1, otherwise push a Script Number 0.",
     },
     { word: "OP_SUBSTR_LAZY", opcode: 195, hex: "0xc3", description: "Returns a section of a string." }, //	liquid network feature.
-], false);
+]);
 //# sourceMappingURL=LIQUID_SEGWIT.js.map

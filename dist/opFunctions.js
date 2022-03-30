@@ -18,14 +18,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -80,7 +76,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         return { main: { addDataArray: [], removeLastSize: removeLastSize }, alt: alt };
     }
     if (word === "OP_IF") {
-        var scope = (0, utils_1.currentScope)(stackDataList);
+        var scope = utils_1.currentScope(stackDataList);
         var flows = { flow: stackDataList.flow, altFlow: stackDataList.altFlow };
         if (scope === false) {
             flows.altFlow.push(false);
@@ -98,7 +94,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         };
     }
     if (word === "OP_NOTIF") {
-        var scope = (0, utils_1.currentScope)(stackDataList);
+        var scope = utils_1.currentScope(stackDataList);
         var flows = { flow: stackDataList.flow, altFlow: stackDataList.altFlow };
         if (scope === false) {
             flows.altFlow.push(false);
@@ -291,7 +287,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         if (mainStackDataArrayLength < 2)
             throw "OP_PICK Error: stack data array must include min 2 data!";
         var stackIndex = mainStackDataArray[mainStackDataArrayLength - 1].number;
-        var willChangedStackDataArray = __spreadArray([], mainStackDataArray, true);
+        var willChangedStackDataArray = __spreadArray([], mainStackDataArray);
         willChangedStackDataArray.pop();
         if (stackIndex !== undefined) {
             if (stackIndex >= willChangedStackDataArray.length)
@@ -309,7 +305,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         if (mainStackDataArrayLength < 2)
             throw "OP_ROLL Error: stack data array must include min 2 data!";
         var stackIndex = mainStackDataArray[mainStackDataArrayLength - 1].number;
-        var willChangedStackDataArray = __spreadArray([], mainStackDataArray, true);
+        var willChangedStackDataArray = __spreadArray([], mainStackDataArray);
         willChangedStackDataArray.pop();
         if (stackIndex !== undefined) {
             if (stackIndex >= willChangedStackDataArray.length)
@@ -738,7 +734,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
             throw "OP_CHECKSIG Error : Tx template data is empty";
         if (stackDataList.txData.outputs.length === 0 || stackDataList.txData.inputs.length === 0)
             throw "OP_CHECKSIG Error : Tx template data is empty";
-        var reversedArray = __spreadArray([], mainStackDataArray, true).reverse();
+        var reversedArray = __spreadArray([], mainStackDataArray).reverse();
         if (reversedArray[reversedArray.length - 1].hex !== "")
             throw "OP_CHECKSIG Error: Stack elements must start with push empty";
         reversedArray.pop();
@@ -763,7 +759,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         if (stackDataList.txData.outputs.length === 0 || stackDataList.txData.inputs.length === 0)
             throw "OP_CHECKMULTISIGVERIFY Error : Tx template data is empty";
         var isStackFailed = false;
-        var reversedArray = __spreadArray([], mainStackDataArray, true).reverse();
+        var reversedArray = __spreadArray([], mainStackDataArray).reverse();
         if (reversedArray[reversedArray.length - 1].hex !== "")
             throw "OP_CHECKSIG Error: Stack elements must start with push empty";
         reversedArray.pop();
