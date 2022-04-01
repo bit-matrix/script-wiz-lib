@@ -16,6 +16,9 @@ var compileData = function (hex) {
     // 1 byte
     else if (byteLength === 1) {
         var n = parseInt(hex, 16);
+        if (hex === "81") {
+            return "4f";
+        }
         if (0 < n && n < 17) {
             return (n + 80).toString(16);
         }
@@ -41,6 +44,8 @@ var compileData = function (hex) {
     }
 };
 exports.compileData = compileData;
-var compileJoin = function (hexes) { return "0x" + hexes.join(""); };
+var compileJoin = function (hexes) {
+    return "0x" + hexes.join("");
+};
 exports.compileJoin = compileJoin;
 //# sourceMappingURL=compileAll.js.map

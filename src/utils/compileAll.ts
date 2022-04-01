@@ -17,6 +17,11 @@ export const compileData = (hex: string): string => {
   // 1 byte
   else if (byteLength === 1) {
     const n = parseInt(hex, 16);
+
+    if (hex === "81") {
+      return "4f";
+    }
+
     if (0 < n && n < 17) {
       return (n + 80).toString(16);
     } else {
@@ -45,4 +50,6 @@ export const compileData = (hex: string): string => {
   }
 };
 
-export const compileJoin = (hexes: string[]): string => "0x" + hexes.join("");
+export const compileJoin = (hexes: string[]): string => {
+  return "0x" + hexes.join("");
+};
