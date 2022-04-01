@@ -7,7 +7,6 @@ const toLEPadByte = (number: number) => {
 };
 
 export const compileData = (hex: string): string => {
-  console.log(hex);
   const byteLength = hex.length / 2;
 
   // 0byte
@@ -20,7 +19,6 @@ export const compileData = (hex: string): string => {
     const n = parseInt(hex, 16);
 
     if (hex === "81") {
-      console.log(hex);
       return "4f";
     }
 
@@ -53,6 +51,5 @@ export const compileData = (hex: string): string => {
 };
 
 export const compileJoin = (hexes: string[]): string => {
-  console.log(hexes);
   return "0x" + hexes.join("");
 };
