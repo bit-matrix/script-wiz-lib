@@ -16,6 +16,6 @@
   },
   "homepage": "https://github.com/bit-matrix/script-wiz-lib#readme",
   "dependencies": {
-    "@script-wiz/lib-core": "^0.0.33"
+    "@script-wiz/lib-core": "^0.0.34"
   }
 }
