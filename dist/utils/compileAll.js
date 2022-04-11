@@ -5,7 +5,7 @@ var wiz_data_1 = require("@script-wiz/wiz-data");
 var toLEPadByte = function (number) {
     var hex = number.toString(16);
     var padHex = hex.length % 2 === 0 ? hex : "0" + hex;
-    return wiz_data_1.hexLE(padHex);
+    return (0, wiz_data_1.hexLE)(padHex);
 };
 var compileData = function (hex) {
     var byteLength = hex.length / 2;

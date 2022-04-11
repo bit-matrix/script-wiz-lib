@@ -28,8 +28,8 @@ var parse = function (opWordCodes, stackDataList, currentScopeParse, currentScop
     try {
         // Values
         if (inputOpCodeParam === undefined) {
-            var wizData = exports.parseValueInputs(inputHexParam, inputNumberParam, inputTextParam, inputBinParam);
-            inputHex = isWitnessElement ? compileAll_1.compileData(wizData.hex) : "";
+            var wizData = (0, exports.parseValueInputs)(inputHexParam, inputNumberParam, inputTextParam, inputBinParam);
+            inputHex = isWitnessElement ? (0, compileAll_1.compileData)(wizData.hex) : "";
             if (currentScopeParse)
                 return { inputHex: inputHex, main: { addDataArray: [wizData], removeLastSize: 0 }, alt: { removeLastStackData: false } };
             else
@@ -39,21 +39,21 @@ var parse = function (opWordCodes, stackDataList, currentScopeParse, currentScop
         var opWord = "";
         if (inputOpCodeParam.startsWith("OP_")) {
             opWord = inputOpCodeParam;
-            inputHex = utils_1.opWordToHex(opWord, opWordCodes);
+            inputHex = (0, utils_1.opWordToHex)(opWord, opWordCodes);
         }
         else if (inputOpCodeParam.startsWith("0x")) {
-            opWord = utils_1.opHexToWord(inputOpCodeParam, opWordCodes);
+            opWord = (0, utils_1.opHexToWord)(inputOpCodeParam, opWordCodes);
         }
         else if (isNaN(inputOpCodeParam)) {
             return { inputHex: inputHex, errorMessage: "Invalid OP code, OP word or OP hex", main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
         }
         else {
-            opWord = utils_1.opcodeToWord(Number(inputOpCodeParam), opWordCodes);
+            opWord = (0, utils_1.opcodeToWord)(Number(inputOpCodeParam), opWordCodes);
         }
         if (opWord === undefined || opWord === "")
             throw "Unknown OP code";
         if (currentScopeParse || currentScopeParseException)
-            emptyParseResultData = opFunctions_1.opFunctions(opWord, stackDataList, opWordCodes, version);
+            emptyParseResultData = (0, opFunctions_1.opFunctions)(opWord, stackDataList, opWordCodes, version);
         return __assign(__assign({}, emptyParseResultData), { inputHex: inputHex });
     }
     catch (ex) {

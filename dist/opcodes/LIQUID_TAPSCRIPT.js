@@ -1,13 +1,17 @@
 "use strict";
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.opcodesLiquidTapscript = void 0;
 var LIQUID_SEGWIT_1 = require("./LIQUID_SEGWIT");
-exports.opcodesLiquidTapscript = __spreadArray(__spreadArray([], LIQUID_SEGWIT_1.opcodesLiquidSegwit), [
+exports.opcodesLiquidTapscript = __spreadArray(__spreadArray([], LIQUID_SEGWIT_1.opcodesLiquidSegwit, true), [
     /*
      * Introspection Opcodes
      */
@@ -195,5 +199,5 @@ exports.opcodesLiquidTapscript = __spreadArray(__spreadArray([], LIQUID_SEGWIT_1
         hex: "0xe4",
         description: "Pop the three elements as: 1) 32 byte X-only internal key P, 2) a 32 byte big endian, unsigned scalar k, and 3) 33 byte compressed point Q. Abort if P, Q is invalid or k is not 32 bytes and outside of secp256k1 curve order. Abort if Q != P + k*G where G is the generator for secp256k1.",
     }, //	liquid network feature.
-]);
+], false);
 //# sourceMappingURL=LIQUID_TAPSCRIPT.js.map
