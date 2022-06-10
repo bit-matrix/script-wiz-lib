@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/swap-cash/script-wiz-lib#readme",
   "dependencies": {
-    "@script-wiz/lib-core": "^0.0.44"
+    "@script-wiz/lib-core": "^0.0.45"
   }
 }
