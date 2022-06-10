@@ -1353,6 +1353,20 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
 
+  if (word === "OP_DETERMINISTICRANDOM") {
+    if (mainStackDataArrayLength < 3) throw "OP_DETERMINISTICRANDOM Error: stack data array must include min 3 data!";
+
+    // mainStackDataArray[mainStackDataArrayLength - 3], // SİZE
+    // mainStackDataArray[mainStackDataArrayLength - 2], // min
+    // mainStackDataArray[mainStackDataArrayLength - 1] // max
+
+    const addDataArray: WizData[] = [convertion.LE32toLE64(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 3;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
   /*
    * Not implemented yet
    */
