@@ -1110,6 +1110,16 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
     }
+    if (word === "OP_DETERMINISTICRANDOM") {
+        if (mainStackDataArrayLength < 3)
+            throw "OP_DETERMINISTICRANDOM Error: stack data array must include min 3 data!";
+        var addDataArray = [
+            lib_core_1.arithmetics.randomRange(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]),
+        ];
+        var removeLastSize = 3;
+        var alt = { removeLastStackData: false };
+        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+    }
     /*
      * Not implemented yet
      */

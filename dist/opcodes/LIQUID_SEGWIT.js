@@ -64,6 +64,12 @@ exports.opcodesLiquidSegwit = __spreadArray(__spreadArray([], BITCOIN_SEGWIT_1.o
      * 193, 194, 195
      */
     {
+        word: "OP_DETERMINISTICRANDOM",
+        opcode: 192,
+        hex: "0xc0",
+        description: "produces a random num within a range from a seed",
+    },
+    {
         word: "OP_CHECKSIGFROMSTACK",
         opcode: 193,
         hex: "0xc1",
