@@ -1,6 +1,6 @@
 {
   "name": "@script-wiz/lib",
-  "version": "0.1.83",
+  "version": "0.1.84",
   "description": "",
   "scripts": {
     "npm-pubish": "npm version patch && npm publish --access public"
@@ -16,6 +16,6 @@
   },
   "homepage": "https://github.com/bit-matrix/script-wiz-lib#readme",
   "dependencies": {
-    "@script-wiz/lib-core": "^0.0.49"
+    "@script-wiz/lib-core": "^0.0.50"
   }
 }
