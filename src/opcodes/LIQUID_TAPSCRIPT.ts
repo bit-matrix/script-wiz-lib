@@ -8,6 +8,29 @@ export const opcodesLiquidTapscript: Opcode[] = [
    * Introspection Opcodes
    */
   // inputs
+
+  {
+    word: "OP_SHA256INITIALIZE",
+    opcode: 196,
+    hex: "0xc4",
+    description: " which pops a bytestring and push SHA256 context creating by adding the bytestring to the initial SHA256 context.",
+  }, //	liquid network feature.
+
+  {
+    word: "OP_SHA256UPDATE",
+    opcode: 197,
+    hex: "0xc5",
+    description: "which first pops a bytestring followed by another pop for SHA256 context and pushes an updated context by adding the bytestring to the data stream being hashed.",
+  }, //	liquid network feature.
+
+  {
+    word: "OP_SHA256FINALIZE",
+    opcode: 198,
+    hex: "0xc6",
+    description:
+      "which first pops a pops a bytestring followed by another pop for SHA256 context and finally pushes a SHA256 hash value after adding the bytestring and completing the padding.",
+  }, //	liquid network feature.
+
   {
     word: "OP_INSPECTINPUTOUTPOINT",
     opcode: 199,

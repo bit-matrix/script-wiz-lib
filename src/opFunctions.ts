@@ -1,5 +1,5 @@
 import WizData from "@script-wiz/wiz-data";
-import { arithmetics, arithmetics64, bitwise, convertion, crypto, introspection, locktime, splices, stacks } from "@script-wiz/lib-core";
+import { arithmetics, arithmetics64, bitwise, convertion, crypto, introspection, locktime, splices, stacks, streaming } from "@script-wiz/lib-core";
 import * as flow from "./utils/flow";
 import { ParseResultData, WizDataList } from "./model";
 import { Opcode } from "./opcodes/model/Opcode";
@@ -1049,6 +1049,36 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
    * Introspection
    * 199 - 214
    */
+
+  if (word === "OP_SHA256INITIALIZE") {
+    if (mainStackDataArrayLength < 1) throw "OP_SHA256INITIALIZE Error: stack data array must include min 1 data!";
+
+    const addDataArray: WizData[] = [streaming.sha256Initializer(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 1;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_SHA256UPDATE") {
+    if (mainStackDataArrayLength < 2) throw "OP_SHA256UPDATE Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = [streaming.sha256Updater(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_SHA256FINALIZE") {
+    if (mainStackDataArrayLength < 2) throw "OP_SHA256FINALIZE Error: stack data array must include min 2 data!";
+
+    const addDataArray: WizData[] = [streaming.sha256Finalizer(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
 
   if (word === "OP_INSPECTINPUTOUTPOINT") {
     if (mainStackDataArrayLength < 1) throw "OP_INSPECTINPUTOUTPOINT Error: stack data array must include min 1 data!";
