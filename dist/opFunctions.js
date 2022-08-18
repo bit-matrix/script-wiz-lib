@@ -863,6 +863,30 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
      * Introspection
      * 199 - 214
      */
+    if (word === "OP_SHA256INITIALIZE") {
+        if (mainStackDataArrayLength < 1)
+            throw "OP_SHA256INITIALIZE Error: stack data array must include min 1 data!";
+        var addDataArray = [lib_core_1.streaming.sha256Initializer(mainStackDataArray[mainStackDataArrayLength - 1])];
+        var removeLastSize = 1;
+        var alt = { removeLastStackData: false };
+        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+    }
+    if (word === "OP_SHA256UPDATE") {
+        if (mainStackDataArrayLength < 2)
+            throw "OP_SHA256UPDATE Error: stack data array must include min 2 data!";
+        var addDataArray = [lib_core_1.streaming.sha256Updater(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+        var removeLastSize = 2;
+        var alt = { removeLastStackData: false };
+        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+    }
+    if (word === "OP_SHA256FINALIZE") {
+        if (mainStackDataArrayLength < 2)
+            throw "OP_SHA256FINALIZE Error: stack data array must include min 2 data!";
+        var addDataArray = [lib_core_1.streaming.sha256Finalizer(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+        var removeLastSize = 2;
+        var alt = { removeLastStackData: false };
+        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+    }
     if (word === "OP_INSPECTINPUTOUTPOINT") {
         if (mainStackDataArrayLength < 1)
             throw "OP_INSPECTINPUTOUTPOINT Error: stack data array must include min 1 data!";
