@@ -866,7 +866,8 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
     if (word === "OP_SHA256INITIALIZE") {
         if (mainStackDataArrayLength < 1)
             throw "OP_SHA256INITIALIZE Error: stack data array must include min 1 data!";
-        var addDataArray = [lib_core_1.streaming.Sha256Initializer(mainStackDataArray[mainStackDataArrayLength - 1])];
+        // const addDataArray: WizData[] = [streaming.Sha256Initializer(mainStackDataArray[mainStackDataArrayLength - 1])];
+        var addDataArray = [];
         var removeLastSize = 1;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
@@ -874,7 +875,8 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
     if (word === "OP_SHA256UPDATE") {
         if (mainStackDataArrayLength < 2)
             throw "OP_SHA256UPDATE Error: stack data array must include min 2 data!";
-        var addDataArray = [lib_core_1.streaming.Sha256Updater(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+        var addDataArray = [];
+        // const addDataArray: WizData[] = [streaming.Sha256Updater(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
         var removeLastSize = 2;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
@@ -882,7 +884,8 @@ var opFunctions = function (word, stackDataList, opCodes, vm) {
     if (word === "OP_SHA256FINALIZE") {
         if (mainStackDataArrayLength < 2)
             throw "OP_SHA256FINALIZE Error: stack data array must include min 2 data!";
-        var addDataArray = [lib_core_1.streaming.Sha256Finalizer(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+        // const addDataArray: WizData[] = [streaming.Sha256Finalizer(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+        var addDataArray = [];
         var removeLastSize = 2;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
