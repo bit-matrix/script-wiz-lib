@@ -6,7 +6,8 @@ export declare class ScriptWiz {
     vm: VM;
     opCodes: Opcodes;
     stackDataList: WizDataList;
-    constructor(vm: VM);
+    extension: any;
+    constructor(vm: VM, extension?: any);
     clearStackDataList: () => void;
     parseHex: (input: string, isWitnessElement?: boolean) => void;
     parseNumber: (input: number, isWitnessElement?: boolean) => void;

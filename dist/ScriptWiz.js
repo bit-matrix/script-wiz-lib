@@ -34,7 +34,7 @@ var initialStackDataList = {
     isStackFailed: false,
 };
 var ScriptWiz = /** @class */ (function () {
-    function ScriptWiz(vm) {
+    function ScriptWiz(vm, extension) {
         var _this = this;
         this.clearStackDataList = function () {
             _this.stackDataList = __assign(__assign({}, initialStackDataList), { txData: _this.stackDataList.txData });
@@ -78,7 +78,7 @@ var ScriptWiz = /** @class */ (function () {
             if (inputOpCode !== undefined)
                 currentScopeParseException = inputOpCode === "OP_IF" || inputOpCode === "OP_NOTIF" || inputOpCode === "OP_ELSE" || inputOpCode === "OP_ENDIF";
             var parseResult;
-            parseResult = (0, parse_1.parse)(_this.opCodes.data, _this.stackDataList, currentScopeParse, currentScopeParseException, isWitnessElement, inputHex, inputNumber, inputText, inputBin, inputOpCode, _this.vm);
+            parseResult = (0, parse_1.parse)(_this.opCodes.data, _this.stackDataList, currentScopeParse, currentScopeParseException, isWitnessElement, inputHex, inputNumber, inputText, inputBin, inputOpCode, _this.vm, _this.extension);
             _this.parseResultCommit(parseResult);
         };
         this.parseResultCommit = function (parseResult) {
@@ -116,6 +116,7 @@ var ScriptWiz = /** @class */ (function () {
         this.vm = vm;
         this.opCodes = new opcodes_1.Opcodes(vm);
         this.stackDataList = __assign({}, initialStackDataList);
+        this.extension = extension;
     }
     return ScriptWiz;
 }());
