@@ -17,7 +17,8 @@ export const parse = (
   inputTextParam?: string,
   inputBinParam?: string,
   inputOpCodeParam?: string,
-  version?: VM
+  version?: VM,
+  extension?: any
 ): ParseResult => {
   let emptyParseResultData: ParseResultData = {
     main: { addDataArray: [], removeLastSize: 0 },
@@ -51,7 +52,7 @@ export const parse = (
 
     if (opWord === undefined || opWord === "") throw "Unknown OP code";
 
-    if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFunctions(opWord, stackDataList, opWordCodes, version);
+    if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFunctions(opWord, stackDataList, opWordCodes, version, extension);
     return { ...emptyParseResultData, inputHex };
   } catch (ex) {
     return { inputHex, errorMessage: ex as string, main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };

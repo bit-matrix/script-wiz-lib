@@ -5,9 +5,8 @@ import { ParseResultData, WizDataList } from "./model";
 import { Opcode } from "./opcodes/model/Opcode";
 import { currentScope } from "./utils";
 import { VM, VM_NETWORK_VERSION } from ".";
-import { compileData } from "./utils/compileAll";
 
-export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[], vm?: VM): ParseResultData => {
+export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[], vm?: VM, extension?: any): ParseResultData => {
   const mainStackDataArray: WizData[] = stackDataList.main;
   const mainStackDataArrayLength = mainStackDataArray.length;
 
@@ -1053,8 +1052,8 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_SHA256INITIALIZE") {
     if (mainStackDataArrayLength < 1) throw "OP_SHA256INITIALIZE Error: stack data array must include min 1 data!";
 
-    // const addDataArray: WizData[] = [streaming.Sha256Initializer(mainStackDataArray[mainStackDataArrayLength - 1])];
-    const addDataArray: WizData[] = [];
+    const addDataArray: WizData[] = [extension.sha256Initializer(mainStackDataArray[mainStackDataArrayLength - 1])];
+
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
 
@@ -1063,8 +1062,8 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
   if (word === "OP_SHA256UPDATE") {
     if (mainStackDataArrayLength < 2) throw "OP_SHA256UPDATE Error: stack data array must include min 2 data!";
-    const addDataArray: WizData[] = [];
-    // const addDataArray: WizData[] = [streaming.Sha256Updater(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+
+    const addDataArray: WizData[] = [extension.sha256Updater(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
@@ -1074,8 +1073,8 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_SHA256FINALIZE") {
     if (mainStackDataArrayLength < 2) throw "OP_SHA256FINALIZE Error: stack data array must include min 2 data!";
 
-    // const addDataArray: WizData[] = [streaming.Sha256Finalizer(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
-    const addDataArray: WizData[] = [];
+    const addDataArray: WizData[] = [extension.sha256Finalizer(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 

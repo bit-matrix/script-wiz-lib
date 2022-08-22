@@ -19,11 +19,13 @@ export class ScriptWiz {
   vm: VM;
   opCodes: Opcodes;
   stackDataList: WizDataList;
+  extension: any;
 
-  constructor(vm: VM) {
+  constructor(vm: VM, extension?: any) {
     this.vm = vm;
     this.opCodes = new Opcodes(vm);
     this.stackDataList = { ...initialStackDataList };
+    this.extension = extension;
   }
 
   clearStackDataList = () => {
@@ -72,7 +74,8 @@ export class ScriptWiz {
       inputText,
       inputBin,
       inputOpCode,
-      this.vm
+      this.vm,
+      this.extension
     );
 
     this.parseResultCommit(parseResult);
