@@ -865,10 +865,15 @@ var opFunctions = function (word, stackDataList, opCodes, vm, extension) {
     if (word === "OP_SHA256INITIALIZE") {
         if (mainStackDataArrayLength < 1)
             throw "OP_SHA256INITIALIZE Error: stack data array must include min 1 data!";
-        var addDataArray = [wiz_data_1.default.fromHex(extension.sha256Initialize(mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase())];
-        var removeLastSize = 1;
-        var alt = { removeLastStackData: false };
-        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+        try {
+            var addDataArray = [wiz_data_1.default.fromHex(extension.sha256Initialize(mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase())];
+            var removeLastSize = 1;
+            var alt = { removeLastStackData: false };
+            return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+        }
+        catch (error) {
+            throw "OP_SHA256INITIALIZE Error:" + error;
+        }
     }
     if (word === "OP_SHA256UPDATE") {
         if (mainStackDataArrayLength < 2)
@@ -1140,12 +1145,17 @@ var opFunctions = function (word, stackDataList, opCodes, vm, extension) {
     if (word === "OP_DETERMINISTICRANDOM") {
         if (mainStackDataArrayLength < 3)
             throw "OP_DETERMINISTICRANDOM Error: stack data array must include min 3 data!";
-        var addDataArray = [
-            wiz_data_1.default.fromNumber(extension.deterministicrandom(mainStackDataArray[mainStackDataArrayLength - 3].number, mainStackDataArray[mainStackDataArrayLength - 2].number, mainStackDataArray[mainStackDataArrayLength - 1].hex)),
-        ];
-        var removeLastSize = 3;
-        var alt = { removeLastStackData: false };
-        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+        try {
+            var addDataArray = [
+                wiz_data_1.default.fromNumber(extension.deterministicrandom(mainStackDataArray[mainStackDataArrayLength - 3].number, mainStackDataArray[mainStackDataArrayLength - 2].number, mainStackDataArray[mainStackDataArrayLength - 1].hex)),
+            ];
+            var removeLastSize = 3;
+            var alt = { removeLastStackData: false };
+            return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+        }
+        catch (error) {
+            throw "OP_DETERMINISTICRANDOM Error:" + error;
+        }
     }
     /*
      * Not implemented yet

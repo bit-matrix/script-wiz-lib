@@ -1052,37 +1052,48 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_SHA256INITIALIZE") {
     if (mainStackDataArrayLength < 1) throw "OP_SHA256INITIALIZE Error: stack data array must include min 1 data!";
 
-    const addDataArray: WizData[] = [WizData.fromHex(extension.sha256Initialize(mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase())];
+    try {
+      const addDataArray: WizData[] = [WizData.fromHex(extension.sha256Initialize(mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase())];
+      const removeLastSize: number = 1;
+      const alt = { removeLastStackData: false };
 
-    const removeLastSize: number = 1;
-    const alt = { removeLastStackData: false };
-
-    return { main: { addDataArray, removeLastSize }, alt };
+      return { main: { addDataArray, removeLastSize }, alt };
+    } catch (error) {
+      throw "OP_SHA256INITIALIZE Error:" + error;
+    }
   }
 
   if (word === "OP_SHA256UPDATE") {
     if (mainStackDataArrayLength < 2) throw "OP_SHA256UPDATE Error: stack data array must include min 2 data!";
 
-    const addDataArray: WizData[] = [
-      WizData.fromHex(extension.sha256Update(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
-    ];
-    const removeLastSize: number = 2;
-    const alt = { removeLastStackData: false };
+    try {
+      const addDataArray: WizData[] = [
+        WizData.fromHex(extension.sha256Update(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
+      ];
+      const removeLastSize: number = 2;
+      const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray, removeLastSize }, alt };
+      return { main: { addDataArray, removeLastSize }, alt };
+    } catch (error) {
+      throw "OP_SHA256UPDATE Error:" + error;
+    }
   }
 
   if (word === "OP_SHA256FINALIZE") {
     if (mainStackDataArrayLength < 2) throw "OP_SHA256FINALIZE Error: stack data array must include min 2 data!";
 
-    const addDataArray: WizData[] = [
-      WizData.fromHex(extension.sha256Finalize(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
-    ];
+    try {
+      const addDataArray: WizData[] = [
+        WizData.fromHex(extension.sha256Finalize(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
+      ];
 
-    const removeLastSize: number = 2;
-    const alt = { removeLastStackData: false };
+      const removeLastSize: number = 2;
+      const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray, removeLastSize }, alt };
+      return { main: { addDataArray, removeLastSize }, alt };
+    } catch (error) {
+      throw "OP_SHA256FINALIZE Error: " + error;
+    }
   }
 
   if (word === "OP_INSPECTINPUTOUTPOINT") {
@@ -1391,20 +1402,24 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_DETERMINISTICRANDOM") {
     if (mainStackDataArrayLength < 3) throw "OP_DETERMINISTICRANDOM Error: stack data array must include min 3 data!";
 
-    const addDataArray: WizData[] = [
-      WizData.fromNumber(
-        extension.deterministicrandom(
-          mainStackDataArray[mainStackDataArrayLength - 3].number,
-          mainStackDataArray[mainStackDataArrayLength - 2].number,
-          mainStackDataArray[mainStackDataArrayLength - 1].hex
-        )
-      ),
-    ];
+    try {
+      const addDataArray: WizData[] = [
+        WizData.fromNumber(
+          extension.deterministicrandom(
+            mainStackDataArray[mainStackDataArrayLength - 3].number,
+            mainStackDataArray[mainStackDataArrayLength - 2].number,
+            mainStackDataArray[mainStackDataArrayLength - 1].hex
+          )
+        ),
+      ];
 
-    const removeLastSize: number = 3;
-    const alt = { removeLastStackData: false };
+      const removeLastSize: number = 3;
+      const alt = { removeLastStackData: false };
 
-    return { main: { addDataArray, removeLastSize }, alt };
+      return { main: { addDataArray, removeLastSize }, alt };
+    } catch (error) {
+      throw "OP_DETERMINISTICRANDOM Error:" + error;
+    }
   }
 
   /*
