@@ -223,7 +223,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     let addDataArray: WizData[] = [];
     const currentData = stacks.ifDup(mainStackDataArray[mainStackDataArrayLength - 1]);
 
-    if (currentData !== {}) addDataArray = [stacks.ifDup(mainStackDataArray[mainStackDataArrayLength - 1]) as WizData];
+    addDataArray = [stacks.ifDup(mainStackDataArray[mainStackDataArrayLength - 1]) as WizData];
 
     const removeLastSize: number = 0;
     const alt = { removeLastStackData: false };
@@ -1052,7 +1052,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_SHA256INITIALIZE") {
     if (mainStackDataArrayLength < 1) throw "OP_SHA256INITIALIZE Error: stack data array must include min 1 data!";
 
-    const addDataArray: WizData[] = [extension.sha256Initializer(mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [WizData.fromHex(extension.sha256Initialize(mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase())];
 
     const removeLastSize: number = 1;
     const alt = { removeLastStackData: false };
@@ -1063,7 +1063,9 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_SHA256UPDATE") {
     if (mainStackDataArrayLength < 2) throw "OP_SHA256UPDATE Error: stack data array must include min 2 data!";
 
-    const addDataArray: WizData[] = [extension.sha256Updater(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [
+      WizData.fromHex(extension.sha256Update(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
+    ];
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
 
@@ -1073,7 +1075,9 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
   if (word === "OP_SHA256FINALIZE") {
     if (mainStackDataArrayLength < 2) throw "OP_SHA256FINALIZE Error: stack data array must include min 2 data!";
 
-    const addDataArray: WizData[] = [extension.sha256Finalizer(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+    const addDataArray: WizData[] = [
+      WizData.fromHex(extension.sha256Finalize(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
+    ];
 
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
@@ -1388,8 +1392,15 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (mainStackDataArrayLength < 3) throw "OP_DETERMINISTICRANDOM Error: stack data array must include min 3 data!";
 
     const addDataArray: WizData[] = [
-      arithmetics.randomRange(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]),
+      WizData.fromNumber(
+        extension.deterministicrandom(
+          mainStackDataArray[mainStackDataArrayLength - 3].number,
+          mainStackDataArray[mainStackDataArrayLength - 2].number,
+          mainStackDataArray[mainStackDataArrayLength - 1].hex
+        )
+      ),
     ];
+
     const removeLastSize: number = 3;
     const alt = { removeLastStackData: false };
 
