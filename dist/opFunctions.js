@@ -878,22 +878,32 @@ var opFunctions = function (word, stackDataList, opCodes, vm, extension) {
     if (word === "OP_SHA256UPDATE") {
         if (mainStackDataArrayLength < 2)
             throw "OP_SHA256UPDATE Error: stack data array must include min 2 data!";
-        var addDataArray = [
-            wiz_data_1.default.fromHex(extension.sha256Update(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
-        ];
-        var removeLastSize = 2;
-        var alt = { removeLastStackData: false };
-        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+        try {
+            var addDataArray = [
+                wiz_data_1.default.fromHex(extension.sha256Update(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
+            ];
+            var removeLastSize = 2;
+            var alt = { removeLastStackData: false };
+            return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+        }
+        catch (error) {
+            throw "OP_SHA256UPDATE Error:" + error;
+        }
     }
     if (word === "OP_SHA256FINALIZE") {
         if (mainStackDataArrayLength < 2)
             throw "OP_SHA256FINALIZE Error: stack data array must include min 2 data!";
-        var addDataArray = [
-            wiz_data_1.default.fromHex(extension.sha256Finalize(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
-        ];
-        var removeLastSize = 2;
-        var alt = { removeLastStackData: false };
-        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+        try {
+            var addDataArray = [
+                wiz_data_1.default.fromHex(extension.sha256Finalize(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
+            ];
+            var removeLastSize = 2;
+            var alt = { removeLastStackData: false };
+            return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+        }
+        catch (error) {
+            throw "OP_SHA256FINALIZE Error: " + error;
+        }
     }
     if (word === "OP_INSPECTINPUTOUTPOINT") {
         if (mainStackDataArrayLength < 1)
