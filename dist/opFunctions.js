@@ -219,8 +219,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm, extension) {
             throw "OP_IFDUP Error: stack data array must include min 1 data!";
         var addDataArray = [];
         var currentData = lib_core_1.stacks.ifDup(mainStackDataArray[mainStackDataArrayLength - 1]);
-        if (currentData !== {})
-            addDataArray = [lib_core_1.stacks.ifDup(mainStackDataArray[mainStackDataArrayLength - 1])];
+        addDataArray = [lib_core_1.stacks.ifDup(mainStackDataArray[mainStackDataArrayLength - 1])];
         var removeLastSize = 0;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
@@ -866,7 +865,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm, extension) {
     if (word === "OP_SHA256INITIALIZE") {
         if (mainStackDataArrayLength < 1)
             throw "OP_SHA256INITIALIZE Error: stack data array must include min 1 data!";
-        var addDataArray = [extension.sha256Initializer(mainStackDataArray[mainStackDataArrayLength - 1])];
+        var addDataArray = [wiz_data_1.default.fromHex(extension.sha256Initialize(mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase())];
         var removeLastSize = 1;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
@@ -874,7 +873,9 @@ var opFunctions = function (word, stackDataList, opCodes, vm, extension) {
     if (word === "OP_SHA256UPDATE") {
         if (mainStackDataArrayLength < 2)
             throw "OP_SHA256UPDATE Error: stack data array must include min 2 data!";
-        var addDataArray = [extension.sha256Updater(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+        var addDataArray = [
+            wiz_data_1.default.fromHex(extension.sha256Update(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
+        ];
         var removeLastSize = 2;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
@@ -882,7 +883,9 @@ var opFunctions = function (word, stackDataList, opCodes, vm, extension) {
     if (word === "OP_SHA256FINALIZE") {
         if (mainStackDataArrayLength < 2)
             throw "OP_SHA256FINALIZE Error: stack data array must include min 2 data!";
-        var addDataArray = [extension.sha256Finalizer(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1])];
+        var addDataArray = [
+            wiz_data_1.default.fromHex(extension.sha256Finalize(mainStackDataArray[mainStackDataArrayLength - 2].hex, mainStackDataArray[mainStackDataArrayLength - 1].hex).toLowerCase()),
+        ];
         var removeLastSize = 2;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
@@ -1138,7 +1141,7 @@ var opFunctions = function (word, stackDataList, opCodes, vm, extension) {
         if (mainStackDataArrayLength < 3)
             throw "OP_DETERMINISTICRANDOM Error: stack data array must include min 3 data!";
         var addDataArray = [
-            lib_core_1.arithmetics.randomRange(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1]),
+            wiz_data_1.default.fromNumber(extension.deterministicrandom(mainStackDataArray[mainStackDataArrayLength - 3].number, mainStackDataArray[mainStackDataArrayLength - 2].number, mainStackDataArray[mainStackDataArrayLength - 1].hex)),
         ];
         var removeLastSize = 3;
         var alt = { removeLastStackData: false };
