@@ -5,6 +5,7 @@ import { ParseResultData, WizDataList } from "./model";
 import { Opcode } from "./opcodes/model/Opcode";
 import { currentScope } from "./utils";
 import { VM, VM_NETWORK_VERSION } from ".";
+import { compileJoin } from "./utils/compileAll";
 
 export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: Opcode[], vm?: VM, extension?: any): ParseResultData => {
   const mainStackDataArray: WizData[] = stackDataList.main;
@@ -839,12 +840,14 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (mainStackDataArrayLength < 2) throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
     if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
 
+    console.log("hereeee", stackDataList);
     const addDataArray: WizData[] = [
       crypto.checkSig(
         mainStackDataArray[mainStackDataArrayLength - 2],
         mainStackDataArray[mainStackDataArrayLength - 1],
         stackDataList.txData,
-        vm?.ver || VM_NETWORK_VERSION.SEGWIT
+        vm!,
+        compileJoin(stackDataList.inputHexes).slice(2)
       ),
     ];
     const removeLastSize: number = 2;
@@ -863,7 +866,8 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
       mainStackDataArray[mainStackDataArrayLength - 2],
       mainStackDataArray[mainStackDataArrayLength - 1],
       stackDataList.txData,
-      vm?.ver || VM_NETWORK_VERSION.SEGWIT
+      vm!,
+      compileJoin(stackDataList.inputHexes)
     );
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
@@ -896,7 +900,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     const signatureList: WizData[] = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
 
-    const addDataArray: WizData[] = [crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm?.ver || VM_NETWORK_VERSION.SEGWIT)];
+    const addDataArray: WizData[] = [crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm!, compileJoin(stackDataList.inputHexes))];
     const removeLastSize: number = 0;
 
     const alt = { removeLastStackData: false };
@@ -928,7 +932,7 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     const signatureList: WizData[] = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
 
-    const verifyResult: WizData = crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm?.ver || VM_NETWORK_VERSION.SEGWIT);
+    const verifyResult: WizData = crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm!, compileJoin(stackDataList.inputHexes));
     const removeLastSize: number = 0;
 
     if (verifyResult.number === 0) isStackFailed = true;
