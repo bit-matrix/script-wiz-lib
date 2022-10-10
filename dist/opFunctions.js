@@ -711,9 +711,20 @@ var opFunctions = function (word, stackDataList, opCodes, vm, extension) {
             throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
         if (stackDataList.txData === undefined)
             throw "OP_CHECKSIG Error : Tx template data is empty";
-        console.log("hereeee", stackDataList);
         var addDataArray = [
-            lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm, (0, compileAll_1.compileJoin)(stackDataList.inputHexes).slice(2)),
+            lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm, (0, compileAll_1.compileJoin)(__spreadArray(__spreadArray([], stackDataList.inputHexes, true), ["ac"], false)).slice(2)),
+        ];
+        var removeLastSize = 2;
+        var alt = { removeLastStackData: false };
+        return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
+    }
+    if (word === "OP_CHECKSIGADD") {
+        if (mainStackDataArrayLength < 2)
+            throw "OP_CHECKSIGADD Error: stack data array must include min 2 data!";
+        if (stackDataList.txData === undefined)
+            throw "OP_CHECKSIGADD Error : Tx template data is empty";
+        var addDataArray = [
+            lib_core_1.crypto.checkSigAdd(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm, (0, compileAll_1.compileJoin)(__spreadArray(__spreadArray([], stackDataList.inputHexes, true), ["ba"], false)).slice(2)),
         ];
         var removeLastSize = 2;
         var alt = { removeLastStackData: false };
