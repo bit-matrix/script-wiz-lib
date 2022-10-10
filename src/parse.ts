@@ -12,6 +12,7 @@ export const parse = (
   currentScopeParse: boolean,
   currentScopeParseException: boolean,
   isWitnessElement: boolean,
+  compileScript: string,
   inputHexParam?: string,
   inputNumberParam?: number,
   inputTextParam?: string,
@@ -52,7 +53,7 @@ export const parse = (
 
     if (opWord === undefined || opWord === "") throw "Unknown OP code";
 
-    if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFunctions(opWord, stackDataList, opWordCodes, version, extension);
+    if (currentScopeParse || currentScopeParseException) emptyParseResultData = opFunctions(opWord, stackDataList, opWordCodes, compileScript, version, extension);
     return { ...emptyParseResultData, inputHex };
   } catch (ex) {
     return { inputHex, errorMessage: ex as string, main: { addDataArray: [], removeLastSize: 0 }, alt: { removeLastStackData: false } };
