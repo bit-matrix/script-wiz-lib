@@ -840,14 +840,33 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (mainStackDataArrayLength < 2) throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
     if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
 
-    console.log("hereeee", stackDataList);
     const addDataArray: WizData[] = [
       crypto.checkSig(
         mainStackDataArray[mainStackDataArrayLength - 2],
         mainStackDataArray[mainStackDataArrayLength - 1],
         stackDataList.txData,
         vm!,
-        compileJoin(stackDataList.inputHexes).slice(2)
+        compileJoin([...stackDataList.inputHexes, "ac"]).slice(2)
+      ),
+    ];
+    const removeLastSize: number = 2;
+    const alt = { removeLastStackData: false };
+
+    return { main: { addDataArray, removeLastSize }, alt };
+  }
+
+  if (word === "OP_CHECKSIGADD") {
+    if (mainStackDataArrayLength < 2) throw "OP_CHECKSIGADD Error: stack data array must include min 2 data!";
+    if (stackDataList.txData === undefined) throw "OP_CHECKSIGADD Error : Tx template data is empty";
+
+    const addDataArray: WizData[] = [
+      crypto.checkSigAdd(
+        mainStackDataArray[mainStackDataArrayLength - 3],
+        mainStackDataArray[mainStackDataArrayLength - 2],
+        mainStackDataArray[mainStackDataArrayLength - 1],
+        stackDataList.txData,
+        vm!,
+        compileJoin([...stackDataList.inputHexes, "ba"]).slice(2)
       ),
     ];
     const removeLastSize: number = 2;
