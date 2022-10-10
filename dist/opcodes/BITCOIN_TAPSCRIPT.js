@@ -11,5 +11,12 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.opcodesBitcoinTapscript = void 0;
 var BITCOIN_SEGWIT_1 = require("./BITCOIN_SEGWIT");
-exports.opcodesBitcoinTapscript = __spreadArray([], BITCOIN_SEGWIT_1.opcodesBitcoinSegwit, true);
+exports.opcodesBitcoinTapscript = __spreadArray(__spreadArray([], BITCOIN_SEGWIT_1.opcodesBitcoinSegwit, true), [
+    {
+        word: "OP_CHECKSIGADD",
+        opcode: 186,
+        hex: "0xba",
+        description: "The entire transaction's outputs, inputs, and script (from the most recently-executed OP_CODESEPARATOR to the end) are hashed. The signature used by OP_CHECKSIGADD must be a valid signature for this hash and public key. If it is, 1 is returned, 0 otherwise.",
+    },
+], false);
 //# sourceMappingURL=BITCOIN_TAPSCRIPT.js.map

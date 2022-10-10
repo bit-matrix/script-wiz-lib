@@ -10,7 +10,7 @@ beforeAll(() => {
 });
 
 test("ScripWiz class test", () => {
-  scriptWiz.parseHex("4655");
+  scriptWiz.parseHex("4655", false, "aa");
   console.log(scriptWiz.vm);
   console.log(scriptWiz.opCodes);
   console.log(scriptWiz.stackDataList);

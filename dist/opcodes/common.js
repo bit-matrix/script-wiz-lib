@@ -151,7 +151,12 @@ exports.commonOpcodes = [
     { word: "OP_HASH160", opcode: 169, hex: "0xa9", description: "The input is hashed twice: first with SHA-256 and then with RIPEMD-160." },
     { word: "OP_HASH256", opcode: 170, hex: "0xaa", description: "The input is hashed two times with SHA-256." },
     // { word: "OP_CODESEPARATOR", opcode: 171, hex: "0xab" }, //	Nothing	Nothing	All of the signature checking words will only match signatures to the data after the most recently-executed OP_CODESEPARATOR.
-    { word: "OP_CHECKSIG", opcode: 172, hex: "0xac" },
+    {
+        word: "OP_CHECKSIG",
+        opcode: 172,
+        hex: "0xac",
+        description: "The entire transaction's outputs, inputs, and script (from the most recently-executed OP_CODESEPARATOR to the end) are hashed. The signature used by OP_CHECKSIG must be a valid signature for this hash and public key. If it is, 1 is returned, 0 otherwise.",
+    },
     { word: "OP_CHECKSIGVERIFY", opcode: 173, hex: "0xad" },
     { word: "OP_CHECKMULTISIG", opcode: 174, hex: "0xae" },
     { word: "OP_CHECKMULTISIGVERIFY", opcode: 175, hex: "0xaf" },

@@ -1,1 +1,1 @@
-{"version":3,"file":"BITCOIN_TAPSCRIPT.js","sourceRoot":"","sources":["../../src/opcodes/BITCOIN_TAPSCRIPT.ts"],"names":[],"mappings":";;;;;;;;;;;;AACA,mDAAwD;AAE3C,QAAA,uBAAuB,qBAAiB,qCAAoB,QAAE"}
+{"version":3,"file":"BITCOIN_TAPSCRIPT.js","sourceRoot":"","sources":["../../src/opcodes/BITCOIN_TAPSCRIPT.ts"],"names":[],"mappings":";;;;;;;;;;;;AACA,mDAAwD;AAE3C,QAAA,uBAAuB,mCAC/B,qCAAoB;IACvB;QACE,IAAI,EAAE,gBAAgB;QACtB,MAAM,EAAE,GAAG;QACX,GAAG,EAAE,MAAM;QACX,WAAW,EACT,mQAAmQ;KACtQ;UACD"}
