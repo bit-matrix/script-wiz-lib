@@ -8,7 +8,7 @@ beforeAll(function () {
     scriptWiz = new ScriptWiz_1.ScriptWiz(testVm);
 });
 test("ScripWiz class test", function () {
-    scriptWiz.parseHex("4655");
+    scriptWiz.parseHex("4655", false, "aa");
     console.log(scriptWiz.vm);
     console.log(scriptWiz.opCodes);
     console.log(scriptWiz.stackDataList);

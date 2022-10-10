@@ -9,11 +9,11 @@ export declare class ScriptWiz {
     extension: any;
     constructor(vm: VM, extension?: any);
     clearStackDataList: () => void;
-    parseHex: (input: string, isWitnessElement?: boolean) => void;
-    parseNumber: (input: number, isWitnessElement?: boolean) => void;
-    parseText: (input: string, isWitnessElement?: boolean) => void;
-    parseBin: (input: string, isWitnessElement?: boolean) => void;
-    parseOpcode: (input: string, isWitnessElement?: boolean) => void;
+    parseHex: (input: string, isWitnessElement: boolean | undefined, compileScript: string) => void;
+    parseNumber: (input: number, isWitnessElement: boolean | undefined, compileScript: string) => void;
+    parseText: (input: string, isWitnessElement: boolean | undefined, compileScript: string) => void;
+    parseBin: (input: string, isWitnessElement: boolean | undefined, compileScript: string) => void;
+    parseOpcode: (input: string, isWitnessElement: boolean | undefined, compileScript: string) => void;
     parseTxData: (input?: TxData | undefined) => void;
     assignLabel: (label: string) => void;
     compile: () => string;

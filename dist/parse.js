@@ -19,7 +19,7 @@ var wiz_data_1 = __importDefault(require("@script-wiz/wiz-data"));
 var utils_1 = require("./utils");
 var compileAll_1 = require("./utils/compileAll");
 var opFunctions_1 = require("./opFunctions");
-var parse = function (opWordCodes, stackDataList, currentScopeParse, currentScopeParseException, isWitnessElement, inputHexParam, inputNumberParam, inputTextParam, inputBinParam, inputOpCodeParam, version, extension) {
+var parse = function (opWordCodes, stackDataList, currentScopeParse, currentScopeParseException, isWitnessElement, compileScript, inputHexParam, inputNumberParam, inputTextParam, inputBinParam, inputOpCodeParam, version, extension) {
     var emptyParseResultData = {
         main: { addDataArray: [], removeLastSize: 0 },
         alt: { removeLastStackData: false },
@@ -53,7 +53,7 @@ var parse = function (opWordCodes, stackDataList, currentScopeParse, currentScop
         if (opWord === undefined || opWord === "")
             throw "Unknown OP code";
         if (currentScopeParse || currentScopeParseException)
-            emptyParseResultData = (0, opFunctions_1.opFunctions)(opWord, stackDataList, opWordCodes, version, extension);
+            emptyParseResultData = (0, opFunctions_1.opFunctions)(opWord, stackDataList, opWordCodes, compileScript, version, extension);
         return __assign(__assign({}, emptyParseResultData), { inputHex: inputHex });
     }
     catch (ex) {

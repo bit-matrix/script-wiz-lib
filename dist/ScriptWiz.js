@@ -39,25 +39,25 @@ var ScriptWiz = /** @class */ (function () {
         this.clearStackDataList = function () {
             _this.stackDataList = __assign(__assign({}, initialStackDataList), { txData: _this.stackDataList.txData });
         };
-        this.parseHex = function (input, isWitnessElement) {
+        this.parseHex = function (input, isWitnessElement, compileScript) {
             if (isWitnessElement === void 0) { isWitnessElement = true; }
-            return _this.parseInput(isWitnessElement, input);
+            return _this.parseInput(isWitnessElement, compileScript, input);
         };
-        this.parseNumber = function (input, isWitnessElement) {
+        this.parseNumber = function (input, isWitnessElement, compileScript) {
             if (isWitnessElement === void 0) { isWitnessElement = true; }
-            return _this.parseInput(isWitnessElement, undefined, input);
+            return _this.parseInput(isWitnessElement, compileScript, undefined, input);
         };
-        this.parseText = function (input, isWitnessElement) {
+        this.parseText = function (input, isWitnessElement, compileScript) {
             if (isWitnessElement === void 0) { isWitnessElement = true; }
-            return _this.parseInput(isWitnessElement, undefined, undefined, input);
+            return _this.parseInput(isWitnessElement, compileScript, undefined, undefined, input);
         };
-        this.parseBin = function (input, isWitnessElement) {
+        this.parseBin = function (input, isWitnessElement, compileScript) {
             if (isWitnessElement === void 0) { isWitnessElement = true; }
-            return _this.parseInput(isWitnessElement, undefined, undefined, undefined, input);
+            return _this.parseInput(isWitnessElement, compileScript, undefined, undefined, undefined, input);
         };
-        this.parseOpcode = function (input, isWitnessElement) {
+        this.parseOpcode = function (input, isWitnessElement, compileScript) {
             if (isWitnessElement === void 0) { isWitnessElement = true; }
-            return _this.parseInput(isWitnessElement, undefined, undefined, undefined, undefined, input);
+            return _this.parseInput(isWitnessElement, compileScript, undefined, undefined, undefined, undefined, input);
         };
         this.parseTxData = function (input) {
             _this.stackDataList = __assign(__assign({}, _this.stackDataList), { txData: input });
@@ -72,13 +72,13 @@ var ScriptWiz = /** @class */ (function () {
         };
         //
         this.compile = function () { return (0, compileAll_1.compileJoin)(_this.stackDataList.inputHexes); };
-        this.parseInput = function (isWitnessElement, inputHex, inputNumber, inputText, inputBin, inputOpCode) {
+        this.parseInput = function (isWitnessElement, compileScript, inputHex, inputNumber, inputText, inputBin, inputOpCode) {
             var currentScopeParse = (0, utils_1.currentScope)(_this.stackDataList);
             var currentScopeParseException = false;
             if (inputOpCode !== undefined)
                 currentScopeParseException = inputOpCode === "OP_IF" || inputOpCode === "OP_NOTIF" || inputOpCode === "OP_ELSE" || inputOpCode === "OP_ENDIF";
             var parseResult;
-            parseResult = (0, parse_1.parse)(_this.opCodes.data, _this.stackDataList, currentScopeParse, currentScopeParseException, isWitnessElement, inputHex, inputNumber, inputText, inputBin, inputOpCode, _this.vm, _this.extension);
+            parseResult = (0, parse_1.parse)(_this.opCodes.data, _this.stackDataList, currentScopeParse, currentScopeParseException, isWitnessElement, compileScript, inputHex, inputNumber, inputText, inputBin, inputOpCode, _this.vm, _this.extension);
             _this.parseResultCommit(parseResult);
         };
         this.parseResultCommit = function (parseResult) {
