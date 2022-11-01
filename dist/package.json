@@ -1,6 +1,6 @@
 {
   "name": "@script-wiz/lib",
-  "version": "0.1.99",
+  "version": "0.1.100",
   "description": "",
   "scripts": {
     "npm-pubish": "npm version patch && npm publish --access public"
