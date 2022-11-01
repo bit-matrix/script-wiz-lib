@@ -124,6 +124,9 @@ export class ScriptWiz {
     // update alt flow
     if (parseResult.altFlow) this.stackDataList = { ...this.stackDataList, altFlow: parseResult.altFlow };
 
+    // push op code seperators
+    if (parseResult.codeSeperators) this.stackDataList = { ...this.stackDataList, codeSeperators: parseResult.codeSeperators };
+
     // stack failed
     if (parseResult.isStackFailed) {
       this.stackDataList = { ...this.stackDataList, isStackFailed: true, errorMessage: "Stack failed an OP_VERIFY operation." };

@@ -158,7 +158,12 @@ export const commonOpcodes: Opcode[] = [
   { word: "OP_SHA256", opcode: 168, hex: "0xa8", description: "The input is hashed using SHA-256." }, //	in	hash	The input is hashed using SHA-256.
   { word: "OP_HASH160", opcode: 169, hex: "0xa9", description: "The input is hashed twice: first with SHA-256 and then with RIPEMD-160." }, //	in	hash	The input is hashed twice: first with SHA-256 and then with RIPEMD-160.
   { word: "OP_HASH256", opcode: 170, hex: "0xaa", description: "The input is hashed two times with SHA-256." }, //	in	hash	The input is hashed two times with SHA-256.
-  // { word: "OP_CODESEPARATOR", opcode: 171, hex: "0xab" }, //	Nothing	Nothing	All of the signature checking words will only match signatures to the data after the most recently-executed OP_CODESEPARATOR.
+  {
+    word: "OP_CODESEPARATOR",
+    opcode: 171,
+    hex: "0xab",
+    description: "Nothing	Nothing	All of the signature checking words will only match signatures to the data after the most recently-executed OP_CODESEPARATOR.",
+  }, //	Nothing	Nothing	All of the signature checking words will only match signatures to the data after the most recently-executed OP_CODESEPARATOR.
   {
     word: "OP_CHECKSIG",
     opcode: 172,

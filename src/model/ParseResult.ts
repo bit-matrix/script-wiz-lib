@@ -12,6 +12,7 @@ export type ParseResultData = {
   flow?: boolean[];
   altFlow?: boolean[];
   isStackFailed?: boolean;
+  codeSeperators?: string[];
 };
 
 export type ParseResult = ParseResultData & {

@@ -835,6 +835,16 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     return { main: { addDataArray, removeLastSize }, alt };
   }
 
+  if (word === "OP_CODESEPARATOR") {
+    const compileList = stackDataList.inputHexes;
+    const currentList = compileList.filter((cl) => cl !== "");
+    const codeSeperatorIndex = [...(stackDataList.codeSeperators || []), WizData.fromNumber(currentList.length).hex];
+
+    const addDataArray: WizData[] = [];
+    const alt = { removeLastStackData: false };
+    return { main: { addDataArray, removeLastSize: 0 }, alt, codeSeperators: codeSeperatorIndex };
+  }
+
   if (word === "OP_CHECKSIG") {
     if (mainStackDataArrayLength < 2) throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
     if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
