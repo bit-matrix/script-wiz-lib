@@ -719,7 +719,7 @@ var opFunctions = function (word, stackDataList, opCodes, compileScript, vm, ext
         if (stackDataList.txData === undefined)
             throw "OP_CHECKSIG Error : Tx template data is empty";
         var addDataArray = [
-            lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm, compileScript),
+            lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm, compileScript, stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : ""),
         ];
         var removeLastSize = 2;
         var alt = { removeLastStackData: false };
@@ -731,7 +731,7 @@ var opFunctions = function (word, stackDataList, opCodes, compileScript, vm, ext
         if (stackDataList.txData === undefined)
             throw "OP_CHECKSIGADD Error : Tx template data is empty";
         var addDataArray = [
-            lib_core_1.crypto.checkSigAdd(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm, compileScript),
+            lib_core_1.crypto.checkSigAdd(mainStackDataArray[mainStackDataArrayLength - 3], mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm, compileScript, stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : ""),
         ];
         var removeLastSize = 3;
         var alt = { removeLastStackData: false };
@@ -743,7 +743,7 @@ var opFunctions = function (word, stackDataList, opCodes, compileScript, vm, ext
         if (stackDataList.txData === undefined)
             throw "OP_CHECKSIG Error : Tx template data is empty ";
         var isStackFailed = false;
-        var checkSigResult = lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm, compileScript);
+        var checkSigResult = lib_core_1.crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm, compileScript, stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : "");
         var removeLastSize = 2;
         var alt = { removeLastStackData: false };
         if (checkSigResult.number === 0)
@@ -769,7 +769,9 @@ var opFunctions = function (word, stackDataList, opCodes, compileScript, vm, ext
         if (signatureLength === undefined)
             throw "Invalid signature length";
         var signatureList = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
-        var addDataArray = [lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm, compileScript)];
+        var addDataArray = [
+            lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm, compileScript, stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : ""),
+        ];
         var removeLastSize = 0;
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
@@ -794,7 +796,7 @@ var opFunctions = function (word, stackDataList, opCodes, compileScript, vm, ext
         if (signatureLength === undefined)
             throw "Invalid signature length";
         var signatureList = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
-        var verifyResult = lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm, compileScript);
+        var verifyResult = lib_core_1.crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm, compileScript, stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : "");
         var removeLastSize = 0;
         if (verifyResult.number === 0)
             isStackFailed = true;
