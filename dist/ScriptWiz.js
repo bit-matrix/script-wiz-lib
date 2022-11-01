@@ -108,6 +108,9 @@ var ScriptWiz = /** @class */ (function () {
             // update alt flow
             if (parseResult.altFlow)
                 _this.stackDataList = __assign(__assign({}, _this.stackDataList), { altFlow: parseResult.altFlow });
+            // push op code seperators
+            if (parseResult.codeSeperators)
+                _this.stackDataList = __assign(__assign({}, _this.stackDataList), { codeSeperators: parseResult.codeSeperators });
             // stack failed
             if (parseResult.isStackFailed) {
                 _this.stackDataList = __assign(__assign({}, _this.stackDataList), { isStackFailed: true, errorMessage: "Stack failed an OP_VERIFY operation." });

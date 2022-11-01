@@ -11,6 +11,7 @@ export declare type ParseResultData = {
     flow?: boolean[];
     altFlow?: boolean[];
     isStackFailed?: boolean;
+    codeSeperators?: string[];
 };
 export declare type ParseResult = ParseResultData & {
     inputHex: string;

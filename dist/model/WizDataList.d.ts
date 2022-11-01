@@ -9,4 +9,5 @@ export declare type WizDataList = {
     isStackFailed: boolean;
     errorMessage?: string;
     txData?: TxData;
+    codeSeperators?: string[];
 };

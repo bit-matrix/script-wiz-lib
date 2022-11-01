@@ -705,6 +705,14 @@ var opFunctions = function (word, stackDataList, opCodes, compileScript, vm, ext
         var alt = { removeLastStackData: false };
         return { main: { addDataArray: addDataArray, removeLastSize: removeLastSize }, alt: alt };
     }
+    if (word === "OP_CODESEPARATOR") {
+        var compileList = stackDataList.inputHexes;
+        var currentList = compileList.filter(function (cl) { return cl !== ""; });
+        var codeSeperatorIndex = __spreadArray(__spreadArray([], (stackDataList.codeSeperators || []), true), [wiz_data_1.default.fromNumber(currentList.length).hex], false);
+        var addDataArray = [];
+        var alt = { removeLastStackData: false };
+        return { main: { addDataArray: addDataArray, removeLastSize: 0 }, alt: alt, codeSeperators: codeSeperatorIndex };
+    }
     if (word === "OP_CHECKSIG") {
         if (mainStackDataArrayLength < 2)
             throw "OP_CHECKSIG Error: stack data array must include min 2 data!";
