@@ -850,7 +850,14 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
     if (stackDataList.txData === undefined) throw "OP_CHECKSIG Error : Tx template data is empty";
 
     const addDataArray: WizData[] = [
-      crypto.checkSig(mainStackDataArray[mainStackDataArrayLength - 2], mainStackDataArray[mainStackDataArrayLength - 1], stackDataList.txData, vm!, compileScript),
+      crypto.checkSig(
+        mainStackDataArray[mainStackDataArrayLength - 2],
+        mainStackDataArray[mainStackDataArrayLength - 1],
+        stackDataList.txData,
+        vm!,
+        compileScript,
+        stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : ""
+      ),
     ];
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
@@ -869,7 +876,8 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
         mainStackDataArray[mainStackDataArrayLength - 1],
         stackDataList.txData,
         vm!,
-        compileScript
+        compileScript,
+        stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : ""
       ),
     ];
     const removeLastSize: number = 3;
@@ -889,7 +897,8 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
       mainStackDataArray[mainStackDataArrayLength - 1],
       stackDataList.txData,
       vm!,
-      compileScript
+      compileScript,
+      stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : ""
     );
     const removeLastSize: number = 2;
     const alt = { removeLastStackData: false };
@@ -922,7 +931,16 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     const signatureList: WizData[] = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
 
-    const addDataArray: WizData[] = [crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm!, compileScript)];
+    const addDataArray: WizData[] = [
+      crypto.checkMultiSig(
+        publicKeyList,
+        signatureList,
+        stackDataList.txData,
+        vm!,
+        compileScript,
+        stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : ""
+      ),
+    ];
     const removeLastSize: number = 0;
 
     const alt = { removeLastStackData: false };
@@ -954,7 +972,14 @@ export const opFunctions = (word: string, stackDataList: WizDataList, opCodes: O
 
     const signatureList: WizData[] = reversedArray.slice(publicKeyLength + 2, publicKeyLength + 2 + signatureLength);
 
-    const verifyResult: WizData = crypto.checkMultiSig(publicKeyList, signatureList, stackDataList.txData, vm!, compileScript);
+    const verifyResult: WizData = crypto.checkMultiSig(
+      publicKeyList,
+      signatureList,
+      stackDataList.txData,
+      vm!,
+      compileScript,
+      stackDataList.codeSeperators ? stackDataList.codeSeperators[stackDataList.codeSeperators.length] : ""
+    );
     const removeLastSize: number = 0;
 
     if (verifyResult.number === 0) isStackFailed = true;
